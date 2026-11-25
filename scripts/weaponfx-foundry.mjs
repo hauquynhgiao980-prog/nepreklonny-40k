@@ -87,7 +87,8 @@ export function createWeaponFX({ broadcast, settings }) {
   function onAttack(rolls, data) {
     const activity = data?.subject, item = activity?.item, roll = rolls?.[0];
     if (!item || !roll || item.type !== "weapon") return null;
-    if (activity.attack?.type?.value !== "ranged") return null;                 // только стрелковое
+    const atype = activity.attack?.type?.value || item.system?.attackType;
+    if (atype !== "ranged") return null;                                        // только стрелковое
     if (/thrown/i.test(roll.options?.attackMode ?? data?.attackMode ?? "")) return null;   // метание — потом
     const actor = activity.actor;
     const src = actor?.token?.object ?? canvas.tokens.controlled.find(t => t.actor === actor) ?? actor?.getActiveTokens?.()[0];
