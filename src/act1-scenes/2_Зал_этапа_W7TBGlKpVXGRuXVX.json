@@ -1,0 +1,220 @@
+{
+ "_id": "W7TBGlKpVXGRuXVX",
+ "name": "2. Зал этапа",
+ "active": false,
+ "navigation": true,
+ "navOrder": 3,
+ "navName": "",
+ "background": {
+  "src": "modules/nepreklonny-40k/maps/03_transit_hall/hall_etap_anim_2304x3072.webm",
+  "anchorX": 0,
+  "anchorY": 0,
+  "offsetX": 0,
+  "offsetY": 0,
+  "fit": "fill",
+  "scaleX": 1,
+  "scaleY": 1,
+  "rotation": 0,
+  "tint": "#ffffff",
+  "alphaThreshold": 0
+ },
+ "foreground": null,
+ "thumb": null,
+ "width": 2304,
+ "height": 3072,
+ "padding": 0,
+ "initial": {
+  "x": 1152,
+  "y": 1536,
+  "scale": 0.5
+ },
+ "backgroundColor": "#000000",
+ "grid": {
+  "type": 1,
+  "size": 128,
+  "style": "solidLines",
+  "thickness": 1,
+  "color": "#000000",
+  "alpha": 0.15,
+  "distance": 5,
+  "units": "ft"
+ },
+ "tokenVision": true,
+ "environment": {
+  "darknessLevel": 0,
+  "globalLight": {
+   "enabled": true
+  }
+ },
+ "drawings": [],
+ "tokens": [],
+ "lights": [],
+ "notes": [],
+ "sounds": [],
+ "regions": [],
+ "templates": [],
+ "tiles": [
+  {
+   "_id": "t1smjnawpTMzXaVY",
+   "texture": {
+    "src": "modules/nepreklonny-40k/maps/03_transit_hall/hall_breach_zone_anim_1248x2104.webm",
+    "anchorX": 0.5,
+    "anchorY": 0.5,
+    "offsetX": 0,
+    "offsetY": 0,
+    "fit": "fill",
+    "scaleX": 1,
+    "scaleY": 1,
+    "rotation": 0,
+    "tint": "#ffffff",
+    "alphaThreshold": 0.75
+   },
+   "width": 1248,
+   "height": 2104,
+   "x": 1056,
+   "y": 756,
+   "elevation": 0,
+   "sort": 1,
+   "rotation": 0,
+   "alpha": 1,
+   "hidden": true,
+   "locked": true,
+   "restrictions": {
+    "light": false,
+    "weather": false
+   },
+   "occlusion": {
+    "mode": 0,
+    "alpha": 0
+   },
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "zone"
+    }
+   },
+   "_key": "!scenes.tiles!W7TBGlKpVXGRuXVX.t1smjnawpTMzXaVY",
+   "video": {
+    "loop": true,
+    "autoplay": false,
+    "volume": 0
+   }
+  },
+  {
+   "_id": "Da9a0l55aAyPwWpR",
+   "texture": {
+    "src": "modules/nepreklonny-40k/maps/03_transit_hall/hall_breach_piece_1152x1536.webm",
+    "anchorX": 0.5,
+    "anchorY": 0.5,
+    "offsetX": 0,
+    "offsetY": 0,
+    "fit": "fill",
+    "scaleX": 1,
+    "scaleY": 1,
+    "rotation": 0,
+    "tint": "#ffffff",
+    "alphaThreshold": 0.75
+   },
+   "width": 1152,
+   "height": 1536,
+   "x": 1152,
+   "y": 820,
+   "elevation": 0,
+   "sort": 2,
+   "rotation": 0,
+   "alpha": 1,
+   "hidden": true,
+   "locked": true,
+   "restrictions": {
+    "light": false,
+    "weather": false
+   },
+   "occlusion": {
+    "mode": 0,
+    "alpha": 0
+   },
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "breach"
+    }
+   },
+   "_key": "!scenes.tiles!W7TBGlKpVXGRuXVX.Da9a0l55aAyPwWpR",
+   "video": {
+    "loop": false,
+    "autoplay": false,
+    "volume": 0.8
+   }
+  },
+  {
+   "_id": "nJNdQiC4zYJGQ0xm",
+   "texture": {
+    "src": "modules/nepreklonny-40k/maps/03_transit_hall/hall_rip_piece_1152x1536.webm",
+    "anchorX": 0.5,
+    "anchorY": 0.5,
+    "offsetX": 0,
+    "offsetY": 0,
+    "fit": "fill",
+    "scaleX": 1,
+    "scaleY": 1,
+    "rotation": 0,
+    "tint": "#ffffff",
+    "alphaThreshold": 0.75
+   },
+   "width": 1152,
+   "height": 1536,
+   "x": 1152,
+   "y": 820,
+   "elevation": 0,
+   "sort": 3,
+   "rotation": 0,
+   "alpha": 1,
+   "hidden": true,
+   "locked": true,
+   "restrictions": {
+    "light": false,
+    "weather": false
+   },
+   "occlusion": {
+    "mode": 0,
+    "alpha": 0
+   },
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "rip"
+    }
+   },
+   "_key": "!scenes.tiles!W7TBGlKpVXGRuXVX.nJNdQiC4zYJGQ0xm",
+   "video": {
+    "loop": false,
+    "autoplay": false,
+    "volume": 0.8
+   }
+  }
+ ],
+ "walls": [],
+ "playlist": null,
+ "playlistSound": null,
+ "journal": null,
+ "journalEntryPage": null,
+ "weather": "",
+ "folder": null,
+ "sort": 300,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {
+  "nepreklonny-40k": {
+   "scene": "hall"
+  }
+ },
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!scenes!W7TBGlKpVXGRuXVX"
+}

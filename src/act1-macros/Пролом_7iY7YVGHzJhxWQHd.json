@@ -1,0 +1,25 @@
+{
+ "_id": "7iY7YVGHzJhxWQHd",
+ "name": "Пролом",
+ "type": "script",
+ "img": "icons/svg/fire.svg",
+ "scope": "global",
+ "command": "const MOD = \"nepreklonny-40k\";\nconst scene = canvas.scene;\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\nif (!scene) return ui.notifications.warn(\"Нет открытой сцены.\");\nconst tileBy = role => scene.tiles.find(t => t.flags?.[MOD]?.role === role);\nconst sleep = ms => new Promise(r => setTimeout(r, ms));\nconst light = s => String(s ?? \"\").includes(\"1152x1536\") || String(s ?? \"\").includes(\"1536x1152\") || String(s ?? \"\").includes(\"1152x1664\");\nconst play = (tile, offset = 0, extra = {}) => tile.update({ hidden: false, \"video.autoplay\": true, ...extra }, { diff: false, playVideo: true, offset });\nconst stop = (tile, extra = {}) => tile.update({ hidden: true, \"video.autoplay\": false, ...extra }, { diff: false, playVideo: false, offset: 0 });\n// ЗАЛ ЭТАПА — ПРОЛОМ.\n// 1-й запуск: видео пролома (3,76 с, со звуком) поверх правой части карты, затем живой тайл зоны пролома.\n// 2-й запуск: зал возвращается в состояние до пролома (для репетиции).\nconst breach = tileBy(\"breach\"), zone = tileBy(\"zone\");\nif (!breach || !zone) return ui.notifications.warn(\"На этой сцене нет тайлов пролома. Откройте сцену «2. Зал этапа».\");\nif (!zone.hidden) {\n  await stop(zone); await stop(breach);\n  return ui.notifications.info(\"Зал этапа: вернул состояние до пролома.\");\n}\nawait play(breach, 0);\nawait sleep(3760 + 300);\nawait play(zone, 0.5);          // последний кадр пролома совпадает с кадром 0,5 с петли зоны\nawait sleep(250);\nawait stop(breach);\nui.notifications.info(\"Пролом. На колени, агнцы!\");\n",
+ "folder": null,
+ "sort": 100,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!macros!7iY7YVGHzJhxWQHd"
+}

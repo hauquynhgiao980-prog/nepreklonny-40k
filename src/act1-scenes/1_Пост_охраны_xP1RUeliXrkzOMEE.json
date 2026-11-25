@@ -1,0 +1,104 @@
+{
+ "_id": "xP1RUeliXrkzOMEE",
+ "name": "1. Пост охраны",
+ "active": false,
+ "navigation": true,
+ "navOrder": 2,
+ "navName": "",
+ "background": {
+  "src": "modules/nepreklonny-40k/maps/02_guard_post/post_guard_anim_2304x3072.webm",
+  "anchorX": 0,
+  "anchorY": 0,
+  "offsetX": 0,
+  "offsetY": 0,
+  "fit": "fill",
+  "scaleX": 1,
+  "scaleY": 1,
+  "rotation": 0,
+  "tint": "#ffffff",
+  "alphaThreshold": 0
+ },
+ "foreground": null,
+ "thumb": null,
+ "width": 2304,
+ "height": 3072,
+ "padding": 0,
+ "initial": {
+  "x": 1152,
+  "y": 1536,
+  "scale": 0.5
+ },
+ "backgroundColor": "#000000",
+ "grid": {
+  "type": 1,
+  "size": 128,
+  "style": "solidLines",
+  "thickness": 1,
+  "color": "#000000",
+  "alpha": 0.15,
+  "distance": 5,
+  "units": "ft"
+ },
+ "tokenVision": true,
+ "environment": {
+  "darknessLevel": 0,
+  "globalLight": {
+   "enabled": true
+  }
+ },
+ "drawings": [],
+ "tokens": [],
+ "lights": [],
+ "notes": [],
+ "sounds": [
+  {
+   "_id": "DUNUURsvWjxbjRMk",
+   "x": 1750,
+   "y": 520,
+   "elevation": 0,
+   "radius": 40,
+   "path": "modules/nepreklonny-40k/maps/02_guard_post/vox_imperator_zashishaet.ogg",
+   "repeat": true,
+   "volume": 0.6,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "vox"
+    }
+   },
+   "_key": "!scenes.sounds!xP1RUeliXrkzOMEE.DUNUURsvWjxbjRMk"
+  }
+ ],
+ "regions": [],
+ "templates": [],
+ "tiles": [],
+ "walls": [],
+ "playlist": null,
+ "playlistSound": null,
+ "journal": null,
+ "journalEntryPage": null,
+ "weather": "",
+ "folder": null,
+ "sort": 200,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {
+  "nepreklonny-40k": {
+   "scene": "post"
+  }
+ },
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!scenes!xP1RUeliXrkzOMEE"
+}

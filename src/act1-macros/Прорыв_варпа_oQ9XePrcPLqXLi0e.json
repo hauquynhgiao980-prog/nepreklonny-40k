@@ -1,0 +1,25 @@
+{
+ "_id": "oQ9XePrcPLqXLi0e",
+ "name": "Прорыв варпа",
+ "type": "script",
+ "img": "icons/svg/lightning.svg",
+ "scope": "global",
+ "command": "const MOD = \"nepreklonny-40k\";\nconst scene = canvas.scene;\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\nif (!scene) return ui.notifications.warn(\"Нет открытой сцены.\");\nconst tileBy = role => scene.tiles.find(t => t.flags?.[MOD]?.role === role);\nconst sleep = ms => new Promise(r => setTimeout(r, ms));\nconst light = s => String(s ?? \"\").includes(\"1152x1536\") || String(s ?? \"\").includes(\"1536x1152\") || String(s ?? \"\").includes(\"1152x1664\");\nconst play = (tile, offset = 0, extra = {}) => tile.update({ hidden: false, \"video.autoplay\": true, ...extra }, { diff: false, playVideo: true, offset });\nconst stop = (tile, extra = {}) => tile.update({ hidden: true, \"video.autoplay\": false, ...extra }, { diff: false, playVideo: false, offset: 0 });\n// СМОТРОВАЯ ГАЛЕРЕЯ — ПРОРЫВ ВАРПА. Меняет фон: чистая галерея ⇄ осквернённая. Стены у обеих версий одни.\nconst dir = \"modules/nepreklonny-40k/maps/05_gallery/\";\nconst src = String(scene.background.src ?? \"\");\nif (!src.includes(\"gallery_\")) return ui.notifications.warn(\"Откройте сцену «4. Смотровая галерея».\");\nconst lite = light(src);\nconst CLEAN = dir + (lite ? \"gallery_clean_anim_1536x1152.webm\" : \"gallery_clean_anim_3072x2304.webm\");\nconst DES = dir + (lite ? \"gallery_desecrated_anim_1536x1152.webm\" : \"gallery_desecrated_anim_3072x2304.webm\");\nconst toDes = !src.includes(\"desecrated\");\nawait scene.update({ \"background.src\": toDes ? DES : CLEAN });\nui.notifications.info(toDes ? \"Прорыв варпа. Из разлома поднимается Нерождённый.\" : \"Галерея снова чистая.\");\n",
+ "folder": null,
+ "sort": 600,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!macros!oQ9XePrcPLqXLi0e"
+}

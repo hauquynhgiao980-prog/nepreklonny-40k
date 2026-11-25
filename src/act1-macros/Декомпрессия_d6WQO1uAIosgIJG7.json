@@ -1,0 +1,25 @@
+{
+ "_id": "d6WQO1uAIosgIJG7",
+ "name": "Декомпрессия",
+ "type": "script",
+ "img": "icons/svg/hazard.svg",
+ "scope": "global",
+ "command": "const MOD = \"nepreklonny-40k\";\nconst scene = canvas.scene;\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\nif (!scene) return ui.notifications.warn(\"Нет открытой сцены.\");\nconst tileBy = role => scene.tiles.find(t => t.flags?.[MOD]?.role === role);\nconst sleep = ms => new Promise(r => setTimeout(r, ms));\nconst light = s => String(s ?? \"\").includes(\"1152x1536\") || String(s ?? \"\").includes(\"1536x1152\") || String(s ?? \"\").includes(\"1152x1664\");\nconst play = (tile, offset = 0, extra = {}) => tile.update({ hidden: false, \"video.autoplay\": true, ...extra }, { diff: false, playVideo: true, offset });\nconst stop = (tile, extra = {}) => tile.update({ hidden: true, \"video.autoplay\": false, ...extra }, { diff: false, playVideo: false, offset: 0 });\n// ЗАЛ ЭТАПА — ДЕКОМПРЕССИЯ (конец второго раунда).\n// 1-й запуск: торпеду вырывает из пролома (видео 3,76 с со звуком), затем фон сцены — тёмная петля с дырой в пустоту.\n// 2-й запуск: зал возвращается в состояние до пролома.\nconst rip = tileBy(\"rip\"), zone = tileBy(\"zone\"), breach = tileBy(\"breach\");\nconst dir = \"modules/nepreklonny-40k/maps/03_transit_hall/\";\nconst lite = light(scene.background.src);\nconst DARK = dir + (lite ? \"hall_dark_anim_1152x1536.webm\" : \"hall_dark_anim_2304x3072.webm\");\nconst BEFORE = dir + (lite ? \"hall_etap_anim_1152x1536.webm\" : \"hall_etap_anim_2304x3072.webm\");\nif (!rip) return ui.notifications.warn(\"На этой сцене нет тайла декомпрессии. Откройте сцену «2. Зал этапа».\");\nif (String(scene.background.src).includes(\"hall_dark_anim\")) {\n  await scene.update({ \"background.src\": BEFORE });\n  for (const t of [rip, zone, breach]) if (t) await stop(t);\n  return ui.notifications.info(\"Зал этапа: вернул состояние до пролома.\");\n}\nawait play(rip, 0);\nawait sleep(3760 + 200);\nscene.update({ \"background.src\": DARK });            // сцена перерисуется — свет «мигает»\nconst hide = [rip, zone, breach].filter(Boolean).map(t => ({ _id: t.id, hidden: true, \"video.autoplay\": false }));\nawait scene.updateEmbeddedDocuments(\"Tile\", hide);\nui.notifications.info(\"Декомпрессия. Испытание 1.\");\n",
+ "folder": null,
+ "sort": 200,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!macros!d6WQO1uAIosgIJG7"
+}

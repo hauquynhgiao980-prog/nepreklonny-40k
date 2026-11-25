@@ -1,0 +1,401 @@
+{
+ "_id": "i8edE8IalBcl582X",
+ "name": "3. Шлюпочная палуба",
+ "active": false,
+ "navigation": true,
+ "navOrder": 4,
+ "navName": "",
+ "background": {
+  "src": "modules/nepreklonny-40k/maps/04_lifeboat_deck/lifeboats_deck_dead_anim_2304x3328.webm",
+  "anchorX": 0,
+  "anchorY": 0,
+  "offsetX": 0,
+  "offsetY": 0,
+  "fit": "fill",
+  "scaleX": 1,
+  "scaleY": 1,
+  "rotation": 0,
+  "tint": "#ffffff",
+  "alphaThreshold": 0
+ },
+ "foreground": null,
+ "thumb": null,
+ "width": 2304,
+ "height": 3328,
+ "padding": 0,
+ "initial": {
+  "x": 1152,
+  "y": 1664,
+  "scale": 0.5
+ },
+ "backgroundColor": "#000000",
+ "grid": {
+  "type": 1,
+  "size": 128,
+  "style": "solidLines",
+  "thickness": 1,
+  "color": "#000000",
+  "alpha": 0.15,
+  "distance": 5,
+  "units": "ft"
+ },
+ "tokenVision": true,
+ "environment": {
+  "darknessLevel": 0,
+  "globalLight": {
+   "enabled": true
+  }
+ },
+ "drawings": [],
+ "tokens": [],
+ "lights": [],
+ "notes": [],
+ "sounds": [
+  {
+   "_id": "Od0XHYBLZ4t5p34b",
+   "x": 1795,
+   "y": 500,
+   "elevation": 0,
+   "radius": 15,
+   "path": "modules/nepreklonny-40k/maps/04_lifeboat_deck/collar_beep_slow.ogg",
+   "repeat": true,
+   "volume": 0.5,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "collar-slow-5"
+    }
+   },
+   "_key": "!scenes.sounds!i8edE8IalBcl582X.Od0XHYBLZ4t5p34b"
+  },
+  {
+   "_id": "SoGlLwmYQ4gQz1Bf",
+   "x": 1795,
+   "y": 500,
+   "elevation": 0,
+   "radius": 7.5,
+   "path": "modules/nepreklonny-40k/maps/04_lifeboat_deck/collar_beep_fast.ogg",
+   "repeat": true,
+   "volume": 0.8,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "collar-fast-5"
+    }
+   },
+   "_key": "!scenes.sounds!i8edE8IalBcl582X.SoGlLwmYQ4gQz1Bf"
+  },
+  {
+   "_id": "XCfqjfBluI0dldD6",
+   "x": 1795,
+   "y": 1100,
+   "elevation": 0,
+   "radius": 15,
+   "path": "modules/nepreklonny-40k/maps/04_lifeboat_deck/collar_beep_slow.ogg",
+   "repeat": true,
+   "volume": 0.5,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "collar-slow-6"
+    }
+   },
+   "_key": "!scenes.sounds!i8edE8IalBcl582X.XCfqjfBluI0dldD6"
+  },
+  {
+   "_id": "GSS9da1WWQDsdYPD",
+   "x": 1795,
+   "y": 1100,
+   "elevation": 0,
+   "radius": 7.5,
+   "path": "modules/nepreklonny-40k/maps/04_lifeboat_deck/collar_beep_fast.ogg",
+   "repeat": true,
+   "volume": 0.8,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "collar-fast-6"
+    }
+   },
+   "_key": "!scenes.sounds!i8edE8IalBcl582X.GSS9da1WWQDsdYPD"
+  },
+  {
+   "_id": "mBBpTZLmhOBV9Xcf",
+   "x": 1795,
+   "y": 1700,
+   "elevation": 0,
+   "radius": 15,
+   "path": "modules/nepreklonny-40k/maps/04_lifeboat_deck/collar_beep_slow.ogg",
+   "repeat": true,
+   "volume": 0.5,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "collar-slow-7"
+    }
+   },
+   "_key": "!scenes.sounds!i8edE8IalBcl582X.mBBpTZLmhOBV9Xcf"
+  },
+  {
+   "_id": "LhX6X2JeDtys02zh",
+   "x": 1795,
+   "y": 1700,
+   "elevation": 0,
+   "radius": 7.5,
+   "path": "modules/nepreklonny-40k/maps/04_lifeboat_deck/collar_beep_fast.ogg",
+   "repeat": true,
+   "volume": 0.8,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "collar-fast-7"
+    }
+   },
+   "_key": "!scenes.sounds!i8edE8IalBcl582X.LhX6X2JeDtys02zh"
+  },
+  {
+   "_id": "0ngdRJqnR9uD2fSD",
+   "x": 1795,
+   "y": 2300,
+   "elevation": 0,
+   "radius": 15,
+   "path": "modules/nepreklonny-40k/maps/04_lifeboat_deck/collar_beep_slow.ogg",
+   "repeat": true,
+   "volume": 0.5,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "collar-slow-8"
+    }
+   },
+   "_key": "!scenes.sounds!i8edE8IalBcl582X.0ngdRJqnR9uD2fSD"
+  },
+  {
+   "_id": "3Z85E9WhH9UghH1s",
+   "x": 1795,
+   "y": 2300,
+   "elevation": 0,
+   "radius": 7.5,
+   "path": "modules/nepreklonny-40k/maps/04_lifeboat_deck/collar_beep_fast.ogg",
+   "repeat": true,
+   "volume": 0.8,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "collar-fast-8"
+    }
+   },
+   "_key": "!scenes.sounds!i8edE8IalBcl582X.3Z85E9WhH9UghH1s"
+  },
+  {
+   "_id": "Ye3Rhd7CVEvU8a3M",
+   "x": 1795,
+   "y": 2917,
+   "elevation": 0,
+   "radius": 15,
+   "path": "modules/nepreklonny-40k/maps/04_lifeboat_deck/collar_beep_slow.ogg",
+   "repeat": true,
+   "volume": 0.5,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "collar-slow-9"
+    }
+   },
+   "_key": "!scenes.sounds!i8edE8IalBcl582X.Ye3Rhd7CVEvU8a3M"
+  },
+  {
+   "_id": "LjOA6amkeyE4UJmM",
+   "x": 1795,
+   "y": 2917,
+   "elevation": 0,
+   "radius": 7.5,
+   "path": "modules/nepreklonny-40k/maps/04_lifeboat_deck/collar_beep_fast.ogg",
+   "repeat": true,
+   "volume": 0.8,
+   "walls": false,
+   "easing": true,
+   "hidden": false,
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "collar-fast-9"
+    }
+   },
+   "_key": "!scenes.sounds!i8edE8IalBcl582X.LjOA6amkeyE4UJmM"
+  }
+ ],
+ "regions": [],
+ "templates": [],
+ "tiles": [
+  {
+   "_id": "4khw9zWYNxNWOHLu",
+   "texture": {
+    "src": "modules/nepreklonny-40k/maps/04_lifeboat_deck/lifeboats_hall_fire_tile_1228x2536.webm",
+    "anchorX": 0.5,
+    "anchorY": 0.5,
+    "offsetX": 0,
+    "offsetY": 0,
+    "fit": "fill",
+    "scaleX": 1,
+    "scaleY": 1,
+    "rotation": 0,
+    "tint": "#ffffff",
+    "alphaThreshold": 0.75
+   },
+   "width": 1228,
+   "height": 2536,
+   "x": 600,
+   "y": 792,
+   "elevation": 0,
+   "sort": 1,
+   "rotation": 0,
+   "alpha": 1,
+   "hidden": false,
+   "locked": true,
+   "restrictions": {
+    "light": false,
+    "weather": false
+   },
+   "occlusion": {
+    "mode": 0,
+    "alpha": 0
+   },
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "turret-fire"
+    }
+   },
+   "_key": "!scenes.tiles!i8edE8IalBcl582X.4khw9zWYNxNWOHLu",
+   "video": {
+    "loop": true,
+    "autoplay": true,
+    "volume": 0
+   }
+  },
+  {
+   "_id": "5eAW3pFL4fn1GpNY",
+   "texture": {
+    "src": "modules/nepreklonny-40k/maps/04_lifeboat_deck/lifeboats_capsule7_tile.png",
+    "anchorX": 0.5,
+    "anchorY": 0.5,
+    "offsetX": 0,
+    "offsetY": 0,
+    "fit": "fill",
+    "scaleX": 1,
+    "scaleY": 1,
+    "rotation": 0,
+    "tint": "#ffffff",
+    "alphaThreshold": 0.75
+   },
+   "width": 529,
+   "height": 644,
+   "x": 1775,
+   "y": 1380,
+   "elevation": 0,
+   "sort": 2,
+   "rotation": 0,
+   "alpha": 1,
+   "hidden": false,
+   "locked": true,
+   "restrictions": {
+    "light": false,
+    "weather": false
+   },
+   "occlusion": {
+    "mode": 0,
+    "alpha": 0
+   },
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "capsule7"
+    }
+   },
+   "_key": "!scenes.tiles!i8edE8IalBcl582X.5eAW3pFL4fn1GpNY"
+  },
+  {
+   "_id": "t1l0fqaixdSn3HOd",
+   "texture": {
+    "src": "modules/nepreklonny-40k/maps/04_lifeboat_deck/lifeboats_valve_stopped_104.png",
+    "anchorX": 0.5,
+    "anchorY": 0.5,
+    "offsetX": 0,
+    "offsetY": 0,
+    "fit": "fill",
+    "scaleX": 1,
+    "scaleY": 1,
+    "rotation": 0,
+    "tint": "#ffffff",
+    "alphaThreshold": 0.75
+   },
+   "width": 104,
+   "height": 104,
+   "x": 160,
+   "y": 1186,
+   "elevation": 0,
+   "sort": 3,
+   "rotation": 0,
+   "alpha": 1,
+   "hidden": true,
+   "locked": true,
+   "restrictions": {
+    "light": false,
+    "weather": false
+   },
+   "occlusion": {
+    "mode": 0,
+    "alpha": 0
+   },
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "valve"
+    }
+   },
+   "_key": "!scenes.tiles!i8edE8IalBcl582X.t1l0fqaixdSn3HOd"
+  }
+ ],
+ "walls": [],
+ "playlist": null,
+ "playlistSound": null,
+ "journal": null,
+ "journalEntryPage": null,
+ "weather": "",
+ "folder": null,
+ "sort": 400,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {
+  "nepreklonny-40k": {
+   "scene": "lifeboats"
+  }
+ },
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!scenes!i8edE8IalBcl582X"
+}

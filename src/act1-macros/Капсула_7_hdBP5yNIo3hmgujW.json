@@ -1,0 +1,25 @@
+{
+ "_id": "hdBP5yNIo3hmgujW",
+ "name": "Капсула 7",
+ "type": "script",
+ "img": "icons/svg/door-exit.svg",
+ "scope": "global",
+ "command": "const MOD = \"nepreklonny-40k\";\nconst scene = canvas.scene;\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\nif (!scene) return ui.notifications.warn(\"Нет открытой сцены.\");\nconst tileBy = role => scene.tiles.find(t => t.flags?.[MOD]?.role === role);\nconst sleep = ms => new Promise(r => setTimeout(r, ms));\nconst light = s => String(s ?? \"\").includes(\"1152x1536\") || String(s ?? \"\").includes(\"1536x1152\") || String(s ?? \"\").includes(\"1152x1664\");\nconst play = (tile, offset = 0, extra = {}) => tile.update({ hidden: false, \"video.autoplay\": true, ...extra }, { diff: false, playVideo: true, offset });\nconst stop = (tile, extra = {}) => tile.update({ hidden: true, \"video.autoplay\": false, ...extra }, { diff: false, playVideo: false, offset: 0 });\n// ШЛЮПОЧНАЯ ПАЛУБА — КАПСУЛА 7. Если Варро улетел, капсулу прячут, и отсек за люком 7 пуст.\nconst cap = tileBy(\"capsule7\");\nif (!cap) return ui.notifications.warn(\"На этой сцене нет капсулы 7. Откройте сцену «3. Шлюпочная палуба».\");\nawait cap.update({ hidden: !cap.hidden });\nui.notifications.info(cap.hidden ? \"Капсула 7 улетела.\" : \"Капсула 7 снова в отсеке.\");\n",
+ "folder": null,
+ "sort": 400,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!macros!hdBP5yNIo3hmgujW"
+}

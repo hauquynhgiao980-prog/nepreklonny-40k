@@ -1,0 +1,1523 @@
+{
+ "folder": null,
+ "name": "Тихий Сол",
+ "type": "npc",
+ "_id": "QN2TgM2SU5ch75Hh",
+ "img": "modules/nepreklonny-40k/icons/gen/enemies40k/KGeNBz04eqDue5Ed.webp",
+ "system": {
+  "currency": {
+   "pp": 0,
+   "gp": 0,
+   "ep": 0,
+   "sp": 0,
+   "cp": 0
+  },
+  "abilities": {
+   "str": {
+    "value": 11,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "dex": {
+    "value": 12,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "con": {
+    "value": 10,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "int": {
+    "value": 10,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "wis": {
+    "value": 11,
+    "proficient": 1,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "cha": {
+    "value": 10,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   }
+  },
+  "bonuses": {
+   "mwak": {
+    "attack": "",
+    "damage": ""
+   },
+   "rwak": {
+    "attack": "",
+    "damage": ""
+   },
+   "msak": {
+    "attack": "",
+    "damage": ""
+   },
+   "rsak": {
+    "attack": "",
+    "damage": ""
+   },
+   "abilities": {
+    "check": "",
+    "save": "",
+    "skill": ""
+   },
+   "spell": {
+    "dc": ""
+   }
+  },
+  "skills": {
+   "acr": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ani": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "arc": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ath": {
+    "ability": "str",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "dec": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 1,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "his": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ins": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "itm": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "inv": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "med": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "nat": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "prc": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "prf": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "per": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "rel": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 1,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "slt": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ste": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "sur": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "value": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   }
+  },
+  "tools": {},
+  "spells": {
+   "spell1": {
+    "value": 0,
+    "override": null
+   },
+   "spell2": {
+    "value": 0,
+    "override": null
+   },
+   "spell3": {
+    "value": 0,
+    "override": null
+   },
+   "spell4": {
+    "value": 0,
+    "override": null
+   },
+   "spell5": {
+    "value": 0,
+    "override": null
+   },
+   "spell6": {
+    "value": 0,
+    "override": null
+   },
+   "spell7": {
+    "value": 0,
+    "override": null
+   },
+   "spell8": {
+    "value": 0,
+    "override": null
+   },
+   "spell9": {
+    "value": 0,
+    "override": null
+   },
+   "pact": {
+    "value": 0,
+    "override": null
+   }
+  },
+  "attributes": {
+   "init": {
+    "ability": "",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "bonus": ""
+   },
+   "movement": {
+    "walk": "30",
+    "units": "ft",
+    "hover": false,
+    "ignoredDifficultTerrain": []
+   },
+   "attunement": {
+    "max": 3
+   },
+   "senses": {
+    "darkvision": null,
+    "blindsight": null,
+    "tremorsense": null,
+    "truesight": null,
+    "units": null,
+    "special": ""
+   },
+   "spellcasting": "str",
+   "exhaustion": 0,
+   "concentration": {
+    "ability": "",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "bonuses": {
+     "save": ""
+    },
+    "limit": 1
+   },
+   "loyalty": {
+    "value": null
+   },
+   "ac": {
+    "flat": null,
+    "calc": "default"
+   },
+   "hd": {
+    "spent": 0
+   },
+   "hp": {
+    "value": 9,
+    "max": 9,
+    "temp": null,
+    "tempmax": null,
+    "formula": "2d8"
+   },
+   "death": {
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "success": 0,
+    "failure": 0,
+    "bonuses": {
+     "save": ""
+    }
+   },
+   "spell": {
+    "level": 0
+   },
+   "price": {
+    "value": null,
+    "denomination": "gp"
+   }
+  },
+  "details": {
+   "biography": {
+    "value": "<p>Попутчик-смертник, молчун, всё время шепчет себе под нос — литанию задом наперёд. На запястье под рукавом вырезана восьмиконечная звезда. Прячет под робой папку из ящика пульта: дело единицы 5, псайкера.</p><p>Уже принадлежит пастве Апостола и в зале этапа встанет на колени.</p>",
+    "public": ""
+   },
+   "alignment": "Нейтральный",
+   "ideal": "",
+   "bond": "",
+   "flaw": "",
+   "race": null,
+   "type": {
+    "value": "humanoid",
+    "custom": "",
+    "subtype": "",
+    "swarm": ""
+   },
+   "habitat": {
+    "value": [
+     {
+      "type": "any"
+     }
+    ],
+    "custom": ""
+   },
+   "cr": 0.125,
+   "treasure": {
+    "value": [
+     "individual",
+     "relics"
+    ]
+   },
+   "source": {
+    "book": "Непреклонный",
+    "page": "",
+    "custom": "",
+    "license": "",
+    "rules": "2024"
+   }
+  },
+  "resources": {
+   "legact": {
+    "max": 0,
+    "spent": 0
+   },
+   "legres": {
+    "max": 0,
+    "spent": 0
+   },
+   "lair": {
+    "value": false,
+    "initiative": null,
+    "inside": false
+   }
+  },
+  "source": {
+   "revision": 1,
+   "rules": "2024",
+   "book": "MM 2024",
+   "page": "",
+   "custom": "",
+   "license": ""
+  },
+  "traits": {
+   "size": "med",
+   "di": {
+    "value": [],
+    "custom": "",
+    "bypasses": []
+   },
+   "dr": {
+    "value": [],
+    "custom": "",
+    "bypasses": []
+   },
+   "dv": {
+    "value": [],
+    "custom": "",
+    "bypasses": []
+   },
+   "dm": {
+    "amount": {},
+    "bypasses": []
+   },
+   "ci": {
+    "value": [],
+    "custom": ""
+   },
+   "languages": {
+    "value": [
+     "common"
+    ],
+    "custom": "",
+    "communication": {
+     "telepathy": {
+      "value": null,
+      "units": "ft"
+     }
+    }
+   },
+   "important": false
+  }
+ },
+ "prototypeToken": {
+  "name": "Тихий Сол",
+  "displayName": 20,
+  "actorLink": false,
+  "appendNumber": false,
+  "prependAdjective": false,
+  "width": 1,
+  "height": 1,
+  "texture": {
+   "src": "modules/nepreklonny-40k/icons/gen/enemies40k/KGeNBz04eqDue5Ed.webp",
+   "anchorX": 0.5,
+   "anchorY": 0.5,
+   "offsetX": 0,
+   "offsetY": 0,
+   "fit": "contain",
+   "scaleX": 2,
+   "scaleY": 2,
+   "rotation": 0,
+   "tint": "#ffffff",
+   "alphaThreshold": 0.75
+  },
+  "lockRotation": true,
+  "rotation": 0,
+  "alpha": 1,
+  "disposition": -1,
+  "displayBars": 20,
+  "bar1": {
+   "attribute": "attributes.hp"
+  },
+  "bar2": {
+   "attribute": null
+  },
+  "light": {
+   "negative": false,
+   "priority": 0,
+   "alpha": 0.5,
+   "angle": 360,
+   "bright": 0,
+   "color": null,
+   "coloration": 1,
+   "dim": 0,
+   "attenuation": 0.5,
+   "luminosity": 0.5,
+   "saturation": 0,
+   "contrast": 0,
+   "shadows": 0,
+   "animation": {
+    "type": null,
+    "speed": 5,
+    "intensity": 5,
+    "reverse": false
+   },
+   "darkness": {
+    "min": 0,
+    "max": 1
+   }
+  },
+  "sight": {
+   "enabled": false,
+   "range": 0,
+   "angle": 360,
+   "visionMode": "darkvision",
+   "color": null,
+   "attenuation": 0,
+   "brightness": 0,
+   "saturation": 0,
+   "contrast": 0
+  },
+  "detectionModes": [],
+  "occludable": {
+   "radius": 0
+  },
+  "ring": {
+   "enabled": false,
+   "colors": {
+    "ring": null,
+    "background": null
+   },
+   "effects": 1,
+   "subject": {
+    "scale": 2,
+    "texture": null
+   }
+  },
+  "flags": {
+   "wall-height": {
+    "tokenHeight": 0
+   },
+   "tagger": {},
+   "splatter": {
+    "bloodColor": ""
+   },
+   "healthEstimate": {
+    "dontMarkDead": false,
+    "hideHealthEstimate": false,
+    "hideName": false
+   }
+  },
+  "randomImg": false,
+  "turnMarker": {
+   "mode": 1,
+   "animation": null,
+   "src": null,
+   "disposition": false
+  },
+  "movementAction": null
+ },
+ "items": [
+  {
+   "name": "Лоскутная броня",
+   "type": "equipment",
+   "img": "icons/svg/shield.svg",
+   "system": {
+    "description": {
+     "value": "<p>Нагрудник и плечи этого доспеха изготовлены из кожи, вываренной в масле. Остальные части доспеха сделаны из более мягких и гибких материалов.</p>",
+     "chat": ""
+    },
+    "source": {
+     "custom": "",
+     "book": "PHB 2024",
+     "revision": 1,
+     "rules": "2024"
+    },
+    "quantity": 1,
+    "weight": {
+     "value": 10,
+     "units": "lb"
+    },
+    "price": {
+     "value": 10,
+     "denomination": "gp"
+    },
+    "attunement": "",
+    "rarity": "",
+    "identified": true,
+    "cover": null,
+    "uses": {
+     "max": "",
+     "spent": 0,
+     "recovery": []
+    },
+    "armor": {
+     "value": 11,
+     "dex": null,
+     "magicalBonus": null
+    },
+    "hp": {
+     "value": 0,
+     "max": 0,
+     "dt": null,
+     "conditions": ""
+    },
+    "speed": {
+     "value": null,
+     "conditions": "",
+     "units": "ft"
+    },
+    "strength": null,
+    "proficient": null,
+    "unidentified": {
+     "description": ""
+    },
+    "type": {
+     "value": "light",
+     "baseItem": "leather"
+    },
+    "container": null,
+    "properties": [],
+    "activities": {},
+    "identifier": "kozhanyj-dospeh-leather-armor",
+    "attuned": false,
+    "equipped": true,
+    "crew": {
+     "value": []
+    }
+   },
+   "effects": [],
+   "_stats": {
+    "compendiumSource": "Compendium.dnd5e.items.WwdpHLXGX5r8uZu5",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.2.3",
+    "lastModifiedBy": null
+   },
+   "ownership": {
+    "default": 0
+   },
+   "_id": "xqil8oqdHHXv3EBk",
+   "sort": 0,
+   "flags": {
+    "midi-qol": {
+     "AoETargetType": "any",
+     "autoTarget": "default",
+     "rollAttackPerTarget": "default",
+     "removeAttackDamageButtons": "default",
+     "itemCondition": "",
+     "reactionCondition": "",
+     "otherCondition": "",
+     "effectCondition": ""
+    },
+    "midiProperties": {
+     "autoFailFriendly": false,
+     "autoSaveFriendly": false,
+     "magicdam": false,
+     "magiceffect": false,
+     "noConcentrationCheck": false,
+     "toggleEffect": false,
+     "ignoreTotalCover": false,
+     "idr": false,
+     "idi": false,
+     "idv": false,
+     "ida": false
+    }
+   },
+   "_key": "!actors.items!QN2TgM2SU5ch75Hh.xqil8oqdHHXv3EBk"
+  },
+  {
+   "name": "Ритуальный нож",
+   "type": "weapon",
+   "img": "icons/svg/sword.svg",
+   "system": {
+    "description": {
+     "value": "<p><em>Бросок рукопашной атаки:</em> [[/attack @abilities.dex.mod + @prof]], досягаемость 5 футов. <em>Попадание:</em> [[/damage 1d4 + @abilities.dex.mod average]] Рубящего урона плюс [[/damage 1]] Некротического урона.</p>",
+     "chat": "<p>Культист атакует серпом!</p>"
+    },
+    "source": {
+     "custom": "",
+     "book": "PHB 2024",
+     "revision": 1,
+     "rules": "2024"
+    },
+    "quantity": 1,
+    "weight": {
+     "value": 2,
+     "units": "lb"
+    },
+    "price": {
+     "value": 1,
+     "denomination": "gp"
+    },
+    "attunement": "",
+    "rarity": "",
+    "identified": true,
+    "cover": null,
+    "range": {
+     "value": null,
+     "long": null,
+     "units": "ft",
+     "reach": null
+    },
+    "uses": {
+     "max": "",
+     "spent": 0,
+     "recovery": []
+    },
+    "damage": {
+     "versatile": {
+      "number": null,
+      "denomination": null,
+      "bonus": "",
+      "types": [],
+      "custom": {
+       "enabled": false,
+       "formula": ""
+      },
+      "scaling": {
+       "mode": "",
+       "number": null,
+       "formula": ""
+      }
+     },
+     "base": {
+      "number": 1,
+      "denomination": 4,
+      "bonus": "",
+      "types": [
+       "slashing"
+      ],
+      "custom": {
+       "enabled": false,
+       "formula": ""
+      },
+      "scaling": {
+       "mode": "",
+       "number": null,
+       "formula": ""
+      }
+     }
+    },
+    "armor": {
+     "value": 10
+    },
+    "hp": {
+     "value": 0,
+     "max": 0,
+     "dt": null,
+     "conditions": ""
+    },
+    "properties": [
+     "lgt"
+    ],
+    "proficient": null,
+    "unidentified": {
+     "description": ""
+    },
+    "type": {
+     "value": "simpleM",
+     "baseItem": "sickle"
+    },
+    "container": null,
+    "magicalBonus": null,
+    "mastery": "nick",
+    "activities": {
+     "dnd5eactivity000": {
+      "_id": "dnd5eactivity000",
+      "type": "attack",
+      "activation": {
+       "type": "action",
+       "value": null,
+       "condition": "",
+       "override": false
+      },
+      "consumption": {
+       "targets": [],
+       "scaling": {
+        "allowed": false,
+        "max": ""
+       },
+       "spellSlot": true
+      },
+      "description": {
+       "chatFlavor": ""
+      },
+      "duration": {
+       "concentration": false,
+       "value": "",
+       "units": "inst",
+       "special": "",
+       "override": false
+      },
+      "effects": [],
+      "range": {
+       "units": "ft",
+       "special": "",
+       "override": false
+      },
+      "target": {
+       "template": {
+        "count": "",
+        "contiguous": false,
+        "type": "",
+        "size": "",
+        "width": "",
+        "height": "",
+        "units": "ft"
+       },
+       "affects": {
+        "count": "",
+        "type": "",
+        "choice": false,
+        "special": ""
+       },
+       "prompt": true,
+       "override": false
+      },
+      "uses": {
+       "spent": 0,
+       "max": "",
+       "recovery": []
+      },
+      "attack": {
+       "ability": "dex",
+       "bonus": "",
+       "critical": {
+        "threshold": null
+       },
+       "flat": false,
+       "type": {
+        "value": "melee",
+        "classification": "weapon"
+       }
+      },
+      "damage": {
+       "critical": {
+        "bonus": ""
+       },
+       "includeBase": true,
+       "parts": [
+        {
+         "custom": {
+          "enabled": true,
+          "formula": "1"
+         },
+         "number": null,
+         "denomination": 0,
+         "bonus": "",
+         "types": [
+          "necrotic"
+         ],
+         "scaling": {
+          "number": 1
+         }
+        }
+       ]
+      },
+      "sort": 0,
+      "useConditionText": "",
+      "effectConditionText": "",
+      "macroData": {
+       "name": "",
+       "command": ""
+      },
+      "ignoreTraits": {
+       "idi": false,
+       "idr": false,
+       "idv": false,
+       "ida": false,
+       "idm": false
+      },
+      "midiProperties": {
+       "ignoreTraits": [],
+       "triggeredActivityId": "none",
+       "triggeredActivityConditionText": "",
+       "triggeredActivityTargets": "targets",
+       "triggeredActivityRollAs": "self",
+       "confirmTargets": "default",
+       "autoTargetType": "any",
+       "autoTargetAction": "default",
+       "automationOnly": false,
+       "otherActivityCompatible": true,
+       "identifier": "",
+       "autoConsume": false,
+       "forceConsumeDialog": "default",
+       "forceRollDialog": "default",
+       "forceDamageDialog": "default",
+       "otherActivityAsParentType": true,
+       "displayActivityName": false,
+       "rollMode": "default",
+       "chooseEffects": false,
+       "toggleEffect": false,
+       "ignoreFullCover": false,
+       "removeChatButtons": "default",
+       "magicEffect": false,
+       "magicDamage": false,
+       "noConcentrationCheck": false,
+       "autoCEEffects": "default"
+      },
+      "attackMode": "oneHanded",
+      "ammunition": "",
+      "otherActivityId": "none",
+      "otherActivityUuid": "",
+      "name": "",
+      "useConditionReason": "",
+      "isOverTimeFlag": false,
+      "overTimeProperties": {
+       "saveRemoves": true,
+       "preRemoveConditionText": "",
+       "postRemoveConditionText": ""
+      },
+      "otherActivityAsParentType": true,
+      "attackRollPerTarget": "default",
+      "fumbleThreshold": 1,
+      "flags": {},
+      "visibility": {
+       "level": {},
+       "requireAttunement": false,
+       "requireIdentification": false,
+       "requireMagic": false
+      }
+     }
+    },
+    "identifier": "serp-sickle",
+    "ammunition": {},
+    "attuned": false,
+    "equipped": true,
+    "crew": {
+     "value": []
+    }
+   },
+   "effects": [],
+   "_stats": {
+    "compendiumSource": "Compendium.dnd5e.items.i4NeNZ30ycwPDHMx",
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.2.5",
+    "lastModifiedBy": "vCCVz19ZVOqY2m4Q",
+    "modifiedTime": 1770432405816
+   },
+   "ownership": {
+    "default": 0
+   },
+   "_id": "zWNlPNyOKxS1QFDg",
+   "sort": 1000,
+   "flags": {
+    "dnd5e": {
+     "persistSourceMigration": true
+    },
+    "midi-qol": {
+     "fumbleThreshold": null,
+     "rollAttackPerTarget": "default",
+     "removeAttackDamageButtons": "default",
+     "itemCondition": "",
+     "reactionCondition": "",
+     "otherCondition": "",
+     "effectCondition": ""
+    },
+    "midiProperties": {
+     "autoFailFriendly": false,
+     "autoSaveFriendly": false,
+     "magicdam": false,
+     "magiceffect": false,
+     "noConcentrationCheck": false,
+     "toggleEffect": false,
+     "ignoreTotalCover": false
+    },
+    "autoanimations": {
+     "id": "245114bb-7f05-47e6-9a70-54c7a28b6933",
+     "label": "Серп Sickle",
+     "levels3d": {
+      "enable": true,
+      "type": "slash",
+      "data": {
+       "color01": "#6db7d0",
+       "color02": "#ba2626",
+       "speed": null,
+       "repeat": null,
+       "arc": null,
+       "delay": null,
+       "scale": null,
+       "alpha": 1,
+       "gravity": null,
+       "mass": null,
+       "life": 300,
+       "emittersize": null,
+       "rate": 15,
+       "addexplosion": {
+        "enable": false,
+        "color01": "#000000",
+        "color02": "#000000",
+        "speed": null,
+        "scale": null,
+        "alpha": null,
+        "gravity": null,
+        "mass": null,
+        "life": null,
+        "emittersize": null,
+        "rate": null,
+        "sprite": "modules/levels-3d-preview/assets/particles/dust.png"
+       },
+       "sprite": "modules/levels-3d-preview/assets/particles/emberssmall.png",
+       "autoSize": true,
+       "spritePath": "modules/levels-3d-preview/assets/particles/twirl_03.png",
+       "onCenter": true,
+       "duration": 500
+      },
+      "secondary": {
+       "enable": true,
+       "data": {
+        "autoSize": true,
+        "spritePath": "jb2a.melee_generic.slash.01.greenyellow.1",
+        "type": "jb2aexplosionnolight"
+       }
+      },
+      "sound": {
+       "delay": 0,
+       "enable": true,
+       "file": "modules/dnd5e-animations/assets/sounds/Weapons/Melee_Slashing_Piercing/*",
+       "startTime": 0,
+       "repeat": 1,
+       "repeatDelay": 250,
+       "volume": 0.75
+      },
+      "tokens": {
+       "enable": true,
+       "source": true,
+       "target": true,
+       "sourceType": "slash",
+       "sourcePlay": "start",
+       "targetType": "shake",
+       "targetPlay": "end"
+      }
+     },
+     "macro": {
+      "enable": false,
+      "playWhen": "0"
+     },
+     "meleeSwitch": {
+      "video": {
+       "dbSection": "range",
+       "menuType": "weapon",
+       "animation": "arrow",
+       "variant": "regular",
+       "color": "regular",
+       "enableCustom": false,
+       "customPath": ""
+      },
+      "sound": {
+       "delay": 0,
+       "enable": false,
+       "file": "",
+       "startTime": 0,
+       "volume": 0.75,
+       "repeat": 1,
+       "repeatDelay": 250
+      },
+      "options": {
+       "detect": "automatic",
+       "range": 2,
+       "isReturning": false,
+       "switchType": "on"
+      }
+     },
+     "menu": "melee",
+     "primary": {
+      "options": {
+       "delay": 0,
+       "elevation": 1000,
+       "isWait": false,
+       "opacity": 1,
+       "repeat": 1,
+       "repeatDelay": 500,
+       "size": 1,
+       "zIndex": 1
+      },
+      "sound": {
+       "delay": 0,
+       "enable": true,
+       "file": "modules/dnd5e-animations/assets/sounds/Weapons/Melee_Slashing_Piercing/*",
+       "startTime": 0,
+       "volume": 0.75,
+       "repeat": 1,
+       "repeatDelay": 250
+      },
+      "video": {
+       "dbSection": "melee",
+       "menuType": "generic",
+       "animation": "1hs",
+       "variant": "01",
+       "color": "white",
+       "enableCustom": true,
+       "customPath": "jb2a.melee_attack.01.sickle.01"
+      }
+     },
+     "secondary": {
+      "enable": false,
+      "options": {
+       "addTokenWidth": false,
+       "anchor": "0.5",
+       "delay": 250,
+       "elevation": 1000,
+       "fadeIn": 250,
+       "fadeOut": 500,
+       "isMasked": false,
+       "isRadius": true,
+       "isWait": false,
+       "opacity": 1,
+       "repeat": 1,
+       "repeatDelay": 500,
+       "size": 1.5,
+       "zIndex": 1
+      },
+      "sound": {
+       "delay": 0,
+       "enable": false,
+       "file": "",
+       "startTime": 0,
+       "volume": 0.75,
+       "repeat": 1,
+       "repeatDelay": 250
+      },
+      "video": {
+       "dbSection": "static",
+       "menuType": "spell",
+       "animation": "curewounds",
+       "variant": "01",
+       "color": "blue",
+       "enableCustom": false,
+       "customPath": ""
+      }
+     },
+     "soundOnly": {
+      "sound": {
+       "enable": false,
+       "delay": 0,
+       "startTime": 0,
+       "volume": 0.75,
+       "file": "",
+       "repeat": 1,
+       "repeatDelay": 250
+      }
+     },
+     "source": {
+      "enable": false,
+      "options": {
+       "addTokenWidth": false,
+       "anchor": "0.5",
+       "delay": 0,
+       "elevation": 1000,
+       "fadeIn": 250,
+       "fadeOut": 500,
+       "isMasked": false,
+       "isRadius": false,
+       "isWait": true,
+       "opacity": 1,
+       "repeat": 1,
+       "repeatDelay": 250,
+       "size": 1,
+       "zIndex": 1
+      },
+      "sound": {
+       "delay": 0,
+       "enable": false,
+       "file": "",
+       "startTime": 0,
+       "repeat": 1,
+       "repeatDelay": 250,
+       "volume": 0.75
+      },
+      "video": {
+       "dbSection": "static",
+       "menuType": "spell",
+       "animation": "curewounds",
+       "variant": "01",
+       "color": "blue",
+       "enableCustom": false,
+       "customPath": ""
+      }
+     },
+     "target": {
+      "enable": false,
+      "options": {
+       "addTokenWidth": false,
+       "anchor": "0.5",
+       "delay": 0,
+       "elevation": 1000,
+       "fadeIn": 250,
+       "fadeOut": 500,
+       "isMasked": false,
+       "isWait": false,
+       "isRadius": false,
+       "opacity": 1,
+       "persistent": false,
+       "repeat": 1,
+       "repeatDelay": 250,
+       "size": 1,
+       "unbindAlpha": false,
+       "unbindVisibility": false,
+       "zIndex": 1
+      },
+      "sound": {
+       "delay": 0,
+       "enable": false,
+       "file": "",
+       "startTime": 0,
+       "repeat": 1,
+       "repeatDelay": 250,
+       "volume": 0.75
+      },
+      "video": {
+       "dbSection": "static",
+       "menuType": "spell",
+       "animation": "curewounds",
+       "variant": "01",
+       "color": "blue",
+       "enableCustom": false,
+       "customPath": ""
+      }
+     },
+     "isEnabled": true,
+     "isCustomized": true,
+     "fromAmmo": false,
+     "version": 5
+    }
+   },
+   "_key": "!actors.items!QN2TgM2SU5ch75Hh.zWNlPNyOKxS1QFDg"
+  },
+  {
+   "name": "Ради Тёмных Богов",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "description": {
+     "value": "<p>Когда культист-ренегат умирает в пределах 5 футов от другого культиста, тот получает преимущество на следующий бросок атаки до конца своего следующего хода.</p>",
+     "chat": ""
+    },
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {},
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "requirements": "",
+    "properties": [],
+    "source": {
+     "book": "Непреклонный",
+     "rules": "2024"
+    }
+   },
+   "effects": [],
+   "flags": {},
+   "_stats": {},
+   "_id": "Py8xaUdzFT4t1LYn",
+   "sort": 2000,
+   "_key": "!actors.items!QN2TgM2SU5ch75Hh.Py8xaUdzFT4t1LYn",
+   "ownership": {
+    "default": 0
+   }
+  },
+  {
+   "name": "Толпа",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "description": {
+     "value": "<p>Пока рядом с целью есть ещё хотя бы два культиста, атаки культиста по ней совершаются с преимуществом.</p>",
+     "chat": ""
+    },
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {},
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "requirements": "",
+    "properties": [],
+    "source": {
+     "book": "Непреклонный",
+     "rules": "2024"
+    }
+   },
+   "effects": [],
+   "flags": {},
+   "_stats": {},
+   "_id": "sHLmhI0QhNl3YZTK",
+   "sort": 3000,
+   "_key": "!actors.items!QN2TgM2SU5ch75Hh.sHLmhI0QhNl3YZTK",
+   "ownership": {
+    "default": 0
+   }
+  }
+ ],
+ "effects": [],
+ "sort": 0,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!actors!QN2TgM2SU5ch75Hh"
+}

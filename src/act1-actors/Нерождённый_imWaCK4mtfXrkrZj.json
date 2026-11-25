@@ -1,0 +1,1324 @@
+{
+ "name": "Нерождённый",
+ "type": "npc",
+ "img": "modules/nepreklonny-40k/icons/gen/enemies40k/5NGh0q9tXN7cKisg.webp",
+ "system": {
+  "currency": {
+   "pp": 0,
+   "gp": 0,
+   "ep": 0,
+   "sp": 0,
+   "cp": 0
+  },
+  "abilities": {
+   "str": {
+    "value": 20,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "dex": {
+    "value": 14,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "con": {
+    "value": 17,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "int": {
+    "value": 12,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "wis": {
+    "value": 14,
+    "proficient": 1,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "cha": {
+    "value": 18,
+    "proficient": 1,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   }
+  },
+  "bonuses": {
+   "mwak": {
+    "attack": "",
+    "damage": ""
+   },
+   "rwak": {
+    "attack": "",
+    "damage": ""
+   },
+   "msak": {
+    "attack": "",
+    "damage": ""
+   },
+   "rsak": {
+    "attack": "",
+    "damage": ""
+   },
+   "abilities": {
+    "check": "",
+    "save": "",
+    "skill": ""
+   },
+   "spell": {
+    "dc": ""
+   }
+  },
+  "skills": {
+   "acr": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ani": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "arc": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ath": {
+    "ability": "str",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "dec": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "his": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ins": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "itm": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "inv": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "med": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "nat": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "prc": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "prf": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "per": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "rel": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "slt": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ste": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "sur": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   }
+  },
+  "tools": {},
+  "spells": {
+   "spell1": {
+    "value": 0,
+    "override": null
+   },
+   "spell2": {
+    "value": 0,
+    "override": null
+   },
+   "spell3": {
+    "value": 0,
+    "override": null
+   },
+   "spell4": {
+    "value": 0,
+    "override": null
+   },
+   "spell5": {
+    "value": 0,
+    "override": null
+   },
+   "spell6": {
+    "value": 0,
+    "override": null
+   },
+   "spell7": {
+    "value": 0,
+    "override": null
+   },
+   "spell8": {
+    "value": 0,
+    "override": null
+   },
+   "spell9": {
+    "value": 0,
+    "override": null
+   },
+   "pact": {
+    "value": 0,
+    "override": null
+   }
+  },
+  "attributes": {
+   "ac": {
+    "calc": "natural",
+    "flat": 15
+   },
+   "init": {
+    "ability": "",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "bonus": "@prof"
+   },
+   "movement": {
+    "walk": "30",
+    "fly": "30",
+    "units": null,
+    "hover": true,
+    "ignoredDifficultTerrain": []
+   },
+   "attunement": {
+    "max": 3
+   },
+   "senses": {
+    "darkvision": 120,
+    "blindsight": null,
+    "tremorsense": null,
+    "truesight": null,
+    "units": null,
+    "special": ""
+   },
+   "spellcasting": "str",
+   "exhaustion": 0,
+   "concentration": {
+    "ability": "",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "bonuses": {
+     "save": ""
+    },
+    "limit": 1
+   },
+   "loyalty": {
+    "value": null
+   },
+   "hd": {
+    "spent": 0
+   },
+   "hp": {
+    "value": 136,
+    "max": 136,
+    "temp": null,
+    "tempmax": null,
+    "formula": "16d10 + 48"
+   },
+   "death": {
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "success": 0,
+    "failure": 0,
+    "bonuses": {
+     "save": ""
+    }
+   },
+   "spell": {
+    "level": 0
+   },
+   "price": {
+    "value": null,
+    "denomination": "gp"
+   }
+  },
+  "details": {
+   "biography": {
+    "value": "<p>Тварь варпа, которую Несущие Слово зовут Нерождённым. Поднимается из разлома у помоста смотровой галереи, когда голос Вела превращает вокс в врата. Говорит голосом Вела.</p><p><em>Опыт 5000. Высокая сложность для пятерых героев 5 уровня.</em></p>",
+    "public": ""
+   },
+   "alignment": "Хаотично-злое",
+   "ideal": "",
+   "bond": "",
+   "flaw": "",
+   "race": null,
+   "type": {
+    "value": "fiend",
+    "subtype": "демон",
+    "swarm": "",
+    "custom": ""
+   },
+   "habitat": {
+    "value": [
+     {
+      "type": "planar",
+      "subtype": "Девять Преисподних"
+     }
+    ],
+    "custom": ""
+   },
+   "cr": 9,
+   "treasure": {
+    "value": [
+     "implements"
+    ]
+   },
+   "source": {
+    "book": "Непреклонный",
+    "page": "",
+    "custom": "",
+    "license": "",
+    "rules": "2024"
+   }
+  },
+  "resources": {
+   "legact": {
+    "max": 2,
+    "spent": 0
+   },
+   "legres": {
+    "max": 0,
+    "spent": 0
+   },
+   "lair": {
+    "value": true,
+    "initiative": 20,
+    "inside": false
+   }
+  },
+  "source": {
+   "revision": 1,
+   "rules": "2024",
+   "book": "MM 2024"
+  },
+  "traits": {
+   "size": "lg",
+   "di": {
+    "value": [
+     "poison",
+     "psychic"
+    ],
+    "custom": "",
+    "bypasses": []
+   },
+   "dr": {
+    "value": [
+     "cold",
+     "fire",
+     "lightning"
+    ],
+    "custom": "",
+    "bypasses": []
+   },
+   "dv": {
+    "value": [],
+    "custom": "",
+    "bypasses": []
+   },
+   "dm": {
+    "amount": {},
+    "bypasses": []
+   },
+   "ci": {
+    "value": [
+     "charmed",
+     "frightened",
+     "poisoned"
+    ],
+    "custom": ""
+   },
+   "languages": {
+    "value": [
+     "infernal"
+    ],
+    "custom": "",
+    "communication": {
+     "telepathy": {
+      "value": 120,
+      "units": "ft"
+     }
+    }
+   },
+   "important": false
+  }
+ },
+ "prototypeToken": {
+  "name": "Нерождённый",
+  "displayName": 20,
+  "actorLink": false,
+  "appendNumber": false,
+  "prependAdjective": false,
+  "width": 2,
+  "height": 2,
+  "texture": {
+   "src": "modules/nepreklonny-40k/icons/gen/enemies40k/5NGh0q9tXN7cKisg.webp",
+   "anchorX": 0.5,
+   "anchorY": 0.5,
+   "offsetX": 0,
+   "offsetY": 0,
+   "fit": "contain",
+   "scaleX": 1.5,
+   "scaleY": 1.5,
+   "rotation": 0,
+   "tint": "#ffffff",
+   "alphaThreshold": 0.75
+  },
+  "lockRotation": true,
+  "rotation": 0,
+  "alpha": 1,
+  "disposition": -1,
+  "displayBars": 20,
+  "bar1": {
+   "attribute": "attributes.hp"
+  },
+  "bar2": {
+   "attribute": null
+  },
+  "light": {
+   "negative": false,
+   "priority": 0,
+   "alpha": 0.5,
+   "angle": 360,
+   "bright": 0,
+   "color": null,
+   "coloration": 1,
+   "dim": 0,
+   "attenuation": 0.5,
+   "luminosity": 0.5,
+   "saturation": 0,
+   "contrast": 0,
+   "shadows": 0,
+   "animation": {
+    "type": null,
+    "speed": 5,
+    "intensity": 5,
+    "reverse": false
+   },
+   "darkness": {
+    "min": 0,
+    "max": 1
+   }
+  },
+  "sight": {
+   "enabled": false,
+   "range": 0,
+   "angle": 360,
+   "visionMode": "darkvision",
+   "color": null,
+   "attenuation": 0,
+   "brightness": 0,
+   "saturation": 0,
+   "contrast": 0
+  },
+  "detectionModes": [],
+  "occludable": {
+   "radius": 0
+  },
+  "ring": {
+   "enabled": false,
+   "colors": {
+    "ring": null,
+    "background": null
+   },
+   "effects": 1,
+   "subject": {
+    "scale": 2,
+    "texture": null
+   }
+  },
+  "flags": {},
+  "randomImg": false,
+  "turnMarker": {
+   "mode": 1,
+   "animation": null,
+   "src": null,
+   "disposition": false
+  },
+  "movementAction": null
+ },
+ "items": [
+  {
+   "_id": "J8J88JITI76XqL3t",
+   "name": "Мультиатака",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {},
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "description": {
+     "value": "<p>Нерождённый дважды бьёт когтем.</p>",
+     "chat": ""
+    },
+    "identifier": "",
+    "source": {
+     "revision": 1,
+     "rules": "2024"
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+     "level": null,
+     "repeatable": false,
+     "items": []
+    },
+    "properties": [],
+    "requirements": ""
+   },
+   "effects": [],
+   "sort": 0,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_key": "!actors.items!imWaCK4mtfXrkrZj.J8J88JITI76XqL3t"
+  },
+  {
+   "_id": "oNRYh0s7VBdXmTqf",
+   "name": "Коготь",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {
+     "waYVgkSCr5TiHzt1": {
+      "type": "attack",
+      "_id": "waYVgkSCr5TiHzt1",
+      "sort": 0,
+      "activation": {
+       "type": "action",
+       "value": null,
+       "override": false,
+       "condition": ""
+      },
+      "consumption": {
+       "scaling": {
+        "allowed": false
+       },
+       "spellSlot": true,
+       "targets": []
+      },
+      "description": {
+       "chatFlavor": ""
+      },
+      "duration": {
+       "units": "inst",
+       "concentration": false,
+       "override": false
+      },
+      "effects": [],
+      "range": {
+       "override": false,
+       "units": "ft",
+       "value": "10",
+       "special": ""
+      },
+      "target": {
+       "template": {
+        "contiguous": false,
+        "units": "ft",
+        "type": ""
+       },
+       "affects": {
+        "choice": false,
+        "type": "creature",
+        "count": "1"
+       },
+       "override": false,
+       "prompt": true
+      },
+      "uses": {
+       "spent": 0,
+       "recovery": []
+      },
+      "name": "",
+      "attack": {
+       "critical": {
+        "threshold": null
+       },
+       "flat": false,
+       "type": {
+        "value": "melee",
+        "classification": "weapon"
+       },
+       "ability": "str",
+       "bonus": ""
+      },
+      "damage": {
+       "critical": {
+        "bonus": ""
+       },
+       "includeBase": false,
+       "parts": [
+        {
+         "custom": {
+          "enabled": false,
+          "formula": ""
+         },
+         "number": 2,
+         "denomination": 8,
+         "bonus": "@mod",
+         "types": [
+          "slashing"
+         ],
+         "scaling": {
+          "number": 1
+         }
+        },
+        {
+         "custom": {
+          "enabled": false,
+          "formula": ""
+         },
+         "number": 1,
+         "denomination": 8,
+         "bonus": "",
+         "types": [
+          "psychic"
+         ],
+         "scaling": {
+          "number": 1
+         }
+        }
+       ]
+      }
+     }
+    },
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "description": {
+     "value": "<p><em>Бросок рукопашной атаки:</em> +9, досягаемость 10 футов. <em>Попадание:</em> 2к8 + 5 рубящего урона и 1к8 урона психической энергией.</p>",
+     "chat": ""
+    },
+    "identifier": "",
+    "source": {
+     "revision": 1,
+     "rules": "2024"
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+     "level": null,
+     "repeatable": false,
+     "items": []
+    },
+    "properties": [],
+    "requirements": ""
+   },
+   "effects": [],
+   "sort": 0,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_key": "!actors.items!imWaCK4mtfXrkrZj.oNRYh0s7VBdXmTqf"
+  },
+  {
+   "_id": "a4hg3kgNiyVrcIeZ",
+   "name": "Слово (перезарядка 5–6)",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {
+     "o7A2Qyj9uROCUs3P": {
+      "type": "save",
+      "_id": "o7A2Qyj9uROCUs3P",
+      "sort": 0,
+      "activation": {
+       "type": "action",
+       "value": null,
+       "override": false,
+       "condition": ""
+      },
+      "consumption": {
+       "scaling": {
+        "allowed": false
+       },
+       "spellSlot": true,
+       "targets": [
+        {
+         "type": "itemUses",
+         "value": "1",
+         "target": "",
+         "scaling": {}
+        }
+       ]
+      },
+      "description": {
+       "chatFlavor": ""
+      },
+      "duration": {
+       "units": "inst",
+       "concentration": false,
+       "override": false
+      },
+      "effects": [],
+      "range": {
+       "override": false,
+       "units": "self"
+      },
+      "target": {
+       "template": {
+        "contiguous": false,
+        "units": "ft",
+        "type": "cone",
+        "size": "30"
+       },
+       "affects": {
+        "choice": false,
+        "type": "creature"
+       },
+       "override": false,
+       "prompt": true
+      },
+      "uses": {
+       "spent": 0,
+       "recovery": []
+      },
+      "name": "",
+      "damage": {
+       "parts": [
+        {
+         "custom": {
+          "enabled": false,
+          "formula": ""
+         },
+         "number": 4,
+         "denomination": 8,
+         "bonus": "",
+         "types": [
+          "psychic"
+         ],
+         "scaling": {
+          "number": 1
+         }
+        }
+       ],
+       "onSave": "half",
+       "critical": {
+        "allow": false
+       }
+      },
+      "save": {
+       "ability": [
+        "wis"
+       ],
+       "dc": {
+        "calculation": "cha",
+        "formula": ""
+       }
+      }
+     }
+    },
+    "uses": {
+     "spent": 0,
+     "max": "1",
+     "recovery": [
+      {
+       "period": "recharge",
+       "type": "recoverAll",
+       "formula": "5"
+      }
+     ]
+    },
+    "description": {
+     "value": "<p>Голос Вела из пасти твари. Конус 30 футов, спасбросок Мудрости Сл 16. <em>Провал:</em> 4к8 урона психической энергией, существо падает ничком и не может встать до конца своего следующего хода. <em>Успех:</em> половина урона. Пользуется «Словом», только пока открыт канал вокса.</p>",
+     "chat": ""
+    },
+    "identifier": "",
+    "source": {
+     "revision": 1,
+     "rules": "2024"
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+     "level": null,
+     "repeatable": false,
+     "items": []
+    },
+    "properties": [],
+    "requirements": ""
+   },
+   "effects": [],
+   "sort": 0,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_key": "!actors.items!imWaCK4mtfXrkrZj.a4hg3kgNiyVrcIeZ"
+  },
+  {
+   "_id": "cRMf5M0tuLeg2686",
+   "name": "Якоря",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {},
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "description": {
+     "value": "<p>Пока цел хоть один якорь, в начале своего хода Нерождённый восстанавливает 10 хитов (15, если испытание 2 провалено), и его нельзя изгнать заклинанием. Якоря: два сердца на левых кафедрах (каждое — КД 12, 15 хитов) и канал вокса (оборвать — действие у когитатора: Техножрец без броска, остальные — Интеллект (Магия) Сл 15).</p><p>При 0 хитов тварь утягивает в разлом. Если разбиты оба сердца и оборван канал, её утягивает сразу, в конце текущего хода.</p>",
+     "chat": ""
+    },
+    "identifier": "",
+    "source": {
+     "revision": 1,
+     "rules": "2024"
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+     "level": null,
+     "repeatable": false,
+     "items": []
+    },
+    "properties": [],
+    "requirements": ""
+   },
+   "effects": [],
+   "sort": 0,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_key": "!actors.items!imWaCK4mtfXrkrZj.cRMf5M0tuLeg2686"
+  },
+  {
+   "_id": "iCET1EqXQKFb7azV",
+   "name": "Легендарные действия (2 за раунд)",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {
+     "kSh7TLKXP8BZoafx": {
+      "type": "utility",
+      "_id": "kSh7TLKXP8BZoafx",
+      "sort": 0,
+      "activation": {
+       "type": "legendary",
+       "value": 1,
+       "override": false,
+       "condition": ""
+      },
+      "consumption": {
+       "scaling": {
+        "allowed": false
+       },
+       "spellSlot": true,
+       "targets": []
+      },
+      "description": {
+       "chatFlavor": ""
+      },
+      "duration": {
+       "units": "inst",
+       "concentration": false,
+       "override": false
+      },
+      "effects": [],
+      "range": {
+       "override": false,
+       "units": "self"
+      },
+      "target": {
+       "template": {
+        "contiguous": false,
+        "units": "ft"
+       },
+       "affects": {
+        "choice": false
+       },
+       "override": false,
+       "prompt": true
+      },
+      "uses": {
+       "spent": 0,
+       "recovery": []
+      },
+      "name": ""
+     }
+    },
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "description": {
+     "value": "<p>После хода другого существа: удар когтем или шаг сквозь дымку — телепорт на 30 футов в видимую точку внутри лиловой дымки у разлома.</p>",
+     "chat": ""
+    },
+    "identifier": "",
+    "source": {
+     "revision": 1,
+     "rules": "2024"
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+     "level": null,
+     "repeatable": false,
+     "items": []
+    },
+    "properties": [],
+    "requirements": ""
+   },
+   "effects": [],
+   "sort": 0,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_key": "!actors.items!imWaCK4mtfXrkrZj.iCET1EqXQKFb7azV"
+  },
+  {
+   "_id": "yg5z8raKI6GkTHgT",
+   "name": "Логово: разлом",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {},
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "description": {
+     "value": "<p>На счёт инициативы 20 (при ничьей — последней) одно на выбор мастера:</p><ul><li>Молния бьёт вдоль ветки на полу: линия 60 футов длиной и 5 шириной от разлома, спасбросок Ловкости Сл 14, 3к8 урона электричеством, при успехе половина.</li><li>Лиловая дымка сгущается: сфера радиусом 15 футов вокруг разлома сильно заслонена до следующего хода логова.</li></ul>",
+     "chat": ""
+    },
+    "identifier": "",
+    "source": {
+     "revision": 1,
+     "rules": "2024"
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+     "level": null,
+     "repeatable": false,
+     "items": []
+    },
+    "properties": [],
+    "requirements": ""
+   },
+   "effects": [],
+   "sort": 0,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_key": "!actors.items!imWaCK4mtfXrkrZj.yg5z8raKI6GkTHgT"
+  },
+  {
+   "_id": "4NGgtUqMWhYGxZPz",
+   "name": "Тактика",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {},
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "description": {
+     "value": "<p>Первой идёт на того, у кого больше Света. Тех, кто принял Шёпот в испытании 2, обходит, пока есть другие цели: «эти уже наши».</p>",
+     "chat": ""
+    },
+    "identifier": "",
+    "source": {
+     "revision": 1,
+     "rules": "2024"
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+     "level": null,
+     "repeatable": false,
+     "items": []
+    },
+    "properties": [],
+    "requirements": ""
+   },
+   "effects": [],
+   "sort": 0,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_key": "!actors.items!imWaCK4mtfXrkrZj.4NGgtUqMWhYGxZPz"
+  }
+ ],
+ "effects": [],
+ "folder": null,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_id": "imWaCK4mtfXrkrZj",
+ "sort": 1500,
+ "_key": "!actors!imWaCK4mtfXrkrZj"
+}

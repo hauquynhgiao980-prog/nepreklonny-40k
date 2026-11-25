@@ -1,0 +1,131 @@
+{
+ "_id": "FXbOS6MB3QzbU9tw",
+ "name": "Акт I — раздатки игрокам",
+ "pages": [
+  {
+   "_id": "sP2qNrsrQ4eN4Sdl",
+   "name": "Манифест особого груза",
+   "type": "text",
+   "title": {
+    "show": true,
+    "level": 1
+   },
+   "image": {},
+   "text": {
+    "content": "<p>«Непреклонный», рейс до Тессарон Прим.</p>\n<p>Ед. 1–4: осуждённые. Передаются Адептус Механикус. Назначение: сервиторизация.</p>\n<p>Ед. 5: псайкер, не классифицирован. Передаётся Чёрному кораблю на орбите Тессарон Прим.</p>\n<p>Ед. 6–7: смертники нижних палуб, переведены на этап по ходатайству младшего проповедника И. Варта. В стазис не помещены.</p>\n<p>Ошейники надзора установлены. Ключ — печать капитана.</p>",
+    "format": 1
+   },
+   "video": {
+    "controls": true,
+    "volume": 0.5
+   },
+   "src": null,
+   "system": {},
+   "sort": 100000,
+   "ownership": {
+    "default": -1
+   },
+   "flags": {},
+   "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.3",
+    "createdTime": 1764072000000,
+    "modifiedTime": 1764072000000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+   },
+   "_key": "!journal.pages!FXbOS6MB3QzbU9tw.sP2qNrsrQ4eN4Sdl"
+  },
+  {
+   "_id": "PhX0dl0EagRyEr7S",
+   "name": "Схема эвакуации",
+   "type": "text",
+   "title": {
+    "show": true,
+    "level": 1
+   },
+   "image": {},
+   "text": {
+    "content": "<p>Ярус 12-Т. Ближайшие спасательные шлюпки: шлюпочная палуба правого борта, два уровня вверх по аварийному трапу.</p>",
+    "format": 1
+   },
+   "video": {
+    "controls": true,
+    "volume": 0.5
+   },
+   "src": null,
+   "system": {},
+   "sort": 200000,
+   "ownership": {
+    "default": -1
+   },
+   "flags": {},
+   "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.3",
+    "createdTime": 1764072000000,
+    "modifiedTime": 1764072000000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+   },
+   "_key": "!journal.pages!FXbOS6MB3QzbU9tw.PhX0dl0EagRyEr7S"
+  },
+  {
+   "_id": "auj4ACQP0eNEU3Xd",
+   "name": "Схема корабля с повреждениями",
+   "type": "text",
+   "title": {
+    "show": true,
+    "level": 1
+   },
+   "image": {},
+   "text": {
+    "content": "<p>Планшет вокс-мастера Каллена Бранта.</p>\n<ul>\n<li>Мостик: красный, связи нет.</li>\n<li>Реактор: заглушен.</li>\n<li>Носовой щит: нет питания.</li>\n<li>Шлюпки правого и левого бортов: уничтожены.</li>\n<li>Лазарет: карантин.</li>\n<li>Энжинариум, секция 14: гермодверь заклинило, 30 живых.</li>\n</ul>",
+    "format": 1
+   },
+   "video": {
+    "controls": true,
+    "volume": 0.5
+   },
+   "src": null,
+   "system": {},
+   "sort": 300000,
+   "ownership": {
+    "default": -1
+   },
+   "flags": {},
+   "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.3",
+    "createdTime": 1764072000000,
+    "modifiedTime": 1764072000000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+   },
+   "_key": "!journal.pages!FXbOS6MB3QzbU9tw.auj4ACQP0eNEU3Xd"
+  }
+ ],
+ "folder": null,
+ "sort": 100,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!journal!FXbOS6MB3QzbU9tw"
+}

@@ -1,0 +1,239 @@
+{
+  "id": "nepreklonny-40k",
+  "title": "Непреклонный — Warhammer 40,000 на D&D 2024",
+  "description": "<p>Автономный набор для игры по Warhammer 40,000 на правилах D&D 2024: тринадцать классов под 41-е тысячелетие со своими заклинаниями, снаряжением, чертами, происхождениями и существами, десять прегенов 5 уровня.</p><p>Самостоятельный модуль «Последний курс „Непреклонного“», акт I: шесть сцен с анимированными картами, тайлами и звуками, текст для мастера, раздатки, персонажи и макросы.</p>",
+  "version": "3.1.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "5.3.0"
+        }
+      }
+    ]
+  },
+  "packs": [
+    {
+      "name": "act1-journal",
+      "label": "Акт I — текст модуля и раздатки",
+      "path": "packs/act1-journal",
+      "type": "JournalEntry",
+      "ownership": {
+        "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "act1-scenes",
+      "label": "Акт I — сцены",
+      "path": "packs/act1-scenes",
+      "type": "Scene",
+      "ownership": {
+        "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "act1-actors",
+      "label": "Акт I — персонажи",
+      "path": "packs/act1-actors",
+      "type": "Actor",
+      "ownership": {
+        "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e"
+    },
+    {
+      "name": "act1-macros",
+      "label": "Акт I — макросы",
+      "path": "packs/act1-macros",
+      "type": "Macro",
+      "ownership": {
+        "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "heroes40k",
+      "label": "Прегены «Непреклонного» — 10 героев, 5 уровень",
+      "path": "packs/heroes40k",
+      "type": "Actor",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "kit40k",
+      "label": "Набор прегенов — только 41-е тысячелетие",
+      "path": "packs/kit40k",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "enemies40k",
+      "label": "Враги — Несущие Слово и демоны",
+      "path": "packs/enemies40k",
+      "type": "Actor",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "classes40k",
+      "label": "Классы — 41-е тысячелетие",
+      "path": "packs/classes40k",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "spells40k",
+      "label": "Заклинания — 41-е тысячелетие",
+      "path": "packs/spells40k",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "gear40k",
+      "label": "Снаряжение — 41-е тысячелетие",
+      "path": "packs/gear40k",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "feats40k",
+      "label": "Черты — 41-е тысячелетие",
+      "path": "packs/feats40k",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "origins40k",
+      "label": "Происхождения — 41-е тысячелетие",
+      "path": "packs/origins40k",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "creatures40k",
+      "label": "Существа — 41-е тысячелетие",
+      "path": "packs/creatures40k",
+      "type": "Actor",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "tables40k",
+      "label": "Таблицы — 41-е тысячелетие",
+      "path": "packs/tables40k",
+      "type": "RollTable",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "lists40k",
+      "label": "Списки заклинаний — 41-е тысячелетие",
+      "path": "packs/lists40k",
+      "type": "JournalEntry",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Последний курс «Непреклонного» — акт I",
+      "sorting": "m",
+      "color": "#3a0f3a",
+      "packs": [
+        "act1-journal",
+        "act1-scenes",
+        "act1-actors",
+        "act1-macros"
+      ],
+      "folders": []
+    },
+    {
+      "name": "Непреклонный — 41-е тысячелетие",
+      "sorting": "m",
+      "color": "#5b1a1a",
+      "packs": [
+        "heroes40k",
+        "kit40k",
+        "enemies40k",
+        "classes40k",
+        "spells40k",
+        "gear40k",
+        "feats40k",
+        "origins40k",
+        "creatures40k",
+        "tables40k",
+        "lists40k"
+      ],
+      "folders": []
+    }
+  ],
+  "flags": {
+    "dnd5e": {
+      "spellLists": [
+        "Compendium.nepreklonny-40k.lists40k.JournalEntry.nep40kSpellLists.JournalEntryPage.nep40kListWizard",
+        "Compendium.nepreklonny-40k.lists40k.JournalEntry.nep40kSpellLists.JournalEntryPage.nep40kListWarlck",
+        "Compendium.nepreklonny-40k.lists40k.JournalEntry.nep40kSpellLists.JournalEntryPage.nep40kListDruid0",
+        "Compendium.nepreklonny-40k.lists40k.JournalEntry.nep40kSpellLists.JournalEntryPage.nep40kListCleric",
+        "Compendium.nepreklonny-40k.lists40k.JournalEntry.nep40kSpellLists.JournalEntryPage.nep40kListRanger",
+        "Compendium.nepreklonny-40k.lists40k.JournalEntry.nep40kSpellLists.JournalEntryPage.nep40kListBard00",
+        "Compendium.nepreklonny-40k.lists40k.JournalEntry.nep40kSpellLists.JournalEntryPage.nep40kListSorcer",
+        "Compendium.nepreklonny-40k.lists40k.JournalEntry.nep40kSpellLists.JournalEntryPage.nep40kListPaladn",
+        "Compendium.nepreklonny-40k.lists40k.JournalEntry.nep40kSpellLists.JournalEntryPage.nep40kListArtifi"
+      ]
+    }
+  },
+  "esmodules": [
+    "scripts/schools40k.mjs"
+  ],
+  "url": "https://github.com/hauquynhgiao980-prog/nepreklonny-40k",
+  "manifest": "https://raw.githubusercontent.com/hauquynhgiao980-prog/nepreklonny-40k/main/module.json",
+  "download": "https://github.com/hauquynhgiao980-prog/nepreklonny-40k/archive/refs/heads/main.zip"
+}

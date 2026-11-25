@@ -1,0 +1,1007 @@
+{
+ "folder": null,
+ "name": "Сторожевая турель палубы",
+ "type": "npc",
+ "_id": "aLdzRiJ4J2RZfNbT",
+ "img": "modules/nepreklonny-40k/maps/04_lifeboat_deck/turret/lifeboats_turret_off_1024.png",
+ "system": {
+  "currency": {
+   "pp": 0,
+   "gp": 0,
+   "ep": 0,
+   "sp": 0,
+   "cp": 0
+  },
+  "abilities": {
+   "str": {
+    "value": 10,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "dex": {
+    "value": 10,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "con": {
+    "value": 14,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "int": {
+    "value": 3,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "wis": {
+    "value": 10,
+    "proficient": 1,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   },
+   "cha": {
+    "value": 1,
+    "proficient": 0,
+    "max": null,
+    "bonuses": {
+     "check": "",
+     "save": ""
+    },
+    "check": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    },
+    "save": {
+     "roll": {
+      "min": null,
+      "max": null,
+      "mode": 0
+     }
+    }
+   }
+  },
+  "bonuses": {
+   "mwak": {
+    "attack": "",
+    "damage": ""
+   },
+   "rwak": {
+    "attack": "",
+    "damage": ""
+   },
+   "msak": {
+    "attack": "",
+    "damage": ""
+   },
+   "rsak": {
+    "attack": "",
+    "damage": ""
+   },
+   "abilities": {
+    "check": "",
+    "save": "",
+    "skill": ""
+   },
+   "spell": {
+    "dc": ""
+   }
+  },
+  "skills": {
+   "acr": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ani": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "arc": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ath": {
+    "ability": "str",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "dec": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 1,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "his": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ins": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "itm": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "inv": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "med": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "nat": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "prc": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "prf": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "per": {
+    "ability": "cha",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "rel": {
+    "ability": "int",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 1,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "slt": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "ste": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "sur": {
+    "ability": "wis",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   },
+   "value": {
+    "ability": "dex",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "value": 0,
+    "bonuses": {
+     "check": "",
+     "passive": ""
+    }
+   }
+  },
+  "tools": {},
+  "spells": {
+   "spell1": {
+    "value": 0,
+    "override": null
+   },
+   "spell2": {
+    "value": 0,
+    "override": null
+   },
+   "spell3": {
+    "value": 0,
+    "override": null
+   },
+   "spell4": {
+    "value": 0,
+    "override": null
+   },
+   "spell5": {
+    "value": 0,
+    "override": null
+   },
+   "spell6": {
+    "value": 0,
+    "override": null
+   },
+   "spell7": {
+    "value": 0,
+    "override": null
+   },
+   "spell8": {
+    "value": 0,
+    "override": null
+   },
+   "spell9": {
+    "value": 0,
+    "override": null
+   },
+   "pact": {
+    "value": 0,
+    "override": null
+   }
+  },
+  "attributes": {
+   "init": {
+    "ability": "",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "bonus": ""
+   },
+   "movement": {
+    "walk": "0",
+    "units": "ft",
+    "hover": false,
+    "ignoredDifficultTerrain": []
+   },
+   "attunement": {
+    "max": 3
+   },
+   "senses": {
+    "darkvision": null,
+    "blindsight": null,
+    "tremorsense": null,
+    "truesight": null,
+    "units": null,
+    "special": ""
+   },
+   "spellcasting": "str",
+   "exhaustion": 0,
+   "concentration": {
+    "ability": "",
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "bonuses": {
+     "save": ""
+    },
+    "limit": 1
+   },
+   "loyalty": {
+    "value": null
+   },
+   "ac": {
+    "flat": 17,
+    "calc": "flat"
+   },
+   "hd": {
+    "spent": 0
+   },
+   "hp": {
+    "value": 30,
+    "max": 30,
+    "temp": null,
+    "tempmax": null,
+    "formula": ""
+   },
+   "death": {
+    "roll": {
+     "min": null,
+     "max": null,
+     "mode": 0
+    },
+    "success": 0,
+    "failure": 0,
+    "bonuses": {
+     "save": ""
+    }
+   },
+   "spell": {
+    "level": 0
+   },
+   "price": {
+    "value": null,
+    "denomination": "gp"
+   }
+  },
+  "details": {
+   "biography": {
+    "value": "<p>Спаренная турель в нижнем торце шлюпочной палубы. Её дух машины отравлен скрапкодом: это она расстреляла бегущих к шлюпкам.</p>",
+    "public": ""
+   },
+   "alignment": "Нейтральный",
+   "ideal": "",
+   "bond": "",
+   "flaw": "",
+   "race": null,
+   "type": {
+    "value": "construct",
+    "subtype": "",
+    "swarm": "",
+    "custom": ""
+   },
+   "habitat": {
+    "value": [
+     {
+      "type": "any"
+     }
+    ],
+    "custom": ""
+   },
+   "cr": 3,
+   "treasure": {
+    "value": [
+     "individual",
+     "relics"
+    ]
+   },
+   "source": {
+    "book": "Непреклонный",
+    "page": "",
+    "custom": "",
+    "license": "",
+    "rules": "2024"
+   }
+  },
+  "resources": {
+   "legact": {
+    "max": 0,
+    "spent": 0
+   },
+   "legres": {
+    "max": 0,
+    "spent": 0
+   },
+   "lair": {
+    "value": false,
+    "initiative": null,
+    "inside": false
+   }
+  },
+  "source": {
+   "revision": 1,
+   "rules": "2024",
+   "book": "MM 2024",
+   "page": "",
+   "custom": "",
+   "license": ""
+  },
+  "traits": {
+   "size": "lg",
+   "di": {
+    "value": [
+     "poison",
+     "psychic"
+    ],
+    "custom": "",
+    "bypasses": []
+   },
+   "dr": {
+    "value": [],
+    "custom": "",
+    "bypasses": []
+   },
+   "dv": {
+    "value": [],
+    "custom": "",
+    "bypasses": []
+   },
+   "dm": {
+    "amount": {},
+    "bypasses": []
+   },
+   "ci": {
+    "value": [
+     "poisoned",
+     "charmed",
+     "frightened"
+    ],
+    "custom": ""
+   },
+   "languages": {
+    "value": [
+     "common"
+    ],
+    "custom": "",
+    "communication": {
+     "telepathy": {
+      "value": null,
+      "units": "ft"
+     }
+    }
+   },
+   "important": false
+  }
+ },
+ "prototypeToken": {
+  "name": "Турель",
+  "displayName": 20,
+  "actorLink": false,
+  "appendNumber": false,
+  "prependAdjective": false,
+  "width": 2,
+  "height": 2,
+  "texture": {
+   "src": "modules/nepreklonny-40k/maps/04_lifeboat_deck/turret/lifeboats_turret_off_1024.png",
+   "anchorX": 0.5,
+   "anchorY": 0.5,
+   "offsetX": 0,
+   "offsetY": 0,
+   "fit": "contain",
+   "scaleX": 1.6,
+   "scaleY": 1.6,
+   "rotation": 0,
+   "tint": "#ffffff",
+   "alphaThreshold": 0.75
+  },
+  "lockRotation": true,
+  "rotation": 0,
+  "alpha": 1,
+  "disposition": -1,
+  "displayBars": 20,
+  "bar1": {
+   "attribute": "attributes.hp"
+  },
+  "bar2": {
+   "attribute": null
+  },
+  "light": {
+   "negative": false,
+   "priority": 0,
+   "alpha": 0.5,
+   "angle": 360,
+   "bright": 0,
+   "color": null,
+   "coloration": 1,
+   "dim": 0,
+   "attenuation": 0.5,
+   "luminosity": 0.5,
+   "saturation": 0,
+   "contrast": 0,
+   "shadows": 0,
+   "animation": {
+    "type": null,
+    "speed": 5,
+    "intensity": 5,
+    "reverse": false
+   },
+   "darkness": {
+    "min": 0,
+    "max": 1
+   }
+  },
+  "sight": {
+   "enabled": false,
+   "range": 0,
+   "angle": 360,
+   "visionMode": "darkvision",
+   "color": null,
+   "attenuation": 0,
+   "brightness": 0,
+   "saturation": 0,
+   "contrast": 0
+  },
+  "detectionModes": [],
+  "occludable": {
+   "radius": 0
+  },
+  "ring": {
+   "enabled": false,
+   "colors": {
+    "ring": null,
+    "background": null
+   },
+   "effects": 1,
+   "subject": {
+    "scale": 2,
+    "texture": null
+   }
+  },
+  "flags": {
+   "wall-height": {
+    "tokenHeight": 0
+   },
+   "tagger": {},
+   "splatter": {
+    "bloodColor": ""
+   },
+   "healthEstimate": {
+    "dontMarkDead": false,
+    "hideHealthEstimate": false,
+    "hideName": false
+   }
+  },
+  "randomImg": false,
+  "turnMarker": {
+   "mode": 1,
+   "animation": null,
+   "src": null,
+   "disposition": false
+  },
+  "movementAction": null
+ },
+ "items": [
+  {
+   "_id": "RBvGrCSzG34uK7eD",
+   "name": "Очередь",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {
+     "9vR5ZD78UiQYPrdw": {
+      "type": "save",
+      "_id": "9vR5ZD78UiQYPrdw",
+      "sort": 0,
+      "activation": {
+       "type": "special",
+       "value": null,
+       "override": false,
+       "condition": ""
+      },
+      "consumption": {
+       "scaling": {
+        "allowed": false
+       },
+       "spellSlot": true,
+       "targets": []
+      },
+      "description": {
+       "chatFlavor": ""
+      },
+      "duration": {
+       "units": "inst",
+       "concentration": false,
+       "override": false
+      },
+      "effects": [],
+      "range": {
+       "override": false,
+       "units": "ft",
+       "value": "60",
+       "special": ""
+      },
+      "target": {
+       "template": {
+        "contiguous": false,
+        "units": "ft",
+        "type": "line",
+        "size": "60",
+        "width": "5"
+       },
+       "affects": {
+        "choice": false,
+        "type": "creature"
+       },
+       "override": false,
+       "prompt": true
+      },
+      "uses": {
+       "spent": 0,
+       "recovery": []
+      },
+      "name": "",
+      "damage": {
+       "parts": [
+        {
+         "custom": {
+          "enabled": false,
+          "formula": ""
+         },
+         "number": 4,
+         "denomination": 8,
+         "bonus": "",
+         "types": [
+          "piercing"
+         ],
+         "scaling": {
+          "number": 1
+         }
+        }
+       ],
+       "onSave": "half",
+       "critical": {
+        "allow": false
+       }
+      },
+      "save": {
+       "ability": [
+        "dex"
+       ],
+       "dc": {
+        "calculation": "",
+        "formula": "14"
+       }
+      }
+     }
+    },
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "description": {
+     "value": "<p>Раз в раунд, на счёт инициативы 20: очередь по ближайшему из тех, кто двигался по залу после её прошлой очереди. Линия от турели через цель шириной в клетку. Все в линии делают спасбросок Ловкости Сл 14: провал — 4к8 колющего урона, успех — половина.</p>",
+     "chat": ""
+    },
+    "identifier": "",
+    "source": {
+     "revision": 1,
+     "rules": "2024"
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+     "level": null,
+     "repeatable": false,
+     "items": []
+    },
+    "properties": [],
+    "requirements": ""
+   },
+   "effects": [],
+   "sort": 0,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_key": "!actors.items!aLdzRiJ4J2RZfNbT.RBvGrCSzG34uK7eD"
+  },
+  {
+   "_id": "aKyf308qGy3zF3wa",
+   "name": "Бьёт по движению",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {},
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "description": {
+     "value": "<p>Кто не двигался после её прошлой очереди, для турели невидим. Комнаты слева вне её сектора.</p>",
+     "chat": ""
+    },
+    "identifier": "",
+    "source": {
+     "revision": 1,
+     "rules": "2024"
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+     "level": null,
+     "repeatable": false,
+     "items": []
+    },
+    "properties": [],
+    "requirements": ""
+   },
+   "effects": [],
+   "sort": 0,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_key": "!actors.items!aLdzRiJ4J2RZfNbT.aKyf308qGy3zF3wa"
+  },
+  {
+   "_id": "jwdgLMNup0R1PAxY",
+   "name": "Как обезвредить",
+   "type": "feat",
+   "img": "icons/svg/aura.svg",
+   "system": {
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {},
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": ""
+    },
+    "description": {
+     "value": "<p>Подобраться вплотную и потратить действие: Техножрец отключает её без броска, остальные — Ловкость (воровские инструменты) Сл 15. Или обесточить в щитовой (первая комната слева, кабель виден без броска): действие, без броска. Или сломать. Макрос «Турель» прячет тайл стрельбы.</p>",
+     "chat": ""
+    },
+    "identifier": "",
+    "source": {
+     "revision": 1,
+     "rules": "2024"
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+     "level": null,
+     "repeatable": false,
+     "items": []
+    },
+    "properties": [],
+    "requirements": ""
+   },
+   "effects": [],
+   "sort": 0,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_key": "!actors.items!aLdzRiJ4J2RZfNbT.jwdgLMNup0R1PAxY"
+  }
+ ],
+ "effects": [],
+ "sort": 0,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!actors!aLdzRiJ4J2RZfNbT"
+}
