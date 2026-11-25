@@ -23,5 +23,13 @@ function relabel() {
   }
 }
 
-Hooks.once("init", relabel);
-Hooks.once("setup", relabel);   // на случай, если система допишет школы позже
+/* Золото Империума — троны. Код валюты (gp) прежний, меняются только подписи на листе. */
+function relabelCurrency() {
+  const gp = CONFIG.DND5E?.currencies?.gp;
+  if (!gp) return;
+  gp.label = "Троны";
+  gp.abbreviation = "тр";
+}
+
+Hooks.once("init", () => { relabel(); relabelCurrency(); });
+Hooks.once("setup", () => { relabel(); relabelCurrency(); });   // на случай, если система допишет школы позже
