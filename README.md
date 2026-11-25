@@ -23,13 +23,15 @@
 
 ## Как залить на сервер
 
-Склонировать репозиторий в папку данных Foundry, например в `Data/maps40k`, ключом только на чтение. После этого отдать папку пользователю, от которого работает Foundry:
+Склонировать репозиторий в папку данных Foundry, например в `Data/maps40k`. После этого отдать папку пользователю, от которого работает Foundry:
 
 ```bash
 cd /home/ubuntu/foundryuserdata/Data
-git clone git@github.com:hauquynhgiao980-prog/nepreklonny-40k.git maps40k
+git clone https://github.com/hauquynhgiao980-prog/nepreklonny-40k.git maps40k
 sudo chown -R ubuntu:ubuntu maps40k
 ```
+
+Если репозиторий закрытый, нужен ключ развёртывания только на чтение. Тогда клонировать по адресу `git@github.com:hauquynhgiao980-prog/nepreklonny-40k.git`.
 
 Обновить: `git -C maps40k pull`. В Foundry файлы будут видны по путям вида `maps40k/03_transit_hall/hall_etap_anim_2304x3072.webm`.
 
