@@ -231,9 +231,11 @@
     }
   },
   "esmodules": [
-    "scripts/schools40k.mjs"
+    "scripts/schools40k.mjs",
+    "scripts/weaponfx.mjs"
   ],
   "url": "https://github.com/hauquynhgiao980-prog/nepreklonny-40k",
   "manifest": "https://raw.githubusercontent.com/hauquynhgiao980-prog/nepreklonny-40k/main/module.json",
-  "download": "https://github.com/hauquynhgiao980-prog/nepreklonny-40k/archive/refs/heads/main.zip"
+  "download": "https://github.com/hauquynhgiao980-prog/nepreklonny-40k/archive/refs/heads/main.zip",
+  "socket": true
 }
