@@ -61,6 +61,65 @@ const SPAWN = {
   gallery: [[2080, 1900], [2210, 1900], [2340, 1900], [2145, 1770], [2275, 1770], [2210, 1640], [2080, 1640]],
 };
 
+// Персонажи мастера и враги по сценам. Токены создаются скрытыми при первом показе, дальше — показать/спрятать.
+// from: компендиум, откуда взять актёра, если в мире его нет; at: центры токенов; neutral — без красной рамки (не выдать заранее).
+const CAST = {
+  post: [
+    { id: "kryuk", label: "Крюк", actor: "Крюк", from: "act1-actors", at: [[560, 430]], neutral: true },
+    { id: "sol", label: "Тихий Сол", actor: "Тихий Сол", from: "act1-actors", at: [[430, 880]], neutral: true },
+  ],
+  hall: [
+    { id: "cultists", label: "Культисты", actor: "Культист-ренегат", from: "enemies40k",
+      at: [[1344, 1216], [1344, 1856], [1216, 1344], [1216, 1728], [1472, 1344], [1472, 1728], [1472, 1088], [1472, 1984]] },
+    { id: "shooters", label: "Стрелки в люках", actor: "Предатель-стрелок", from: "enemies40k", at: [[1728, 1472], [1728, 1600]] },
+    { id: "leader", label: "Отмеченный Хаосом", actor: "Отмеченный Хаосом", from: "enemies40k", at: [[1216, 1472]] },
+  ],
+  lifeboats: [
+    { id: "turret", label: "Турель", actor: "Сторожевая турель палубы", from: "act1-actors", at: [[1288, 2900]] },
+    { id: "varro", label: "Варро", actor: "Варро, матрос пусковой команды", from: "act1-actors", at: [[330, 1250]], neutral: true },
+  ],
+  gallery: [
+    { id: "unborn", label: "Нерождённый", actor: "Нерождённый", from: "act1-actors", at: [[2215, 1430]] },
+  ],
+};
+// какие персонажи выходят вместе с событием (и прячутся, если событие откатили)
+const EVENT_CAST = { "Пролом": ["cultists", "shooters", "leader"], "Прорыв варпа": ["unborn"] };
+
+async function castActor(g) {
+  let a = game.actors.find(x => x.name === g.actor);
+  if (a) return a;
+  const pack = game.packs.get(`${MOD}.${g.from}`);
+  const id = pack && (await pack.getIndex()).find(e => e.name === g.actor)?._id;
+  if (!id) throw new Error(`Нет актёра «${g.actor}» ни в мире, ни в компендиуме.`);
+  let folder = game.folders.find(f => f.type === "Actor" && f.name === "Акт I — персонажи мастера");
+  folder ??= await Folder.create({ name: "Акт I — персонажи мастера", type: "Actor", color: "#3a0f3a" });
+  a = await game.actors.importFromCompendium(pack, id, { folder: folder.id });
+  return a;
+}
+const castTokens = (scene, gid) => scene.tokens.filter(t => t.flags?.[MOD]?.cast === gid);
+
+/** Показать или спрятать группу. Если токенов ещё нет — создать на местах. */
+export async function setCast(scene, gid, show) {
+  const g = (CAST[scene.flags?.[MOD]?.scene] || []).find(x => x.id === gid); if (!g) return;
+  let toks = castTokens(scene, gid);
+  if (!toks.length && show) {
+    const actor = await castActor(g), gs = scene.grid?.size || 128, docs = [];
+    for (const [i, [cx, cy]] of g.at.entries()) {
+      const size = (actor.prototypeToken?.width || 1) * gs;
+      const x = Math.round((cx - size / 2) / gs) * gs, y = Math.round((cy - size / 2) / gs) * gs;
+      const td = (await actor.getTokenDocument({ x, y, hidden: true })).toObject();
+      if (g.at.length > 1) td.name = `${td.name} ${i + 1}`;
+      if (g.neutral) td.disposition = 0;
+      td.flags = { ...(td.flags || {}), [MOD]: { ...(td.flags?.[MOD] || {}), cast: gid } };
+      docs.push(td);
+    }
+    await scene.createEmbeddedDocuments("Token", docs);
+    toks = castTokens(scene, gid);
+  }
+  const upd = toks.filter(t => t.hidden === show).map(t => ({ _id: t.id, hidden: !show }));
+  if (upd.length) await scene.updateEmbeddedDocuments("Token", upd);
+}
+
 /** Герои игроков — по порядку раздачи. Только назначенные игрокам и только существующие в мире. */
 function rosterActors() {
   const st = S.get();
@@ -121,7 +180,15 @@ async function runMacro(name, scene) {
     m = id ? await pack.getDocument(id) : null;
   }
   if (!m) return ui.notifications.warn(`Нет макроса «${name}»: импортируйте акт I.`);
-  return m.execute();
+  const ev = Object.values(EVENTS).flat().find(e => e.macro === name);
+  const before = ev?.on?.(scene);
+  await m.execute();
+  const cast = EVENT_CAST[name];
+  if (!cast || !ev?.on) return;
+  // макрос дожидается видео; ждём, пока состояние сцены сменится, не дольше 8 с
+  for (let i = 0; i < 40 && ev.on(scene) === before; i++) await new Promise(r => setTimeout(r, 200));
+  const now = ev.on(scene);
+  if (now !== before) for (const gid of cast) await setCast(scene, gid, !!now);
 }
 
 const playTile = t => t.update({ hidden: false, "video.autoplay": true }, { diff: false, playVideo: true, offset: 0 });
@@ -144,7 +211,7 @@ export function directorTab(rerender) {
     h("div", { style: "flex:1" }),
     h("button.nk-btn", { "data-start-act": 1, disabled: !heroes.length, onclick: busy(() => startAct()) }, "НАЧАТЬ АКТ")),
     h("div.nk-hint", { style: "margin-bottom:12px" },
-    "«Начать акт» — герои игроков просыпаются в своих камерах блока, все переходят туда. «Герои сюда» — поставить героев игроков у входа на сцену; «Смотреть» — открыть сцену у себя, «Всем» — перевести на неё игроков. События запускают видео и меняют карту; повтор возвращает как было. Глаз у тайла и звука — показать или спрятать; ▶ — проиграть видео сначала.")];
+    "Персонажи — враги и NPC сцены: появляются скрытыми на своих местах, глаз показывает их игрокам; с «Проломом» и «Прорывом варпа» выходят сами. «Начать акт» — герои игроков просыпаются в своих камерах блока, все переходят туда. «Герои сюда» — поставить героев игроков у входа на сцену; «Смотреть» — открыть сцену у себя, «Всем» — перевести на неё игроков. События запускают видео и меняют карту; повтор возвращает как было. Глаз у тайла и звука — показать или спрятать; ▶ — проиграть видео сначала.")];
   for (const s of scenes) {
     const key = s.flags[MOD].scene;
     const here = canvas.scene?.id === s.id;
@@ -169,6 +236,14 @@ export function directorTab(rerender) {
         h("button", { title: t.hidden ? "Показать" : "Спрятать", "data-tile": role || t.id, onclick: busy(() => t.update({ hidden: !t.hidden })) }, t.hidden ? "◌" : "◉"),
         h("span", {}, name),
         video ? h("button", { title: "Проиграть видео сначала", onclick: busy(() => playTile(t)) }, "▶") : null);
+    }))));
+    const cast = CAST[key] || [];
+    if (cast.length) rows.push(h("div.nk-drow", {}, h("b", {}, "ПЕРСОНАЖИ"), h("div.nk-chips", {}, cast.map(g => {
+      const toks = castTokens(s, g.id), on = toks.some(t => !t.hidden);
+      return h("span", { class: `nk-chip ${on ? "on" : ""}` },
+        h("button", { title: on ? "Спрятать" : toks.length ? "Показать" : "Поставить на места и показать", "data-cast": g.id,
+          onclick: busy(() => setCast(s, g.id, !on)) }, on ? "◉" : "◌"),
+        h("span", {}, g.at.length > 1 ? `${g.label} ×${g.at.length}` : g.label));
     }))));
     const groups = new Map();
     for (const snd of s.sounds) { const role = snd.flags?.[MOD]?.role; if (!role) continue; const g = groupOf(role); (groups.get(g) || groups.set(g, []).get(g)).push(snd); }
