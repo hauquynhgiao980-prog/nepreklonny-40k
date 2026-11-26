@@ -75,7 +75,7 @@
     {
       "name": "heroes40k",
       "label": "Прегены «Непреклонного» — 10 героев, 5 уровень",
-      "path": "packs/heroes40k",
+      "path": "packs/heroes40k-343",
       "type": "Actor",
       "system": "dnd5e",
       "ownership": {
@@ -119,7 +119,7 @@
     {
       "name": "spells40k",
       "label": "Заклинания — 41-е тысячелетие",
-      "path": "packs/spells40k",
+      "path": "packs/spells40k-343",
       "type": "Item",
       "system": "dnd5e",
       "ownership": {

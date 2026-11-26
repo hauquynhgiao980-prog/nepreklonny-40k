@@ -112622,7 +112622,9 @@
          "template": {
           "contiguous": false,
           "units": "ft",
-          "type": ""
+          "type": "sphere",
+          "size": "20",
+          "count": ""
          },
          "affects": {
           "choice": false,
@@ -112737,7 +112739,9 @@
          "template": {
           "contiguous": false,
           "units": "ft",
-          "type": ""
+          "type": "sphere",
+          "size": "20",
+          "count": ""
          },
          "affects": {
           "choice": false,
@@ -130011,7 +130015,9 @@
          "template": {
           "contiguous": false,
           "units": "ft",
-          "type": ""
+          "type": "sphere",
+          "size": "20",
+          "count": ""
          },
          "affects": {
           "choice": false,
@@ -130126,7 +130132,9 @@
          "template": {
           "contiguous": false,
           "units": "ft",
-          "type": ""
+          "type": "sphere",
+          "size": "20",
+          "count": ""
          },
          "affects": {
           "choice": false,

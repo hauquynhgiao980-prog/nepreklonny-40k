@@ -182,24 +182,39 @@ export function createSpellFX({ broadcast, settings }) {
   const pt = (t, hit) => ({ x: t.center.x, y: t.center.y, r: Math.min(t.w, t.h) / 2, id: t.id, ...(hit === undefined ? {} : { hit }) });
 
   /** Собрать посылку: кто, в кого, где, чем. */
+  /** Шаблон области: центр, радиус и кто внутри (по центрам токенов). */
+  function area(tplDoc) {
+    const d = tplDoc?.document ?? tplDoc, obj = d?.object; if (!d) return null;
+    let x = d.x, y = d.y, radius = ((Number(d.distance) || 0) / (canvas.scene.grid?.distance || FT)) * canvas.grid.size, inside = [];
+    let shape = obj?.shape;
+    if (!shape) try {                                   // шаблон ещё не нарисован — считаем форму сами
+      const MT = foundry.canvas?.placeables?.MeasuredTemplate ?? globalThis.MeasuredTemplate;
+      const dp = canvas.dimensions?.distancePixels ?? canvas.grid.size / (canvas.scene.grid?.distance || FT), dist = (Number(d.distance) || 0) * dp;
+      shape = d.t === "circle" ? MT?.getCircleShape?.(dist) : d.t === "rect" ? MT?.getRectShape?.(dist, d.direction)
+        : d.t === "cone" ? MT?.getConeShape?.(dist, d.direction, d.angle) : d.t === "ray" ? MT?.getRayShape?.(dist, d.direction, (Number(d.width) || FT) * dp) : null;
+    } catch (err) { shape = null; }
+    if (shape) {
+      const b = shape.getBounds?.();
+      if (b && d.t !== "circle") { x = d.x + b.x + b.width / 2; y = d.y + b.y + b.height / 2; radius = Math.max(b.width, b.height) / 2; }
+      inside = (canvas.tokens?.placeables ?? []).filter(t => shape.contains(t.center.x - d.x, t.center.y - d.y));
+    }
+    return { at: { x, y }, radius, inside };
+  }
+
   function build(item, activity, { hitFor = null, templates = [] } = {}) {
     const e = pick(item, activity); if (!e) return null;
     const src = tokOf(activity?.actor ?? item.actor); if (!src) return null;
     const style = styleOf(activity?.actor ?? item.actor);
+    const zone = templates?.length ? area(templates[0]) : null;
     let targets = [...(game.user.targets ?? [])].filter(t => t.document?.parent === canvas.scene);
+    if (!targets.length && zone?.inside.length) targets = zone.inside.filter(t => t !== src || e.fx !== "area");   // шаблон без целей — кто под ним
     if (!targets.length && (e.self || ["heal", "ward"].includes(e.fx))) targets = [src];
     if (e.self) targets = [src];
     if (["bolt", "rays", "mind", "pillar", "mark"].includes(e.fx) && !targets.filter(t => t !== src).length && e.fx !== "mark") return null;
     const pal = e.pal === "auto" ? (style === "warp" ? (e.fx === "heal" ? "heal" : "warp") : style === "mech" ? (e.fx === "heal" ? "volt" : "mech") : e.fx === "heal" ? "heal" : "holy") : e.pal;
     const p = { t: "sfx", scene: canvas.scene.id, fx: e.fx, pal, style: e.style ?? style, o: e, seed: Math.floor(Math.random() * 1e9), from: pt(src),
       tos: targets.filter(t => !(t === src && ["bolt", "rays", "mind", "pillar"].includes(e.fx))).map(t => pt(t, hitFor ? hitFor(t) : undefined)) };
-    const tpl = templates?.[0]?.object ?? templates?.[0];
-    if (tpl?.document ?? tpl) {
-      const d = tpl.document ?? tpl;
-      p.at = { x: d.x, y: d.y };
-      const dist = Number(d.distance) || 0;
-      if (dist) p.radius = (dist / (canvas.scene.grid?.distance || FT)) * canvas.grid.size * (d.t === "rect" ? 0.6 : 1);
-    }
+    if (zone) { p.at = zone.at; if (zone.radius) p.radius = zone.radius; }
     return p;
   }
 
@@ -210,7 +225,9 @@ export function createSpellFX({ broadcast, settings }) {
     const item = activity?.item; if (!item || item.type === "weapon") return null;
     if (activity.type === "attack") return null;
     if (item.type !== "spell" && !SPELLS[item.name]) return null;
-    return send(build(item, activity, { templates: results?.templates ?? [] }));
+    const templates = results?.templates ?? [];
+    if (templates.length) { setTimeout(() => send(build(item, activity, { templates })), 80); return true; }   // дать шаблону дорисоваться
+    return send(build(item, activity, { templates }));
   }
   /** dnd5e.rollAttackV2 — заклинания с атакой: попадание по КД каждой цели. */
   function onAttack(rolls, data) {
