@@ -1,4 +1,4 @@
-/* «Непреклонный» 3.4.3 — для уже импортированного мира (Нерождённый — живой токен, петля WebM):
+/* «Непреклонный» 3.4.3 — для уже импортированного мира (Нерождённый — живой токен с аурой варпа и лиловым светом):
    1) портреты и токены NPC и врагов акта I: Крюк, Тихий Сол, Варро, культисты, стрелок, Отмеченный Хаосом, Нерождённый,
       турель (только портрет); у культистов на сцене лица чередуются;
    2) макросы сервиторов в папке «Акт I» (создаёт, если их нет; иначе обновляет код);
@@ -14,7 +14,8 @@ export default async function ({ log }) {
     { name: "Культист-ренегат", img: "kultist_a", tok: "token_kultist_a", size: 1 },
     { name: "Предатель-стрелок", img: "strelok", tok: "token_strelok", size: 1 },
     { name: "Отмеченный Хаосом", img: "otmechenny", tok: "token_otmechenny", size: 1 },
-    { name: "Нерождённый", img: "nerozhdenny", tok: "token_nerozhdenny_anim.webm", size: 2, scale: 1.3 },
+    { name: "Нерождённый", img: "nerozhdenny", tok: "token_nerozhdenny_aura.webm", size: 2, scale: 1.7,
+      light: { dim: 15, bright: 5, color: "#a01cff", alpha: 0.5, coloration: 1, luminosity: 0.5, animation: { type: "pulse", speed: 3, intensity: 5, reverse: false } } },
     { name: "Сторожевая турель палубы", img: "turret", tok: null, size: 2 },
   ];
   const report = [];
@@ -24,12 +25,13 @@ export default async function ({ log }) {
       if (!s.tok) { await a.update({ img: `${T}${s.img}.webp` }); report.push({ actor: a.name }); continue; }   // турель: на карте остаётся вид сверху
       const upd = { img: `${T}${s.img}.webp`, "prototypeToken.texture": tex, "prototypeToken.width": s.size, "prototypeToken.height": s.size };
       if (s.disp !== undefined) upd["prototypeToken.disposition"] = s.disp;
+      if (s.light) upd["prototypeToken.light"] = s.light;
       await a.update(upd);
       report.push({ actor: a.name });
       for (const scene of game.scenes) {
         const toks = scene.tokens.filter(t => t.actorId === a.id).sort((p, q) => p.name.localeCompare(q.name, "ru", { numeric: true }));
         if (!toks.length) continue;
-        const tu = toks.map((t, i) => ({ _id: t.id, width: s.size, height: s.size,
+        const tu = toks.map((t, i) => ({ _id: t.id, width: s.size, height: s.size, ...(s.light ? { light: s.light } : {}),
           texture: { ...tex, src: s.name === "Культист-ренегат" ? FACES[i % FACES.length] : tex.src } }));
         await scene.updateEmbeddedDocuments("Token", tu);
         report.push({ scene: scene.name, actor: a.name, tokens: tu.length });
