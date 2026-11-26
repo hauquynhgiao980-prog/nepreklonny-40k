@@ -42,6 +42,7 @@ export default async function ({ log }) {
       const add = (data.tiles ?? []).filter(t => t.flags?.[MOD]?.role && !roles.has(t.flags[MOD].role)).map(strip);
       if (add.length) r.tilesAdded = (await scene.createEmbeddedDocuments("Tile", add, { keepId: true })).map(t => t.flags?.[MOD]?.role);
       const upd = { environment: data.environment };
+      if (scene.name === "1. Тюремный блок" && data.name !== scene.name) upd.name = data.name;   // 0. Тюремный блок
       if (data.thumb) upd.thumb = data.thumb;
       await scene.update(upd);
       log(`«${scene.name}»: стен ${r.walls}, света ${r.lights}, звуков ${r.sounds}, зон ${r.regions}${r.tilesAdded ? `, тайлы: ${r.tilesAdded.join(", ")}` : ""}`);

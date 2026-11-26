@@ -133,7 +133,7 @@ def build_scenes():
     out = []
     # пролог: видео мостика не входит в репозиторий — положите файл в maps/00_bridge/
     sid, s = scene('bridge', 'Пролог. Мостик', 0, 2176, 3840, M + '00_bridge/bridge_intact_2176x3840.mp4'); out.append(s)
-    sid, s = scene('cells', '1. Тюремный блок', 1, 4608, 3072, M + '01_prison_block/cells8_anim_4608x3072.webm'); out.append(s)
+    sid, s = scene('cells', '0. Тюремный блок', 1, 4608, 3072, M + '01_prison_block/cells8_anim_4608x3072.webm'); out.append(s)
     sid = fid('scene', 'post')
     snd = [sound(sid, 'vox', M + '02_guard_post/vox_imperator_zashishaet.ogg', 1750, 520, 40, 0.6)]
     # череп-протоколист парит в допросной между когитатором и койкой
