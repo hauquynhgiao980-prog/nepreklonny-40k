@@ -4,6 +4,7 @@
 // отбрасывают зонд, и он пропускает ход. Печать чистоты на пути — код замирает на ход.
 // Проверка взломщика больше 12 — код просыпается на ход позже. Хоть один зонд в ядре раньше кода — победа.
 // Мастер ведёт игру: хранит состояние в настройке мира, считает ходы; игроки шлют выбор по сокету.
+// Проба мастера — та же игра только у него в памяти: он ведёт первый зонд, остальные — боты; мир не меняется.
 import * as S from "./state.mjs";
 import { h } from "./ui.mjs";
 import { g } from "./texts.mjs";
@@ -69,8 +70,36 @@ export function generate(nPlayers, seed = Date.now()) {
   throw new Error("поле не собралось");
 }
 
-// ---------------------------------------------------------------- у мастера
+// ---------------------------------------------------------------- где живёт партия
 const isActiveGM = () => game.user.isGM && (!game.users.activeGM || game.users.activeGM.id === game.user.id);
+const ME = "__gm";
+
+/** Настоящая игра: состояние в настройке мира, ходы считает активный мастер, игроки шлют выбор по сокету. */
+const WORLD = {
+  trial: false, t: {},
+  get: () => S.get().hack,
+  update: fn => S.update(s => fn(s)),
+  director: () => isActiveGM(),
+  gmView: () => game.user.isGM,
+  mine: () => { const st = S.get(), aid = st.roster?.[game.user.id]; return aid && st.hack?.probes?.[aid] ? aid : null; },
+  ready: hk => S.send({ t: "hack.ready", id: hk.id }),
+  pick: (hk, c) => S.send({ t: "hack.pick", id: hk.id, turn: hk.turn, x: c[0], y: c[1] }),
+};
+
+/** Проба мастера: всё в памяти его браузера, никому не видно, мир и броски не трогаются. */
+const TRIAL = {
+  trial: true, t: {}, st: { hack: null }, n: 1,
+  get() { return this.st.hack; },
+  update(fn) { const r = fn(this.st); if (r !== false) trialUI.sync(this.st, ME); return Promise.resolve(); },
+  director: () => true,
+  gmView: () => false,
+  mine() { return this.st.hack?.probes?.[ME] ? ME : null; },
+  ready(hk) { onReady(this, ME, hk.id); },
+  pick(hk, c) { onPick(this, ME, hk.id, hk.turn, c); },
+  bots(hk) { botTurn(this, hk); },
+};
+
+// ---------------------------------------------------------------- у мастера
 const wallsOf = hk => new Set(hk.board.walls);
 const minesOf = hk => new Set(hk.board.mines);
 const countAround = (hk, p) => { const w = wallsOf(hk), m = minesOf(hk); return nbrs(w, p).filter(q => m.has(K(...q))).length; };
@@ -101,6 +130,7 @@ export async function openGame() {
   const st = S.get();
   const list = Object.entries(st.roster || {}).filter(([uid, aid]) => game.users.get(uid)?.active && game.actors.get(aid) && st.heroes?.[aid]).slice(0, 5);
   if (!list.length) return ui.notifications.warn("Играть некому: нет игроков в сети с назначенными героями.");
+  if (TRIAL.get()) abortGame(TRIAL);
   const seed = Math.floor(Math.random() * 2 ** 31), b = generate(list.length, seed);
   const lag = st.hackPrep?.lag ?? 0;
   await S.update(s => {
@@ -116,30 +146,34 @@ export async function openGame() {
     s.hack = hk;
   });
 }
-export const abortGame = () => { clearTimers(); return S.update(s => { delete s.hack; }); };
-export const forceStart = () => S.update(s => { if (s.hack?.phase !== "intro") return false; s.hack.phase = "count"; s.hack.countAt = Date.now(); });
+export const abortGame = (ctx = WORLD) => { clearTimers(ctx); return ctx.update(s => { delete s.hack; }); };
+export const forceStart = (ctx = WORLD) => ctx.update(s => { if (s.hack?.phase !== "intro") return false; s.hack.phase = "count"; s.hack.countAt = Date.now(); });
 
-let tTurn = null, tTurnFor = null, tCount = null, tCountFor = null;
-function clearTimers() { clearTimeout(tTurn); clearTimeout(tCount); tTurn = tCount = null; tTurnFor = tCountFor = null; }
+function clearTimers(ctx) {
+  const T = ctx.t; clearTimeout(T.turn); clearTimeout(T.count); (T.bots || []).forEach(clearTimeout);
+  ctx.t = {};
+}
 
-/** Таймеры мастера: отсчёт перед стартом и ход по 5 секунд. */
-function gmTick(hk) {
-  if (!isActiveGM()) return;
-  if (!hk) { clearTimers(); return; }
-  if (hk.phase === "count" && tCountFor !== hk.id) {
-    tCountFor = hk.id;
-    tCount = setTimeout(() => S.update(s => { if (s.hack?.id !== hk.id || s.hack.phase !== "count") return false; s.hack.phase = "play"; s.hack.turn = 1; }), COUNT_MS);
+/** Таймеры ведущего: отсчёт перед стартом и ход по 5 секунд. */
+function gmTick(ctx, hk) {
+  if (!ctx.director()) return;
+  if (!hk) { clearTimers(ctx); return; }
+  const T = ctx.t;
+  if (hk.phase === "count" && T.countFor !== hk.id) {
+    T.countFor = hk.id;
+    T.count = setTimeout(() => ctx.update(s => { if (s.hack?.id !== hk.id || s.hack.phase !== "count") return false; s.hack.phase = "play"; s.hack.turn = 1; }), COUNT_MS);
   }
-  if (hk.phase === "play" && tTurnFor !== `${hk.id}:${hk.turn}`) {
-    tTurnFor = `${hk.id}:${hk.turn}`; clearTimeout(tTurn);
+  if (hk.phase === "play" && T.turnFor !== `${hk.id}:${hk.turn}`) {
+    T.turnFor = `${hk.id}:${hk.turn}`; clearTimeout(T.turn);
     const active = hk.order.filter(a => !hk.probes[a].stun);
-    tTurn = setTimeout(() => resolve(hk.id, hk.turn), active.length ? TURN_MS : 1200);
+    T.turn = setTimeout(() => resolve(ctx, hk.id, hk.turn), active.length ? TURN_MS : 1200);
+    ctx.bots?.(hk);
   }
 }
 
-function resolve(id, turn) {
-  clearTimeout(tTurn);
-  return S.update(s => {
+function resolve(ctx, id, turn) {
+  clearTimeout(ctx.t.turn);
+  return ctx.update(s => {
     const hk = s.hack;
     if (!hk || hk.id !== id || hk.phase !== "play" || hk.turn !== turn) return false;
     const walls = wallsOf(hk), mines = minesOf(hk);
@@ -198,24 +232,72 @@ export function onSocket(msg, senderId) {
   const hk = S.get().hack; if (!hk || hk.id !== msg.id) return;
   const aid = Object.keys(hk.probes).find(a => hk.probes[a].uid === uid);
   if (!aid) return;
-  if (msg.t === "hack.ready") {
-    S.update(s => {
-      const x = s.hack; if (!x || x.id !== msg.id || x.phase !== "intro") return false;
-      x.ready[aid] = true;
-      if (x.order.every(a => x.ready[a])) { x.phase = "count"; x.countAt = Date.now(); }
-    });
-  } else if (msg.t === "hack.pick") {
-    const c = [Number(msg.x), Number(msg.y)];
-    S.update(s => {
-      const x = s.hack; if (!x || x.id !== msg.id || x.phase !== "play" || x.turn !== msg.turn) return false;
-      const pr = x.probes[aid]; if (pr.stun) return false;
-      if (!nbrs(wallsOf(x), pr.p).some(q => eq(q, c))) return false;
-      x.choice[aid] = c;
-      const active = x.order.filter(a => !x.probes[a].stun);
-      if (active.every(a => x.choice[a])) { const id = x.id, turn = x.turn; clearTimeout(tTurn); tTurnFor = `${id}:${turn}`; tTurn = setTimeout(() => resolve(id, turn), 350); }
-    });
+  if (msg.t === "hack.ready") onReady(WORLD, aid, msg.id);
+  else if (msg.t === "hack.pick") onPick(WORLD, aid, msg.id, msg.turn, [Number(msg.x), Number(msg.y)]);
+}
+
+function onReady(ctx, aid, id) {
+  return ctx.update(s => {
+    const x = s.hack; if (!x || x.id !== id || x.phase !== "intro") return false;
+    x.ready[aid] = true;
+    if (x.order.every(a => x.ready[a])) { x.phase = "count"; x.countAt = Date.now(); }
+  });
+}
+function onPick(ctx, aid, id, turn, c) {
+  return ctx.update(s => {
+    const x = s.hack; if (!x || x.id !== id || x.phase !== "play" || x.turn !== turn) return false;
+    const pr = x.probes[aid]; if (!pr || pr.stun) return false;
+    if (!nbrs(wallsOf(x), pr.p).some(q => eq(q, c))) return false;
+    x.choice[aid] = c;
+    const active = x.order.filter(a => !x.probes[a].stun);
+    if (active.every(a => x.choice[a])) { const T = ctx.t; clearTimeout(T.turn); T.turnFor = `${id}:${turn}`; T.turn = setTimeout(() => resolve(ctx, id, turn), 350); }
+  });
+}
+
+// ---------------------------------------------------------------- проба мастера
+/** Ход бота: ближе к ядру, по разведанным узлам охотнее, назад неохотно; иногда медлит и не успевает. */
+function botMove(hk, aid) {
+  const walls = wallsOf(hk), pr = hk.probes[aid], boom = new Set(hk.boom), known = new Set([...Object.keys(hk.rev), ...hk.safe]);
+  const opts = nbrs(walls, pr.p).filter(q => !boom.has(K(...q)));
+  if (!opts.length) return null;
+  const dist = bfs(walls, CORE);
+  const score = q => dist.get(K(...q)) + (known.has(K(...q)) ? 0 : 0.8) + (eq(q, pr.prev) ? 0.6 : 0) + Math.random() * 0.9;
+  return opts.map(q => [score(q), q]).sort((a, b) => a[0] - b[0])[0][1];
+}
+function botTurn(ctx, hk) {
+  ctx.t.bots = [];
+  for (const aid of hk.order) {
+    if (aid === ME || hk.probes[aid].stun || Math.random() < 0.08) continue;
+    ctx.t.bots.push(setTimeout(() => {
+      const cur = ctx.get(); if (!cur || cur.id !== hk.id || cur.phase !== "play" || cur.turn !== hk.turn) return;
+      const c = botMove(cur, aid); if (c) onPick(ctx, aid, cur.id, cur.turn, c);
+    }, 900 + Math.random() * 2900));
   }
 }
+
+/** Проба: мастер ведёт первый зонд, остальные — боты. Никто, кроме мастера, игру не видит. */
+export function openTrial(n = 1) {
+  if (!game.user.isGM) return;
+  if (S.get().hack) return ui.notifications.warn("У игроков сейчас идёт игра — проба после неё.");
+  if (TRIAL.get()) abortGame(TRIAL);
+  n = Math.max(1, Math.min(5, Number(n) || 1)); TRIAL.n = n;
+  const st = S.get(), names = Object.values(st.roster || {}).map(a => st.heroes?.[a]).filter(Boolean);
+  const seed = Math.floor(Math.random() * 2 ** 31), b = generate(n, seed);
+  const lag = st.hackPrep?.lag ?? 0;
+  const hk = { id: Date.now(), trial: true, phase: "intro", seed, lag, board: { walls: b.walls, mines: b.mines }, seals: b.seals.slice(),
+    order: [], probes: {}, worm: { p: b.worm, prev: null, sleep: lag, stun: 0, trail: [] },
+    rev: {}, safe: [], boom: [], turn: 0, choice: {}, ready: {}, events: [], result: null, hacker: null };
+  for (let i = 0; i < n; i++) {
+    const aid = i ? `__bot${i}` : ME, hero = names[i] ?? null;
+    hk.order.push(aid);
+    hk.probes[aid] = { uid: i ? null : game.user.id, p: b.starts[i], prev: b.starts[i], start: b.starts[i], stun: 0, moves: 0, color: COLORS[i],
+      name: i ? (hero?.name ? `${hero.name} · бот` : `Зонд ${i + 1} · бот`) : "Мастер", gender: i ? hero?.gender : "m" };
+    if (i) hk.ready[aid] = true;
+    reveal(hk, b.starts[i]);
+  }
+  return TRIAL.update(s => { s.hack = hk; });
+}
+export const closeTrial = () => abortGame(TRIAL);
 
 // ---------------------------------------------------------------- звук
 let AC = null;
@@ -280,7 +362,7 @@ function gearSvg(size, color) {
 }
 
 export class HackUI {
-  constructor() { this.el = null; this.step = "title"; this.gid = null; this.gmHidden = false; this.pieces = new Map(); this.lastTurn = 0; this.pick = null; this.timers = []; }
+  constructor(ctx = WORLD) { this.ctx = ctx; this.el = null; this.step = "title"; this.gid = null; this.gmHidden = false; this.pieces = new Map(); this.lastTurn = 0; this.pick = null; this.timers = []; }
   get isOpen() { return !!this.el?.isConnected; }
   close() {
     this.timers.forEach(clearInterval); this.timers = [];
@@ -290,13 +372,13 @@ export class HackUI {
 
   /** Вызывается при любом изменении состояния. aid — герой этого игрока (у мастера null). */
   sync(st, aid) {
-    const hk = st.hack;
-    if (game.user.isGM) gmTick(hk);
+    const hk = st.hack, gmv = this.ctx.gmView();
+    gmTick(this.ctx, hk);
     if (!hk) { this.close(); this.gid = null; return; }
     if (hk.id !== this.gid) { this.close(); this.gid = hk.id; this.step = "title"; this.gmHidden = false; this.lastTurn = 0; this.pick = null; this.closedEnd = false; }
     const mine = aid && hk.probes[aid] ? aid : null;
-    if (game.user.isGM && this.gmHidden) { if (this.isOpen) this.close(); return; }
-    if (!game.user.isGM && !mine && hk.phase === "intro") return;     // не участник: смотрит с начала гонки
+    if (gmv && this.gmHidden) { if (this.isOpen) this.close(); return; }
+    if (!gmv && !mine && hk.phase === "intro") return;     // не участник: смотрит с начала гонки
     if (this.closedEnd && hk.phase === "end") return;
     this.render(hk, mine);
   }
@@ -308,12 +390,13 @@ export class HackUI {
     return this.el;
   }
   topBtns() {
-    if (!game.user.isGM) return null;
+    if (this.ctx.trial) return h("button.nk-x.nk-hk-hide", { title: "Закрыть пробу", onclick: () => abortGame(this.ctx) }, "✕");
+    if (!this.ctx.gmView()) return null;
     return h("button.nk-x.nk-hk-hide", { title: "Спрятать у себя (игра идёт дальше; вернуть — «Показать игру» в пульте)", onclick: () => { this.gmHidden = true; this.close(); } }, "✕");
   }
 
   render(hk, mine) {
-    const gm = game.user.isGM;
+    const gm = this.ctx.gmView();
     if (hk.phase === "intro") {
       if (gm) return this.renderWait(hk, true);
       if (hk.ready[mine]) return this.renderWait(hk, false);
@@ -333,7 +416,8 @@ export class HackUI {
     const title = h("div.nk-hk-big", {}, word.split(" ").map(wd => h("span.w", {}, [...wd].map(ch => { const sp = h("span", { "data-c": ch }, ch); spans.push(sp); return sp; }))));
     const star = h("div.nk-hk-star"); star.append(starSvg(420, "rgba(170,0,20,.16)"));
     el.replaceChildren(star, h("div.nk-hk-center", {}, title,
-      h("button.nk-btn.nk-hk-go", { onclick: () => { this.step = "rules"; beep("pick"); this.render(S.get().hack, this.mineId()); } }, "НАЧАТЬ")), h("div.nk-hk-scan"));
+      h("button.nk-btn.nk-hk-go", { onclick: () => { this.step = "rules"; beep("pick"); this.render(this.ctx.get(), this.mineId()); } }, "НАЧАТЬ")), h("div.nk-hk-scan"),
+      this.ctx.trial ? h("div.nk-hk-trial", {}, "проба мастера · видите только вы") : "");
     const iv = setInterval(() => {
       if (!title.isConnected) return clearInterval(iv);
       for (const s of spans) {
@@ -344,7 +428,7 @@ export class HackUI {
     }, 90);
     this.timers.push(iv);
   }
-  mineId() { const st = S.get(), aid = st.roster?.[game.user.id]; return aid && st.hack?.probes?.[aid] ? aid : null; }
+  mineId() { return this.ctx.mine(); }
 
   renderRules(hk, mine) {
     const el = this.shell("nk-hk-full");
@@ -360,7 +444,7 @@ export class HackUI {
     ];
     el.replaceChildren(h("div.nk-hk-center", {},
       h("div.nk-hk-rules", {}, rules.map(t => h("p", {}, t))),
-      h("button.nk-btn.nk-hk-go", { onclick: e => { e.currentTarget.disabled = true; beep("pick"); S.send({ t: "hack.ready", id: hk.id }); } }, "ГОТОВ")), h("div.nk-hk-scan"));
+      h("button.nk-btn.nk-hk-go", { onclick: e => { e.currentTarget.disabled = true; beep("pick"); this.ctx.ready(hk); } }, "ГОТОВ")), h("div.nk-hk-scan"));
   }
 
   renderWait(hk, gm) {
@@ -372,8 +456,8 @@ export class HackUI {
       h("div.nk-hk-list", {}, hk.order.map(a => h("div", { class: hk.ready[a] ? "ok" : "" },
         h("i", { style: `background:${hk.probes[a].color}` }), hk.probes[a].name, h("span", {}, hk.ready[a] ? "ГОТОВ" : "…")))),
       gm ? h("div.nk-hk-row", {},
-        h("button.nk-btn", { onclick: () => forceStart() }, `НАЧАТЬ СЕЙЧАС · ${ready} ИЗ ${hk.order.length}`),
-        h("button.nk-btn", { onclick: () => abortGame() }, "ОТМЕНИТЬ")) : null), h("div.nk-hk-scan"));
+        h("button.nk-btn", { onclick: () => forceStart(this.ctx) }, `НАЧАТЬ СЕЙЧАС · ${ready} ИЗ ${hk.order.length}`),
+        h("button.nk-btn", { onclick: () => abortGame(this.ctx) }, "ОТМЕНИТЬ")) : null), h("div.nk-hk-scan"));
   }
 
   renderCount(hk) {
@@ -389,7 +473,7 @@ export class HackUI {
 
   // ---------------------------------------------------------------- поле
   renderPlay(hk, mine) {
-    const el = this.shell(`nk-hk-full nk-hk-play${game.user.isGM ? " nk-hk-gm" : ""}`);
+    const el = this.shell(`nk-hk-full nk-hk-play${this.ctx.gmView() ? " nk-hk-gm" : ""}`);
     const newTurn = hk.turn !== this.lastTurn;
     if (el.dataset.view !== "play") {
       el.dataset.view = "play"; this.pieces.clear();
@@ -435,7 +519,7 @@ export class HackUI {
     if (this.cs && Math.abs(this.cs - cs) > 0.5) { this.piecesEl.replaceChildren(); this.pieces.clear(); }
     this.cs = cs;
     const walls = wallsOf(hk), boom = new Set(hk.boom), safe = new Set(hk.safe), seals = new Set(hk.seals);
-    const gmMines = game.user.isGM ? minesOf(hk) : null;
+    const gmMines = this.ctx.gmView() ? minesOf(hk) : null;
     const me = mine ? hk.probes[mine] : null;
     const can = new Set(me && !me.stun ? nbrs(walls, me.p).filter(q => !boom.has(K(...q))).map(q => K(...q)) : []);
     if (!this.pick && hk.choice?.[mine]) this.pick = hk.choice[mine];
@@ -512,14 +596,14 @@ export class HackUI {
   }
 
   choose(c) {
-    const st = S.get(), hk = st.hack, mine = this.mineId();
+    const hk = this.ctx.get(), mine = this.mineId();
     if (!hk || hk.phase !== "play" || !mine) return;
     this.pick = c; beep("pick");
-    S.send({ t: "hack.pick", id: hk.id, turn: hk.turn, x: c[0], y: c[1] });
-    this.drawBoard(hk, mine);
+    this.ctx.pick(hk, c);
+    if (this.board?.isConnected && this.ctx.get() === hk && hk.phase === "play") this.drawBoard(hk, mine);
   }
   onKey(e) {
-    const st = S.get(), hk = st.hack, mine = this.mineId();
+    const hk = this.ctx.get(), mine = this.mineId();
     if (!hk || hk.phase !== "play" || !mine || e.target?.closest?.("input,textarea,[contenteditable]")) return;
     const d = { ArrowUp: [0, -1], KeyW: [0, -1], ArrowDown: [0, 1], KeyS: [0, 1], ArrowLeft: [-1, 0], KeyA: [-1, 0], ArrowRight: [1, 0], KeyD: [1, 0] }[e.code];
     if (!d) return;
@@ -566,14 +650,21 @@ export class HackUI {
     }
     const kids = [h("div.nk-hk-big.res", {}, title), h("div.nk-hk-text", {}, text)];
     if (!r.win) { const s = h("div.nk-hk-star end"); s.append(starSvg(360, "rgba(255,30,20,.28)")); el.replaceChildren(s); } else el.replaceChildren();
+    if (this.ctx.trial) {
+      const n = Object.values(hk.probes).reduce((a, p) => a + (p.uid ? 0 : 1), 0);
+      kids.push(h("div.nk-hk-trial in", {}, `проба · ходов ${r.turns ?? hk.turn}${n ? ` · ботов ${n}` : ""}${hk.lag ? " · код отставал на ход" : ""}`));
+    }
     el.append(this.topBtns() || "", h("div.nk-hk-center", {}, ...kids,
-      game.user.isGM
+      this.ctx.trial
+        ? h("div.nk-hk-row", {}, h("button.nk-btn", { onclick: () => openTrial(TRIAL.n) }, "ЕЩЁ РАЗ"), h("button.nk-btn", { onclick: () => abortGame(this.ctx) }, "ЗАКРЫТЬ"))
+        : this.ctx.gmView()
         ? h("div.nk-hk-row", {}, h("button.nk-btn", { onclick: () => abortGame() }, "ЗАКРЫТЬ У ВСЕХ"))
         : h("button.nk-btn.nk-hk-go", { onclick: () => { this.closedEnd = true; this.close(); } }, "ЗАКРЫТЬ")), h("div.nk-hk-scan"));
   }
 }
 
-export const hackUI = new HackUI();
+export const hackUI = new HackUI(WORLD);
+const trialUI = new HackUI(TRIAL);
 
 // ---------------------------------------------------------------- кнопки для пульта
 export function hackTools(rerender) {
@@ -591,6 +682,12 @@ export function hackTools(rerender) {
       prep ? h("button.nk-btn.small", { onclick: async () => { await clearHacker(); rerender(); } }, "СБРОСИТЬ") : null,
       h("div", { style: "flex:1" }),
       h("button.nk-btn", { "data-hack-open": "1", onclick: async () => { await openGame(); setTimeout(rerender, 300); } }, "ОТКРЫТЬ ИГРУ У ИГРОКОВ")));
+    const bots = Math.min(5, Math.max(heroes.length, 5)) - 1;
+    rows.push(h("div.nk-g-row", {},
+      h("div.nk-g-lab", {}, "ПРОБА"),
+      h("button.nk-btn.small", { "data-hack-trial": "1", title: "Только у вас: ведёте один зонд против кода", onclick: () => openTrial(1) }, "ОДИН ЗОНД"),
+      h("button.nk-btn.small", { "data-hack-trial": String(bots + 1), title: `Только у вас: ваш зонд и ${bots} бота, как в игре на пятерых`, onclick: () => openTrial(bots + 1) }, `ВЫ И ${bots} БОТА`),
+      h("span.nk-g-hint", {}, prep ? `Код ${prep.lag ? "отстаёт на ход" : "без отставания"}, как по проверке выше.` : "Игроки ничего не видят, мир не меняется.")));
   } else {
     const phase = { intro: "игроки читают правила", count: "отсчёт", play: `идёт ход ${hk.turn}`, end: hk.result?.win ? `победа: ${hk.probes[hk.result.by[0]]?.name}, ${hk.probes[hk.result.by[0]]?.moves} ход.` : "код забрал ядро" }[hk.phase];
     rows.push(h("div.nk-g-row", {},

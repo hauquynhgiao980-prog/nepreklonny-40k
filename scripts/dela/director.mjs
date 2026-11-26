@@ -88,6 +88,40 @@ const CAST = {
 // какие персонажи выходят вместе с событием (и прячутся, если событие откатили)
 const EVENT_CAST = { "Пролом": ["cultists", "shooters", "leader"], "Прорыв варпа": ["unborn"] };
 
+/** Прорыв варпа силами модуля (тот же, что в макросе): 10 с лиловая расщелина с молниями, тайтл и вспышка у всех,
+ *  под вспышкой — осквернённая галерея. Повтор возвращает чистую галерею без эффекта. */
+export async function warpToggle(scene) {
+  const dir = M + "05_gallery/", src = String(scene.background.src ?? "");
+  if (!src.includes("gallery_")) return ui.notifications.warn("Это не смотровая галерея: фон не узнан.");
+  const lite = src.includes("1536x1152");
+  const CLEAN = dir + (lite ? "gallery_clean_anim_1536x1152.webm" : "gallery_clean_anim_3072x2304.webm");
+  const DES = dir + (lite ? "gallery_desecrated_anim_1536x1152.webm" : "gallery_desecrated_anim_3072x2304.webm");
+  const toDes = !src.includes("desecrated");
+  if (toDes) {
+    const fx = game.modules.get(MOD)?.api?.spellFx;
+    const rift = scene.lights.find(l => l.flags?.[MOD]?.role === "rift");
+    const at = rift ? { x: rift.x, y: rift.y - (scene.grid?.size ?? 128) * 0.45 } : { x: scene.width * 0.72, y: scene.height * 0.56 };
+    let on = true; try { on = game.settings.get(MOD, "spellFx"); } catch { /* нет настройки */ }
+    if (fx?.breach && on) { ui.notifications.info("Прорыв варпа: разлом открывается…"); await fx.breach(scene, at, { duration: 10000, preload: DES, title: "ЗАВЕСА РАЗОРВАНА", sub: "ВАРП ВХОДИТ В ГАЛЕРЕЮ" }); }
+  }
+  await scene.update({ "background.src": toDes ? DES : CLEAN });
+  for (const type of ["AmbientLight", "AmbientSound"]) {
+    const coll = type === "AmbientLight" ? scene.lights : scene.sounds;
+    const upd = coll.filter(d => d.flags?.[MOD]?.role === "rift").map(d => ({ _id: d.id, hidden: !toDes }));
+    if (upd.length) await scene.updateEmbeddedDocuments(type, upd);
+  }
+  ui.notifications.info(toDes ? "Прорыв варпа. Из разлома поднимается Нерождённый." : "Галерея снова чистая.");
+}
+// события, которые модуль делает сам, не дожидаясь макроса в мире
+const OWN = { "Прорыв варпа": warpToggle };
+
+/** Запустить событие сцены по имени (для вкладки «Сценарий»). */
+export async function fireEvent(key, name) {
+  const scene = game.scenes.find(s => s.flags?.[MOD]?.scene === key);
+  if (!scene) return ui.notifications.warn("Этой сцены нет в мире: импортируйте акт I.");
+  return runMacro(name, scene);
+}
+
 async function castActor(g) {
   let a = game.actors.find(x => x.name === g.actor);
   if (a) return a;
@@ -178,7 +212,7 @@ async function runMacro(name, scene) {
     const ready = new Promise(r => Hooks.once("canvasReady", r));
     await scene.view(); await ready;
   }
-  let m = game.macros.getName(name);
+  let m = OWN[name] ? { execute: () => OWN[name](scene) } : game.macros.getName(name);
   if (!m) {
     const pack = game.packs.get(`${MOD}.act1-macros`);
     const id = pack && (await pack.getIndex()).find(e => e.name === name)?._id;
@@ -190,8 +224,8 @@ async function runMacro(name, scene) {
   await m.execute();
   const cast = EVENT_CAST[name];
   if (!cast || !ev?.on) return;
-  // макрос дожидается видео; ждём, пока состояние сцены сменится, не дольше 8 с
-  for (let i = 0; i < 40 && ev.on(scene) === before; i++) await new Promise(r => setTimeout(r, 200));
+  // макрос дожидается видео; ждём, пока состояние сцены сменится, не дольше 15 с
+  for (let i = 0; i < 75 && ev.on(scene) === before; i++) await new Promise(r => setTimeout(r, 200));
   const now = ev.on(scene);
   if (now !== before) for (const gid of cast) await setCast(scene, gid, !!now);
 }

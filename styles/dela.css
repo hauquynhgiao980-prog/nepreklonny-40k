@@ -444,3 +444,35 @@
 #nk-hack.nk-hk-end.lose .nk-hk-big.res { color: #ff4a3a; text-shadow: 0 0 26px rgba(255, 40, 20, .8); }
 #nk-hack .nk-hk-text { max-width: 680px; font-size: 18px; line-height: 1.6; color: #e6efe0; }
 #nk-panel .nk-g-res { font-size: 12.5px; color: #ffd9cf; }
+
+/* ---------------------------------------------------------------- записки, слухи, шёпот, голос */
+#nk-note { position: fixed; inset: 0; z-index: 99930; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0); transition: background .5s; cursor: pointer; }
+#nk-note.on { background: rgba(0, 0, 0, .55); }
+#nk-note .nk-note-card { width: min(560px, 86vw); padding: 26px 30px 18px; border: 1px solid rgba(214, 170, 90, .45); background: linear-gradient(180deg, #1d1710, #120e09);
+  box-shadow: 0 0 0 1px #000, 0 18px 60px rgba(0, 0, 0, .8), inset 0 0 40px rgba(214, 150, 60, .08); transform: translateY(18px) scale(.97); opacity: 0; transition: transform .6s cubic-bezier(.2, .9, .2, 1), opacity .5s; }
+#nk-note.on .nk-note-card { transform: none; opacity: 1; }
+#nk-note .nk-note-t { font: 700 12px/1 "NK Plex Mono", "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .32em; color: #d6aa5a; margin-bottom: 16px; }
+#nk-note .nk-note-x { font: 19px/1.5 var(--nk-serif, "Signika", serif); color: #eadcc4; text-shadow: 0 1px 0 #000; }
+#nk-note .nk-note-c { margin-top: 18px; font: 10px/1 "NK Plex Mono", "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .18em; color: rgba(234, 220, 196, .35); text-transform: uppercase; }
+#nk-note.k-rumor .nk-note-card { border-color: rgba(150, 160, 175, .45); background: linear-gradient(180deg, #14171b, #0b0d10); }
+#nk-note.k-rumor .nk-note-t { color: #9fb0c4; }
+
+#nk-say { position: fixed; inset: 0; z-index: 99920; pointer-events: none; display: flex; flex-direction: column; justify-content: center; gap: 2.2vh; transition: opacity 1.5s; }
+#nk-say.out { opacity: 0; }
+#nk-say.k-whisper { align-items: center; text-align: center; background: radial-gradient(ellipse at 50% 50%, rgba(40, 0, 60, .35), rgba(0, 0, 0, 0) 60%); }
+#nk-say.k-whisper .nk-say-l { font: italic 400 clamp(22px, 3.2vw, 44px)/1.2 var(--nk-serif, "Signika", serif); letter-spacing: .12em; color: #e6ccff;
+  text-shadow: 0 0 14px #8a2be2, 0 0 40px #4b0082; }
+#nk-say.k-whisper .nk-say-l span { display: inline-block; opacity: 0; filter: blur(10px); animation: nk-say-in 1.4s ease-out forwards, nk-say-sway 3s ease-in-out infinite alternate; }
+@keyframes nk-say-in { to { opacity: .92; filter: blur(0); } }
+@keyframes nk-say-sway { from { transform: translateY(1px); } to { transform: translateY(-2px); } }
+#nk-say.k-voice { align-items: flex-start; padding-left: 6vw; }
+#nk-say.k-voice .nk-say-l { font: 700 clamp(20px, 2.6vw, 38px)/1.15 "NK Plex Mono", "IBM Plex Mono", ui-monospace, monospace; color: #ffe2b0; text-transform: uppercase; letter-spacing: .06em;
+  text-shadow: 0 0 2px #000, 0 2px 12px rgba(0, 0, 0, .9), 0 0 24px rgba(255, 150, 40, .35); opacity: 0; transform: translateX(-30px); transition: opacity .25s, transform .35s cubic-bezier(.2, .9, .2, 1); }
+#nk-say.k-voice .nk-say-l.on { opacity: 1; transform: none; animation: nk-say-shake .18s steps(2) 3; }
+@keyframes nk-say-shake { 50% { transform: translateX(3px); } }
+#nk-say .nk-say-from { order: 99; font: 11px/1 "NK Plex Mono", "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .3em; color: rgba(255, 226, 176, .45); text-transform: uppercase; }
+#nk-say.preview { opacity: .85; }
+#nk-say .nk-say-gm { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; font: 10px/1 "NK Plex Mono", "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .2em; color: rgba(255, 255, 255, .3); text-transform: uppercase; }
+.nk-note-chat p { margin: .3em 0 0; }
+#nk-hack .nk-hk-trial { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; font: 10px/1 "NK Plex Mono", "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .22em; color: rgba(255, 255, 255, .28); text-transform: uppercase; }
+#nk-hack .nk-hk-trial.in { position: static; margin-top: 10px; }

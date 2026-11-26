@@ -9689,7 +9689,7 @@
    "sound": 20,
    "dir": 0,
    "door": 1,
-   "ds": 0,
+   "ds": 2,
    "threshold": {
     "light": null,
     "sight": null,

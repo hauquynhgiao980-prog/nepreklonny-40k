@@ -4,6 +4,7 @@ import { Anketa, Pad, Panel } from "./dela/ui.mjs";
 import { TrialUI } from "./dela/trial.mjs";
 import * as Servitor from "./dela/servitor.mjs";
 import * as Hack from "./dela/hack.mjs";
+import * as Nudge from "./dela/nudge.mjs";
 
 const anketa = new Anketa();
 const trial = new TrialUI();
@@ -65,6 +66,7 @@ Hooks.once("ready", () => {
   game.socket.on(S.SOCKET, (msg, senderId) => S.handleSocket(msg, senderId));
   game.socket.on(S.SOCKET, (msg, senderId) => Servitor.onSocket(msg, senderId));
   game.socket.on(S.SOCKET, (msg, senderId) => Hack.onSocket(msg, senderId));
+  game.socket.on(S.SOCKET, (msg, senderId) => Nudge.onSocket(msg, senderId));
   S.onChange(st => sync(st));
   Hooks.on("nkDelaAnketaClosed", () => sync());
   Hooks.on("userConnected", () => { if (game.user.isGM) panel.render(); });
@@ -81,5 +83,6 @@ Hooks.once("ready", () => {
   const mod = game.modules.get(S.MOD);
   if (mod) mod.api = Object.assign(mod.api || {}, { dela: { panel, state: S.get, update: S.update, openAnketa: S.openAnketa, assign: S.assign, startTrial: S.startTrial, trial, togglePad,
     servitor: { look: Servitor.look, calm: Servitor.calm, scare: Servitor.scare },
-    hack: { open: Hack.openGame, start: Hack.forceStart, abort: Hack.abortGame, roll: Hack.rollHacker, show: () => Hack.hackUI.showGM() } } });
+    hack: { open: Hack.openGame, start: () => Hack.forceStart(), abort: () => Hack.abortGame(), roll: Hack.rollHacker, show: () => Hack.hackUI.showGM(), trial: n => Hack.openTrial(n) },
+    nudge: { notes: Nudge.sendNotes, rumors: Nudge.sendRumors, whisper: Nudge.whisper, voice: Nudge.voice } } });
 });
