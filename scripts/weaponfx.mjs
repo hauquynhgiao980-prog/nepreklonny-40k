@@ -1,6 +1,8 @@
 /* Непреклонный: эффекты стрелкового оружия. Подключение к модулю: настройки, сокет, хук атаки.
-   В макросе: NepreklonnyFX.shoot(стрелок, цель, { kind: "laser" | "slug" | "bolt", shots: 3, hit: true }). */
+   В макросе: NepreklonnyFX.shoot(стрелок, цель, { kind: "laser" | "slug" | "bolt", shots: 3, hit: true }).
+   Эффекты заклинаний — там же: NepreklonnyFX.spell("Священное пламя", заклинатель, [цели]). */
 import { createWeaponFX } from "./weaponfx-foundry.mjs";
+import { createSpellFX } from "./spellfx-foundry.mjs";
 
 const MOD = "nepreklonny-40k";
 
@@ -17,6 +19,14 @@ Hooks.once("init", () => {
     name: "Громкость выстрелов", hint: "0 — без звука.",
     scope: "client", config: true, type: Number, range: { min: 0, max: 1, step: 0.05 }, default: 0.5,
   });
+  game.settings.register(MOD, "spellFx", {
+    name: "Эффекты заклинаний", hint: "Варп, свет Императора и плазма машин, когда кто-то читает заклинание или пользуется силой.",
+    scope: "client", config: true, type: Boolean, default: true,
+  });
+  game.settings.register(MOD, "spellFxVolume", {
+    name: "Громкость заклинаний", hint: "0 — без звука.",
+    scope: "client", config: true, type: Number, range: { min: 0, max: 1, step: 0.05 }, default: 0.5,
+  });
 });
 
 Hooks.once("ready", () => {
@@ -28,12 +38,22 @@ Hooks.once("ready", () => {
       volume: () => game.settings.get(MOD, "weaponFxVolume"),
     },
   });
-  game.socket.on(`module.${MOD}`, p => { if (p?.t === "wfx") api.play(p); });
+  const spells = createSpellFX({
+    broadcast: p => game.socket.emit(`module.${MOD}`, p),
+    settings: { enabled: () => game.settings.get(MOD, "spellFx"), volume: () => game.settings.get(MOD, "spellFxVolume") },
+  });
+  game.socket.on(`module.${MOD}`, p => { if (p?.t === "wfx") api.play(p); else if (p?.t === "sfx") spells.play(p); });
+  Hooks.on("dnd5e.postUseActivity", (activity, config, results) => {
+    try { spells.onUse(activity, config, results); } catch (e) { console.error(`${MOD} | эффекты заклинаний`, e); }
+  });
+  Hooks.on("dnd5e.rollAttackV2", (rolls, data) => {
+    try { spells.onAttack(rolls, data); } catch (e) { console.error(`${MOD} | эффекты заклинаний`, e); }
+  });
   Hooks.on("dnd5e.rollAttackV2", (rolls, data) => {
     try { api.onAttack(rolls, data); } catch (e) { console.error(`${MOD} | эффекты стрельбы`, e); }
   });
-  Hooks.on("canvasTearDown", () => api.teardown());
+  Hooks.on("canvasTearDown", () => { api.teardown(); spells.teardown(); });
   const mod = game.modules.get(MOD);
-  mod.api = { ...(mod.api ?? {}), weaponFx: api };
-  globalThis.NepreklonnyFX = api;
+  mod.api = { ...(mod.api ?? {}), weaponFx: api, spellFx: spells };
+  globalThis.NepreklonnyFX = Object.assign(api, { spell: spells.cast, spells });
 });

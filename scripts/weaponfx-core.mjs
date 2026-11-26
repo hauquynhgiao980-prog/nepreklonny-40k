@@ -7,7 +7,7 @@ const PIXI = globalThis.PIXI;
 
 /* ─────────────────────────── шейдеры ─────────────────────────── */
 
-const VERT = `
+export const VERT = `
 precision highp float;
 attribute vec2 aVertexPosition;
 attribute vec2 aUvs;
@@ -19,7 +19,7 @@ void main() {
   gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
 }`;
 
-const NOISE = `
+export const NOISE = `
 float h1(float n) { return fract(sin(n) * 43758.5453123); }
 float h2(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
 float n1(float x) { float i = floor(x), f = fract(x); return mix(h1(i), h1(i + 1.0), f * f * (3.0 - 2.0 * f)); }
@@ -174,12 +174,12 @@ export function rng(seed) {                       // mulberry32: у всех к�
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
-const rgb = hex => [((hex >> 16) & 255) / 255, ((hex >> 8) & 255) / 255, (hex & 255) / 255];
+export const rgb = hex => [((hex >> 16) & 255) / 255, ((hex >> 8) & 255) / 255, (hex & 255) / 255];
 const lerp = (a, b, t) => a + (b - a) * t;
 const clamp01 = x => Math.max(0, Math.min(1, x));
 
 let programs = null;
-function prog() {
+export function prog() {
   programs ??= {
     beam: PIXI.Program.from(VERT, BEAM_FRAG, "nk-wfx-beam"),
     flash: PIXI.Program.from(VERT, FLASH_FRAG, "nk-wfx-flash"),
@@ -191,7 +191,7 @@ function prog() {
 }
 
 /** Повёрнутый прямоугольник: центр (cx,cy), длина вдоль угла ang, ширина поперёк. uv: x вдоль, y поперёк. */
-function quadMesh(program, uniforms, cx, cy, len, wid, ang, blend) {
+export function quadMesh(program, uniforms, cx, cy, len, wid, ang, blend) {
   const c = Math.cos(ang), s = Math.sin(ang), hl = len / 2, hw = wid / 2;
   const pt = (u, v) => [cx + c * u - s * v, cy + s * u + c * v];
   const verts = [...pt(-hl, -hw), ...pt(hl, -hw), ...pt(hl, hw), ...pt(-hl, hw)];
