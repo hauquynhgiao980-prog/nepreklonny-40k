@@ -116,9 +116,11 @@ export function resetAnketa(userId) {
 export function startTrial(n) {
   return update(s => {
     const M = TRIAL_META[n - 1]; if (!M) return false;
-    s.trial = { n, id: Date.now(), phase: M.gate ? "choose" : "roll", heroes: Object.values(s.roster || {}).filter(a => s.heroes?.[a]), picks: {}, rolls: {} };
+    s.trial = { n, id: Date.now(), phase: s.trialMode === "manual" ? "choose" : "roll", heroes: Object.values(s.roster || {}).filter(a => s.heroes?.[a]), picks: {}, rolls: {} };
   });
 }
+/** Режим испытаний: auto — броски сразу после выбора, manual — броски открывает мастер. */
+export const setTrialMode = mode => update(s => { s.trialMode = mode; if (mode === "auto" && s.trial?.phase === "choose") s.trial.phase = "roll"; });
 export const openRolls = () => update(s => { if (!s.trial) return false; s.trial.phase = "roll"; });
 export const cancelTrial = () => update(s => { if (!s.trial) return false; delete s.trial; });
 export function setPick(aid, c, shot = false) {

@@ -325,9 +325,14 @@ export class Panel {
 
   trialLive(st, assigned) {
     const T = st.trial;
+    const manual = st.trialMode === "manual";
+    const modeSeg = h("span.nk-seg", { title: "Автомат: игрок бросает сразу после выбора. Вручную: броски открывает мастер кнопкой «Открыть броски»." },
+      h("button", { class: !manual ? "on" : "", "data-mode": "auto", onclick: () => S.setTrialMode("auto") }, "АВТОМАТ"),
+      h("button", { class: manual ? "on" : "", "data-mode": "manual", onclick: () => S.setTrialMode("manual") }, "ВРУЧНУЮ"));
     if (!T) {
       return h("div.nk-live", {},
-        h("div.nk-hint", {}, "Испытание уходит всем назначенным героям сразу. Каждый игрок услышит свой голос, тайно выберет, увидит ответ голоса и бросит спасбросок. Сумма и итог считаются здесь, «Применить» записывает шкалы, летопись и корпус."),
+        h("div.nk-hint", {}, "Испытание уходит всем назначенным героям сразу. Каждый игрок услышит свой голос, тайно выберет, увидит ответ голоса и бросит спасбросок — сразу (автомат) или когда вы откроете броски (вручную). Сумма и итог считаются здесь, «Применить» записывает шкалы, летопись и корпус."),
+        h("div.nk-bar", { style: "margin:10px 0 0;align-items:center" }, h("span.nk-hint", {}, "БРОСКИ:"), modeSeg, h("div", { style: "flex:1" })),
         h("div.nk-bar", { style: "margin:10px 0 0" }, TRIAL_META.map(M => h("button.nk-btn", { "data-start": M.n, disabled: !assigned.length, onclick: () => S.startTrial(M.n) },
           `НАЧАТЬ ${M.n} · ${M.title}${st.outcomes?.[M.n] ? " · ПРОЙДЕНО" : ""}`))));
     }
@@ -363,7 +368,8 @@ export class Panel {
       h("div.nk-sum", {},
         h("div", {}, `СУММА ${R.sum} · ПОРОГ ${R.thr || "—"} (${R.per} × ${R.N})`, R.outcome ? h("b", { class: `oc-${R.outcome}` }, ` → ${OUTCOME_LABEL[R.outcome].toUpperCase()}`) : null),
         h("div", { style: "flex:1" }),
-        T.phase === "choose" ? h("button.nk-btn", { "data-open-rolls": 1, title: "Выстрелы с Шёпотом и огонь врагов уже позади — пусть ползут к шлюзу", onclick: () => S.openRolls() }, "ОТКРЫТЬ БРОСКИ") : null,
+        modeSeg,
+        T.phase === "choose" ? h("button.nk-btn", { "data-open-rolls": 1, title: "Открыть игрокам спасброски", onclick: () => S.openRolls() }, "ОТКРЫТЬ БРОСКИ") : null,
         override,
         h("button.nk-btn", { "data-apply": 1, disabled: !R.outcome && !override.value, onclick: () => S.applyTrial(override.value || null) }, "ПРИМЕНИТЬ"),
         h("button.nk-btn.ghost", { onclick: () => S.cancelTrial() }, "ОТМЕНИТЬ")));

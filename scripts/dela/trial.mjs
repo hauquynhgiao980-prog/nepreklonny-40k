@@ -133,7 +133,7 @@ export class TrialUI {
         h("button.nk-btn.nk-quiet", { onclick: () => this.go("rules") }, "НАЧАТЬ")));
     } else if (R === "rules") {
       this.frame().append(h("div.nk-center", {},
-        h("div.nk-scene", {}, M.scene), h("div.nk-rules", {}, M.rules),
+        h("div.nk-scene", {}, M.scene), h("div.nk-rules", {}, M.rules), M.hint ? h("div.nk-hint3", {}, M.hint) : null,
         h("button.nk-btn.nk-big", { onclick: () => this.go("voice") }, "ДАЛЕЕ")));
     } else if (R === "voice") this.voice(M);
     else if (R === "react") this.react();
@@ -159,13 +159,13 @@ export class TrialUI {
       this.go("react");
     };
     const card = (cls, title, sub, onclick, quote) => h(`button.nk-choice.${cls}`, { onclick },
-      h("b", {}, title), quote ? h("q", {}, quote) : null, h("span", {}, sub));
+      h("b", {}, title), quote ? h("q", {}, quote) : null, sub ? h("span", {}, sub) : null);
     choices.append(
       h("div.nk-col", {},
-        card("w", "ПРИНЯТЬ ПОМОЩЬ", "бросок с преимуществом · шаг к Ереси", () => pick("w")),
-        M.shot ? card("w", "ПРИНЯТЬ: ВЫСТРЕЛ", "атака с преимуществом по врагу, бросок обычный · все увидят сразу · шаг к Ереси", () => pick("w", true)) : null),
-      card("o", "ОТКАЗАТЬ ВСЛУХ", "бросок с помехой · шаг к Свету", () => pick("o"), o),
-      card("n", "ПРОМОЛЧАТЬ", "обычный бросок", () => pick("n")));
+        card("w", "ПРИНЯТЬ СИЛУ", "Ты станешь сильнее.", () => pick("w")),
+        M.shot ? card("w", "ПРИНЯТЬ СИЛУ", "Ты сможешь дать отпор врагу.", () => pick("w", true)) : null),
+      card("o", "ОТКАЗАТЬ", null, () => pick("o"), o),
+      card("n", "ПРОМОЛЧАТЬ", null, () => pick("n")));
     const root = this.frame();
     root.append(h("div.nk-voice", {}, h("div.nk-vlabel", {}, "ГОЛОС"), typed, choices));
     let i = 0;
@@ -180,7 +180,7 @@ export class TrialUI {
     const cv = h("canvas.nk-fx");
     root.append(cv, h("div.nk-react", {}, h("div.nk-rbig", {}, R.big), h("div.nk-rsmall", {}, R.small)));
     if (c === "w") this.stopFx = redHatch(cv);
-    const next = () => this.go(this.T?.phase === "roll" ? "roll" : "wait");
+    const next = () => this.go(this.T?.phase === "choose" ? "wait" : "roll");
     this.timer = setTimeout(next, c === "n" ? 4200 : 4800);
     setTimeout(() => root.addEventListener("click", () => { clearTimeout(this.timer); next(); }, { once: true }), 1800);
   }
@@ -199,12 +199,13 @@ export class TrialUI {
           this.go("rolled");
         } catch (e) { console.error(e); ui.notifications?.error(`Бросок не удался: ${e.message}`); busy.v = false; }
       } }, h("b", {}, `${label} ${sign(saveMod(actor, ab))}`), h("span", {}, how)));
-    const pickText = this.pick?.c === "w" ? (this.pick.shot ? "Ты {приняла|принял} голос и {стреляла|стрелял}" : "Ты {приняла|принял} голос")
+    const pickText = this.pick?.c === "w" ? "Ты {приняла|принял} силу"
       : this.pick?.c === "o" ? "Ты {отказала|отказал} голосу" : "Ты {промолчала|промолчал}";
     this.frame().append(h("div.nk-center", {}, h("div.nk-card", {},
       h("div.nk-tsub", {}, `ИСПЫТАНИЕ ${M.n} · ${M.title}`),
       h("div.nk-rhead", {}, `Спасбросок ${MODE_LABEL[mode]}`),
       h("div.nk-hint2", {}, `${this.gg(pickText)}. Выбери, как спасаешься:`),
+      this.pick?.shot ? h("div.nk-hint2", { style: "color:#ff9a8a" }, "Голос держит твою руку: когда мастер скажет, сделай одну атаку с преимуществом по врагу.") : null,
       h("div.nk-saves", {}, btns))));
   }
 
