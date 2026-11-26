@@ -1,0 +1,2438 @@
+{
+ "walls": [
+  {
+   "c": [
+    136,
+    318,
+    1090,
+    318
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1090,
+    318,
+    1090,
+    985
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1090,
+    985,
+    727,
+    985
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    727,
+    985,
+    727,
+    1140
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    500,
+    1140,
+    500,
+    985
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    500,
+    985,
+    136,
+    985
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    136,
+    318,
+    136,
+    985
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1197,
+    318,
+    2166,
+    318
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    2166,
+    318,
+    2166,
+    985
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    2166,
+    985,
+    1787,
+    985
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1787,
+    985,
+    1787,
+    1140
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1560,
+    1140,
+    1560,
+    985
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1560,
+    985,
+    1197,
+    985
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1197,
+    985,
+    1197,
+    318
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    303,
+    1290,
+    500,
+    1290
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    500,
+    1290,
+    500,
+    1140
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    727,
+    1140,
+    727,
+    1290
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    727,
+    1290,
+    1560,
+    1290
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1560,
+    1290,
+    1560,
+    1140
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1787,
+    1140,
+    1787,
+    1290
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1787,
+    1290,
+    2000,
+    1290
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    2000,
+    1290,
+    2150,
+    1390
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    2150,
+    1670,
+    2000,
+    1880
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    2000,
+    1880,
+    1787,
+    1880
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1787,
+    1880,
+    1787,
+    2000
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1565,
+    2000,
+    1565,
+    1880
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1565,
+    1880,
+    736,
+    1880
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    736,
+    1880,
+    736,
+    2000
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    480,
+    2000,
+    480,
+    1880
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    480,
+    1880,
+    303,
+    1880
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    303,
+    1880,
+    112,
+    1670
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    112,
+    1390,
+    303,
+    1290
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    120,
+    2000,
+    480,
+    2000
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    736,
+    2000,
+    736,
+    2200
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    736,
+    2200,
+    1565,
+    2200
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1565,
+    2200,
+    1565,
+    2000
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    1787,
+    2000,
+    2150,
+    2000
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    2150,
+    2000,
+    2150,
+    2330
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    2150,
+    2590,
+    2150,
+    2930
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    2150,
+    2930,
+    120,
+    2930
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    120,
+    2000,
+    120,
+    2930
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 0,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null
+  },
+  {
+   "c": [
+    500,
+    1140,
+    727,
+    1140
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 1,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null,
+   "doorSound": "futuristicHydraulic",
+   "role": "office"
+  },
+  {
+   "c": [
+    1560,
+    1140,
+    1787,
+    1140
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 1,
+   "ds": 2,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null,
+   "doorSound": "futuristicHydraulic",
+   "role": "interrogation"
+  },
+  {
+   "c": [
+    480,
+    2000,
+    736,
+    2000
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 1,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null,
+   "doorSound": "futuristicHydraulic",
+   "role": "storageL"
+  },
+  {
+   "c": [
+    1565,
+    2000,
+    1787,
+    2000
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 1,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null,
+   "doorSound": "futuristicHydraulic",
+   "role": "storageR"
+  },
+  {
+   "c": [
+    112,
+    1390,
+    112,
+    1670
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 1,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null,
+   "doorSound": "futuristicHydraulic",
+   "role": "exitL"
+  },
+  {
+   "c": [
+    2150,
+    1390,
+    2150,
+    1670
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 1,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null,
+   "doorSound": "futuristicHydraulic",
+   "role": "exitR"
+  },
+  {
+   "c": [
+    2150,
+    2330,
+    2150,
+    2590
+   ],
+   "light": 20,
+   "move": 20,
+   "sight": 20,
+   "sound": 20,
+   "dir": 0,
+   "door": 1,
+   "ds": 0,
+   "threshold": {
+    "light": null,
+    "sight": null,
+    "sound": null,
+    "attenuation": false
+   },
+   "animation": null,
+   "doorSound": "futuristicHydraulic",
+   "role": "toHall"
+  }
+ ],
+ "lights": [
+  {
+   "x": 1984,
+   "y": 1802,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 322,
+   "y": 1809,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1336,
+   "y": 1824,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 631,
+   "y": 482,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 28,
+    "bright": 9,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 967,
+   "y": 1787,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1681,
+   "y": 452,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 28,
+    "bright": 9,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1335,
+   "y": 1315,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 318,
+   "y": 1327,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 965,
+   "y": 1315,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1972,
+   "y": 1345,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1342,
+   "y": 1314,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 641,
+   "y": 1288,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 28,
+    "bright": 9,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1997,
+   "y": 1314,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 306,
+   "y": 1314,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 15,
+    "bright": 4,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1690,
+   "y": 342,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 965,
+   "y": 1314,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 21,
+    "bright": 5,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 606,
+   "y": 342,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 28,
+    "bright": 9,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1038,
+   "y": 373,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1683,
+   "y": 1368,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 633,
+   "y": 1747,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1680,
+   "y": 2217,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 647,
+   "y": 2219,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1677,
+   "y": 1747,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 220,
+   "y": 342,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 28,
+    "bright": 9,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1298,
+   "y": 351,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 178,
+   "y": 648,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 853,
+   "y": 342,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 376,
+   "y": 342,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 422,
+   "y": 950,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1682,
+   "y": 952,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 852,
+   "y": 342,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 15,
+    "bright": 4,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 2064,
+   "y": 562,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 15,
+    "bright": 4,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 2106,
+   "y": 384,
+   "hidden": false,
+   "role": "candle",
+   "config": {
+    "dim": 10,
+    "bright": 3,
+    "color": "#ff9f40",
+    "alpha": 0.22,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "flame",
+     "speed": 4,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 734,
+   "y": 960,
+   "hidden": false,
+   "role": "warm",
+   "config": {
+    "dim": 20,
+    "bright": 7,
+    "color": "#ffc46b",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "torch",
+     "speed": 2,
+     "intensity": 2,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 218,
+   "y": 342,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 15,
+    "bright": 4,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 286,
+   "y": 658,
+   "hidden": false,
+   "role": "red",
+   "config": {
+    "dim": 15,
+    "bright": 4,
+    "color": "#ff2b1c",
+    "alpha": 0.32,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 2118,
+   "y": 898,
+   "hidden": false,
+   "role": "candle",
+   "config": {
+    "dim": 10,
+    "bright": 3,
+    "color": "#ff9f40",
+    "alpha": 0.22,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "flame",
+     "speed": 4,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 1334,
+   "y": 1314,
+   "hidden": false,
+   "role": "candle",
+   "config": {
+    "dim": 10,
+    "bright": 3,
+    "color": "#ff9f40",
+    "alpha": 0.22,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "flame",
+     "speed": 4,
+     "intensity": 3,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 342,
+   "y": 542,
+   "hidden": false,
+   "role": "green",
+   "config": {
+    "dim": 8,
+    "bright": 2,
+    "color": "#3cff86",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 1,
+     "intensity": 1,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  },
+  {
+   "x": 210,
+   "y": 618,
+   "hidden": false,
+   "role": "green",
+   "config": {
+    "dim": 8,
+    "bright": 2,
+    "color": "#3cff86",
+    "alpha": 0.25,
+    "angle": 360,
+    "coloration": 1,
+    "attenuation": 0.5,
+    "luminosity": 0.5,
+    "saturation": 0,
+    "contrast": 0,
+    "shadows": 0,
+    "negative": false,
+    "priority": 0,
+    "animation": {
+     "type": "pulse",
+     "speed": 1,
+     "intensity": 1,
+     "reverse": false
+    },
+    "darkness": {
+     "min": 0,
+     "max": 1
+    }
+   }
+  }
+ ],
+ "sounds": [
+  {
+   "role": "hum",
+   "path": "modules/nepreklonny-40k/sounds/ambient/ship_hum.ogg",
+   "x": 1152,
+   "y": 1536,
+   "radius": 150,
+   "volume": 0.3,
+   "walls": false,
+   "hidden": false
+  },
+  {
+   "role": "cogitator",
+   "path": "modules/nepreklonny-40k/sounds/ambient/cogitator.ogg",
+   "x": 380,
+   "y": 560,
+   "radius": 20,
+   "volume": 0.5,
+   "walls": true,
+   "hidden": false
+  },
+  {
+   "role": "candles-office",
+   "path": "modules/nepreklonny-40k/sounds/ambient/candles.ogg",
+   "x": 330,
+   "y": 480,
+   "radius": 15,
+   "volume": 0.7,
+   "walls": true,
+   "hidden": false
+  },
+  {
+   "role": "candles-interrogation",
+   "path": "modules/nepreklonny-40k/sounds/ambient/candles.ogg",
+   "x": 1950,
+   "y": 420,
+   "radius": 15,
+   "volume": 0.7,
+   "walls": true,
+   "hidden": false
+  }
+ ],
+ "regions": [
+  {
+   "name": "Выход: блок камер",
+   "color": "#d9a21b",
+   "pts": [
+    112,
+    1390,
+    330,
+    1390,
+    330,
+    1670,
+    112,
+    1670
+   ],
+   "behaviors": [
+    {
+     "name": "Сообщить мастеру",
+     "type": "executeScript",
+     "system": {
+      "events": [
+       "tokenEnter"
+      ],
+      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у прохода обратно в блок камер.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Выход: дальше в корабль",
+   "color": "#d9a21b",
+   "pts": [
+    1930,
+    1390,
+    2150,
+    1390,
+    2150,
+    1670,
+    1930,
+    1670
+   ],
+   "behaviors": [
+    {
+     "name": "Сообщить мастеру",
+     "type": "executeScript",
+     "system": {
+      "events": [
+       "tokenEnter"
+      ],
+      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у правого прохода: дальше в корабль.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+     }
+    }
+   ]
+  },
+  {
+   "name": "Дверь с шевронами: к залу этапа",
+   "color": "#d9a21b",
+   "pts": [
+    1900,
+    2330,
+    2150,
+    2330,
+    2150,
+    2590,
+    1900,
+    2590
+   ],
+   "behaviors": [
+    {
+     "name": "Сообщить мастеру",
+     "type": "executeScript",
+     "system": {
+      "events": [
+       "tokenEnter"
+      ],
+      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у двери с шевронами: дальше «Зал этапа».`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+     }
+    }
+   ]
+  }
+ ]
+}

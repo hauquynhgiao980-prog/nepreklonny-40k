@@ -72,6 +72,55 @@ def scene(key, name, nav, w, h, bg, tiles=(), sounds=()):
         "ownership": {"default": 0}, "flags": {MOD: {"scene": key}}, "_stats": STATS, "_key": f"!scenes!{sid}"}
 
 
+ENV = {"darknessLevel": 0.35, "darknessLock": False,
+       "globalLight": {"enabled": True, "alpha": 0.5, "bright": False, "color": None, "coloration": 1, "luminosity": 0,
+                       "saturation": 0, "contrast": 0, "shadows": 0, "darkness": {"min": 0, "max": 0.6}}}
+
+
+def apply_markup(s):
+    """Стены, свет, звуки и зоны из tools/markup/<сцена>.json (их собирает конвейер tools/markup/pipeline)."""
+    key = s["flags"][MOD]["scene"]
+    path = os.path.join(ROOT, 'tools', 'markup', f'{key}.json')
+    if not os.path.exists(path):
+        return s
+    m = json.load(open(path, encoding='utf-8'))
+    sid = s["_id"]
+    s["environment"] = copy.deepcopy(ENV)
+    walls = []
+    for i, w in enumerate(m["walls"]):
+        wid = fid('wall', key, str(i), *map(str, w["c"]))
+        doc = {k: v for k, v in w.items() if k != 'role'}
+        doc.update({"_id": wid, "flags": {MOD: {"markup": True, **({"role": w["role"]} if w.get("role") else {})}}, "_key": f"!scenes.walls!{sid}.{wid}"})
+        walls.append(doc)
+    s["walls"] = walls
+    lights = []
+    for i, l in enumerate(m["lights"]):
+        lid = fid('light', key, str(i), str(l["x"]), str(l["y"]))
+        lights.append({"_id": lid, "x": l["x"], "y": l["y"], "elevation": 0, "rotation": 0, "walls": True, "vision": False,
+                       "hidden": l["hidden"], "config": l["config"], "flags": {MOD: {"role": l["role"], "markup": True}},
+                       "_key": f"!scenes.lights!{sid}.{lid}"})
+    s["lights"] = lights
+    for z in m["sounds"]:
+        snd_id = fid('sound', sid, z["role"], str(z["x"]), str(z["y"]))
+        s["sounds"].append({"_id": snd_id, "x": z["x"], "y": z["y"], "elevation": 0, "radius": z["radius"], "path": z["path"],
+                            "repeat": True, "volume": z["volume"], "walls": z["walls"], "easing": True, "hidden": z["hidden"],
+                            "flags": {MOD: {"role": z["role"], "markup": True}}, "_key": f"!scenes.sounds!{sid}.{snd_id}"})
+    regions = []
+    for i, r in enumerate(m["regions"]):
+        rid = fid('region', key, str(i), r["name"])
+        beh = []
+        for j, b in enumerate(r["behaviors"]):
+            bid = fid('behavior', key, str(i), str(j))
+            beh.append({"_id": bid, "name": b["name"], "type": b["type"], "system": b["system"], "disabled": b.get("disabled", False),
+                        "flags": {}, "_key": f"!scenes.regions.behaviors!{sid}.{rid}.{bid}"})
+        regions.append({"_id": rid, "name": r["name"], "color": r["color"],
+                        "shapes": [{"type": "polygon", "points": r["pts"], "hole": False}],
+                        "elevation": {"bottom": None, "top": None}, "behaviors": beh, "visibility": 0, "locked": False,
+                        "flags": {MOD: {"role": r["name"], "markup": True}}, "_key": f"!scenes.regions!{sid}.{rid}"})
+    s["regions"] = regions
+    return s
+
+
 def build_scenes():
     d = reset('act1-scenes')
     out = []
@@ -101,6 +150,7 @@ def build_scenes():
     _, s = scene('lifeboats', '3. Шлюпочная палуба', 4, 2304, 3328, L + 'lifeboats_deck_dead_anim_2304x3328.webm', tiles=tl, sounds=snd); out.append(s)
     _, s = scene('gallery', '4. Смотровая галерея', 5, 3072, 2304, M + '05_gallery/gallery_clean_anim_3072x2304.webm'); out.append(s)
     for s in out:
+        apply_markup(s)
         dump(d, s['name'], s)
     return out
 

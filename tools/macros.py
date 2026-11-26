@@ -10,6 +10,12 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const light = s => String(s ?? "").includes("1152x1536") || String(s ?? "").includes("1536x1152") || String(s ?? "").includes("1152x1664");
 const play = (tile, offset = 0, extra = {}) => tile.update({ hidden: false, "video.autoplay": true, ...extra }, { diff: false, playVideo: true, offset });
 const stop = (tile, extra = {}) => tile.update({ hidden: true, "video.autoplay": false, ...extra }, { diff: false, playVideo: false, offset: 0 });
+// свет и звуки сцены по роли (flags.nepreklonny-40k.role)
+const roleHide = async (type, roles, hidden) => {
+  const coll = type === "AmbientLight" ? scene.lights : scene.sounds;
+  const upd = coll.filter(d => roles.includes(d.flags?.[MOD]?.role)).map(d => ({ _id: d.id, hidden }));
+  if (upd.length) await scene.updateEmbeddedDocuments(type, upd);
+};
 '''
 
 BREACH = HEAD + r'''// ЗАЛ ЭТАПА — ПРОЛОМ.
@@ -39,13 +45,17 @@ const DARK = dir + (lite ? "hall_dark_anim_1152x1536.webm" : "hall_dark_anim_230
 const BEFORE = dir + (lite ? "hall_etap_anim_1152x1536.webm" : "hall_etap_anim_2304x3072.webm");
 if (!rip) return ui.notifications.warn("На этой сцене нет тайла декомпрессии. Откройте сцену «2. Зал этапа».");
 if (String(scene.background.src).includes("hall_dark_anim")) {
-  await scene.update({ "background.src": BEFORE });
+  await scene.update({ "background.src": BEFORE, "environment.darknessLevel": 0.35 });
   for (const t of [rip, zone, breach]) if (t) await stop(t);
+  await roleHide("AmbientLight", ["hall-light"], false); await roleHide("AmbientLight", ["lock-alarm"], true);
+  await roleHide("AmbientSound", ["wind"], true);
   return ui.notifications.info("Зал этапа: вернул состояние до пролома.");
 }
 await play(rip, 0);
 await sleep(3760 + 200);
-scene.update({ "background.src": DARK });            // сцена перерисуется — свет «мигает»
+scene.update({ "background.src": DARK, "environment.darknessLevel": 0.6 });   // сцена перерисуется — свет «мигает»
+await roleHide("AmbientLight", ["hall-light"], true); await roleHide("AmbientLight", ["lock-alarm"], false);
+await roleHide("AmbientSound", ["wind"], false);
 const hide = [rip, zone, breach].filter(Boolean).map(t => ({ _id: t.id, hidden: true, "video.autoplay": false }));
 await scene.updateEmbeddedDocuments("Tile", hide);
 ui.notifications.info("Декомпрессия. Испытание 1.");
@@ -82,6 +92,7 @@ const CLEAN = dir + (lite ? "gallery_clean_anim_1536x1152.webm" : "gallery_clean
 const DES = dir + (lite ? "gallery_desecrated_anim_1536x1152.webm" : "gallery_desecrated_anim_3072x2304.webm");
 const toDes = !src.includes("desecrated");
 await scene.update({ "background.src": toDes ? DES : CLEAN });
+await roleHide("AmbientLight", ["rift"], !toDes); await roleHide("AmbientSound", ["rift"], !toDes);
 ui.notifications.info(toDes ? "Прорыв варпа. Из разлома поднимается Нерождённый." : "Галерея снова чистая.");
 '''
 
