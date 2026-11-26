@@ -45,6 +45,32 @@ export default async function ({ log }) {
       if (scene.name === "1. Тюремный блок" && data.name !== scene.name) upd.name = data.name;   // 0. Тюремный блок
       if (data.thumb) upd.thumb = data.thumb;
       await scene.update(upd);
+      // сцена может стоять не в начальном состоянии: подогнать стены, свет и звуки под то, что сейчас на карте
+      const roleIs = (d, roles) => roles.includes(d.flags?.[MOD]?.role);
+      const setHidden = async (type, coll, roles, hidden) => {
+        const upd = scene[coll].filter(d => roleIs(d, roles)).map(d => ({ _id: d.id, hidden }));
+        if (upd.length) await scene.updateEmbeddedDocuments(type, upd);
+      };
+      if (key === "hall") {
+        const dark = String(scene.background.src).includes("hall_dark");
+        const torpedo = !dark && scene.tiles.some(t => roleIs(t, ["zone"]) && !t.hidden);
+        const st = dark ? "dark" : torpedo ? "torpedo" : "intact";
+        const wu = scene.walls.filter(w => w.flags?.[MOD]?.states).map(w => {
+          const f = w.flags[MOD], on = f.states.includes(st), o = f.on || {};
+          return { _id: w.id, move: on ? o.move ?? 20 : 0, sight: on ? o.sight ?? 20 : 0, light: on ? o.light ?? 20 : 0, sound: on ? o.sound ?? 20 : 0 };
+        });
+        if (wu.length) await scene.updateEmbeddedDocuments("Wall", wu);
+        await setHidden("AmbientLight", "lights", ["hall-light"], dark); await setHidden("AmbientLight", "lights", ["lock-alarm"], !dark);
+        await setHidden("AmbientLight", "lights", ["torpedo"], !torpedo); await setHidden("AmbientSound", "sounds", ["torpedo"], !torpedo);
+        await setHidden("AmbientSound", "sounds", ["wind"], !dark);
+        if (dark) await scene.update({ "environment.darknessLevel": 0.6 });
+        r.state = st;
+      }
+      if (key === "gallery") {
+        const des = String(scene.background.src).includes("desecrated");
+        await setHidden("AmbientLight", "lights", ["rift"], !des); await setHidden("AmbientSound", "sounds", ["rift"], !des);
+        r.state = des ? "осквернена" : "чистая";
+      }
       log(`«${scene.name}»: стен ${r.walls}, света ${r.lights}, звуков ${r.sounds}, зон ${r.regions}${r.tilesAdded ? `, тайлы: ${r.tilesAdded.join(", ")}` : ""}`);
       report.push(r);
     }
