@@ -87,7 +87,7 @@ export async function rollHacker(aid) {
   const st = S.get(), cls = st.heroes?.[aid]?.cls;
   let r;
   try {
-    r = await actor.rollAbilityCheck({ ability: "int", advantage: cls === "techpriest" }, { configure: false });
+    r = await actor.rollAbilityCheck({ ability: "int", advantage: cls === "tehnozhrec" }, { configure: false });
   } catch (e) { console.error(e); return ui.notifications.error("Проверка не прошла, подробности в консоли."); }
   r = Array.isArray(r) ? r[0] : r;
   if (!r) return;
@@ -583,8 +583,8 @@ export function hackTools(rerender) {
   if (!hk) {
     rows.push(h("div.nk-g-row", {},
       h("div.nk-g-lab", {}, "ВЗЛАМЫВАЕТ"),
-      heroes.length ? heroes.map(x => h("button", { class: `nk-chip ${prep?.aid === x.aid ? "scared" : ""}`, "data-hacker": x.aid, title: `Проверка Интеллекта${x.hero.cls === "techpriest" ? " с преимуществом" : ""}`,
-        onclick: async () => { await rollHacker(x.aid); rerender(); } }, h("b", {}, x.hero.name || x.actor.name), x.hero.cls === "techpriest" ? h("span", {}, "ПРЕИМ.") : null))
+      heroes.length ? heroes.map(x => h("button", { class: `nk-chip ${prep?.aid === x.aid ? "scared" : ""}`, "data-hacker": x.aid, title: `Проверка Интеллекта${x.hero.cls === "tehnozhrec" ? " с преимуществом" : ""}`,
+        onclick: async () => { await rollHacker(x.aid); rerender(); } }, h("b", {}, x.hero.name || x.actor.name), x.hero.cls === "tehnozhrec" ? h("span", {}, "ПРЕИМ.") : null))
         : h("span.nk-g-hint", {}, "Сначала назначьте героев во вкладке «Герои и вера».")));
     rows.push(h("div.nk-g-row", {},
       prep ? h("span.nk-g-res", {}, `${prep.name}: ${prep.total} — ${prep.lag ? "код проснётся на ход позже" : "код стартует сразу"}`) : h("span.nk-g-hint", {}, "Без проверки код стартует сразу."),

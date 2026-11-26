@@ -29,14 +29,18 @@ export async function look(aids) {
   const st = S.get();
   const list = (aids?.length ? aids : Object.values(st.roster || {})).filter(a => game.actors.get(a));
   if (!list.length) return ui.notifications.warn("Некому смотреть: назначьте игрокам героев во вкладке «Герои и вера» или выделите токены героев.");
-  const id = Date.now();
+  const id = Date.now(), sent = [];
   for (const aid of list) {
-    const v = variantOf(st.heroes?.[aid]);
+    if (id - (lastLook.get(aid) || 0) < 6000) continue;        // повторный клик, пока идёт экран
+    lastLook.set(aid, id);
+    const v = variantOf(st.heroes?.[aid]), name = st.heroes?.[aid]?.name || game.actors.get(aid)?.name;
     const uid = userOf(aid, st), user = uid && game.users.get(uid);
-    if (user?.active) game.socket.emit(S.SOCKET, { t: "nk.scare", to: uid, aid, v, id });
+    if (user?.active) { game.socket.emit(S.SOCKET, { t: "nk.scare", to: uid, aid, v, id }); sent.push(`${name} — «${WORDS[v]}»`); }
     else gmSave(aid);                     // игрока нет в сети — бросает мастер
   }
+  if (sent.length) ui.notifications.info(`Сервитор смотрит: ${sent.join(", ")}. Спасбросок игрок бросит сам, итог придёт в чат.`);
 }
+const lastLook = new Map();
 
 /** Снять испуг со всех героев (или с указанных). */
 export async function calm(aids) {
