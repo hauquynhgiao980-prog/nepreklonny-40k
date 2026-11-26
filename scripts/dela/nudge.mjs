@@ -109,13 +109,46 @@ export function voice() {
   sent.add("voice");
 }
 
+// ---------------------------------------------------------------- картинки мест
+export const picSrc = key => `modules/${S.MOD}/icons/gen/places/${key}.webp`;
+
+/** Показать картинку места всем (мастер видит её же с кнопкой «Убрать у всех»). */
+export function showPic(key, title = "") {
+  if (!game.user.isGM) return;
+  const src = picSrc(key), probe = new Image();
+  probe.onload = () => {
+    game.socket.emit(S.SOCKET, { t: "nk.pic", src, title });
+    pic(src, title, true);
+  };
+  probe.onerror = () => ui.notifications.warn(`Картинки «${title}» ещё нет: сгенерируйте её по промпту и пришлите, я положу её в модуль.`);
+  probe.src = src;
+}
+export function hidePic() {
+  if (!game.user.isGM) return;
+  game.socket.emit(S.SOCKET, { t: "nk.pic", hide: true });
+  closePic();
+}
+function closePic() { const el = document.getElementById("nk-pic"); if (!el) return; el.classList.remove("on"); setTimeout(() => el.remove(), 450); }
+function pic(src, title, gm = false) {
+  document.getElementById("nk-pic")?.remove();
+  const box = h("div", { id: "nk-pic", class: `nk-ui${gm ? " gm" : ""}` },
+    h("img", { src, alt: title }),
+    title ? h("div.nk-pic-t", {}, title) : "",
+    gm ? h("div.nk-pic-gm", {}, h("button.nk-btn.small", { onclick: e => { e.stopPropagation(); hidePic(); } }, "УБРАТЬ У ВСЕХ"), h("span", {}, "щелчок — закрыть у себя"))
+      : h("div.nk-pic-c", {}, "щелчок — закрыть"));
+  box.addEventListener("click", closePic);
+  document.body.append(box);
+  requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add("on")));
+}
+
 // ---------------------------------------------------------------- у игрока
 export function onSocket(msg, senderId) {
-  if (!msg || (msg.t !== "nk.note" && msg.t !== "nk.say")) return;
+  if (!msg || (msg.t !== "nk.note" && msg.t !== "nk.say" && msg.t !== "nk.pic")) return;
   const from = game.users.get(senderId || msg.userId);
   if (from && !from.isGM) return;
   if (msg.to && msg.to !== game.user.id) return;
   if (msg.t === "nk.note") note(msg.title, msg.text, msg.kind);
+  else if (msg.t === "nk.pic") { if (msg.hide) closePic(); else pic(msg.src, msg.title); }
   else show(msg.kind, msg.lines);
 }
 

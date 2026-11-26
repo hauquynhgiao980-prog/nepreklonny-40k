@@ -1,0 +1,52 @@
+ПРОМПТЫ ДЛЯ КАРТИНОК ПРОМЕЖУТОЧНЫХ МЕСТ — «Последний курс „Непреклонного“», акт I
+Модель: Krea 2 Turbo (твой ComfyUI), euler / simple, 8 шагов, CFG 1.0. Размер 1344×768 (16:9).
+Готовые картинки пришли сюда в любом формате — я переведу в webp и положу в icons/gen/places/<ключ>.webp.
+Промпты не сокращать: на коротких Krea даёт пустые кадры. Одна картинка на ключ, можно 2–3 сида и выбрать.
+
+Общий стиль у всех: кинематографичный концепт-арт мрачной космической готики, тяжёлая индустриальная техника,
+латунь и чёрный металл, кабели, заклёпки, красный аварийный свет, пар, пыль в лучах, глубокие тени, плёночное зерно.
+
+================================================================================
+КЛЮЧ: trap — Аварийный трап
+================================================================================
+Cinematic concept art, interior of a vast industrial warship, a narrow emergency stairwell shaft seen from a landing, steep iron grating stairs climbing up into red darkness and dropping down into smoke, heavy riveted black steel walls lined with thick bundles of cables and brass pipes, oily handrails worn smooth, a single red emergency lamp on each flight casting hard pools of crimson light, thin haze of smoke drifting up from below with an orange glow of distant fire at the bottom, cold blue frost on the upper rails, water dripping and catching the light, stencilled hazard stripes in yellow and black on the landing edge, deep shadows, grimdark far-future gothic industrial atmosphere, oppressive scale, painterly matte painting, high detail, film grain, moody volumetric lighting, wide angle, view from the landing looking upward
+
+================================================================================
+КЛЮЧ: agafya — Гибель «Святой Агафьи» в смотровую щель
+================================================================================
+Cinematic concept art, view through a narrow armoured viewing slit in the thick hull of a warship, the slit framed by massive riveted brass and black steel with frost on the glass edges, beyond it the void of space filled with drifting burning wreckage, in the middle distance a long cathedral-like battleship breaking in half in total silence, a chain of white explosions running along its spine, the two halves slowly drifting apart shedding sparks and tiny escape pods, red and orange fire against a deep crimson nebula, faint lightning in the nebula, distant streaks of lance beams, a huge dark silhouette of an enemy flagship barely visible far behind the smoke, grimdark far-future space battle, epic scale, painterly matte painting, high detail, volumetric light, film grain
+
+================================================================================
+КЛЮЧ: medpost — Медпост яруса
+================================================================================
+Cinematic concept art, small cramped medical station inside an industrial warship, two narrow steel cots with stained grey sheets, a tall metal cabinet with drawers pulled open, broken glass ampoules glittering on the riveted floor, brass medical apparatus with tubes and gauges on the wall, a skull motif engraved on the cabinet doors, a dead medic in a stained white apron sitting slumped against the wall as if resting, an empty syringe beside his hand, a data slate on his knees with a faint green glow, flickering white surgical lamp overhead mixed with red emergency light from the corridor through a half open door, dust in the light beams, cold sterile and grim atmosphere, grimdark far-future gothic industrial style, painterly matte painting, high detail, film grain
+
+================================================================================
+КЛЮЧ: armsmen — Пост корабельной стражи
+================================================================================
+Cinematic concept art, armoury cage at a guard post inside a warship corridor, the heavy steel mesh door of the cage swung open, empty weapon racks inside, a single combat shotgun lying on the floor, two guards in dark blue carapace armour lying face down at the entrance, a third wounded guard sitting against the wall pressing a hand to his stomach and looking up at the viewer with tired eyes, a smoke grenade on his belt, scorch marks of close range shots on the walls, red emergency lamps and a flickering strip light, scattered spent cartridges, a string of prayer beads with eight beads lying near one of the fallen guards, tense grim atmosphere, grimdark far-future gothic industrial style, painterly matte painting, high detail, volumetric light, film grain
+
+================================================================================
+КЛЮЧ: stern — Кормовой переход
+================================================================================
+Cinematic concept art, view through a small thick round window in a massive sealed blast door, looking down a very long straight warship corridor stretching into the distance, the corridor dark and airless, frost creeping across the floor plates and pipes, fine dust hanging motionless in the air, dead lamps along the ceiling, far away at the very end of the corridor three small warm yellow lights glowing above the closed gates of a hangar, on the near side the blast door edge shows a red warning light and heavy hazard stripes in yellow and black, the window glass has frost at its rim, silent cold lonely atmosphere with a sliver of hope in the distant lights, grimdark far-future gothic industrial style, painterly matte painting, high detail, film grain
+
+================================================================================
+КЛЮЧ: chapel — Молельня нижних палуб
+================================================================================
+Cinematic concept art, a low cramped crew shrine deep inside a warship, six rows of worn steel benches, thick pipes and cables running across the low ceiling, a small pulpit at the front with an open handwritten notebook on it, above the pulpit a large framed holy icon completely covered by a rough sackcloth, in the aisle a circle of eight black candles burning with steady flames, dozens of simple white chalk drawings of lambs covering the steel walls, drawn crudely by many hands, dripping black wax on the floor, warm candlelight mixed with dim red emergency light, heavy unsettling quiet, faint purple tint in the shadows, grimdark far-future gothic industrial style, painterly matte painting, high detail, volumetric light, film grain
+
+================================================================================
+КЛЮЧ: barracks — Переборка казарм 3-Б
+================================================================================
+Cinematic concept art, close view of a small square window in a heavy sealed bulkhead door of a warship, behind the glass a soldiers barracks with rows of steel double bunks, military backpacks and long greatcoats hanging on hooks, helmets on the bunks, the air behind the glass hazy and trembling, the glass fogged from the inside, a soldier lying on the floor right behind the door weakly raising one hand to the glass, his finger tracing marks in the fog, dim green emergency light inside, red light on our side, riveted steel frame with hazard stripes and pipes around the window, desperate intimate atmosphere, grimdark far-future military style, painterly matte painting, high detail, film grain
+
+================================================================================
+КЛЮЧ: crawl — Кабельный лаз
+================================================================================
+Cinematic concept art, a tight square maintenance crawlway inside a warship wall seen from its open hatch, the hatch cover with wing nuts hanging open on its hinge, the tunnel walls packed with thick bundles of cables and brass conduits, faint warm glow from some cables, small indicator lights blinking green and amber along the way, the crawlway stretching forward into darkness where a dim blue electrical glow and sparks flicker at the far end, grease and dust on the floor of the tunnel, claustrophobic tense atmosphere, red emergency light spilling in from behind the viewer, grimdark far-future gothic industrial style, painterly matte painting, high detail, film grain, low camera angle
+
+================================================================================
+КЛЮЧ: bridgedoor — Переборка к мостику
+================================================================================
+Cinematic concept art, a colossal main bulkhead door at the end of a warship corridor, twice the height of a man, massive riveted bronze and black steel with heavy locking bolts, sealed shut, a small thick window in it, behind the window a long dark spine corridor lit only by rows of black candles on the floor, on the inner side of the window glass a large symbol painted in fresh blood: eight arrows radiating outward from one central point, a vox grille above the door with a faint green light, on our side a dead naval officer in a black uniform lying at the foot of the door with a glowing data slate in his hand, red emergency light, ominous silent atmosphere, grimdark far-future gothic industrial style, painterly matte painting, high detail, volumetric light, film grain

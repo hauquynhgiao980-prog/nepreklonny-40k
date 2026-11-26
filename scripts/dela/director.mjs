@@ -115,6 +115,13 @@ export async function warpToggle(scene) {
 // события, которые модуль делает сам, не дожидаясь макроса в мире
 const OWN = { "Прорыв варпа": warpToggle };
 
+/** События сцены для вкладки «Сценарий»: подпись, подсказка, включено ли, запуск. */
+export function sceneEvents(key) {
+  const scene = game.scenes.find(s => s.flags?.[MOD]?.scene === key);
+  return { scene, list: (EVENTS[key] || []).map(e => ({ id: e.macro || e.id, label: e.label, hint: e.hint, on: scene ? !!e.on?.(scene) : false,
+    fire: () => (e.macro ? runMacro(e.macro, scene) : e.run(scene)) })) };
+}
+
 /** Запустить событие сцены по имени (для вкладки «Сценарий»). */
 export async function fireEvent(key, name) {
   const scene = game.scenes.find(s => s.flags?.[MOD]?.scene === key);
@@ -175,8 +182,16 @@ export async function placeHeroes(scene) {
   const gs = scene.grid?.size || 128, snap = v => Math.round((v - gs / 2) / gs) * gs;
   const mine = new Set(list.map(x => x.actor.id));
   const create = [], move = [];
+  // в блоке камер псайкер — единица 5 (так в манифесте): ему камера 5, остальным по порядку 1–4
+  const slot = new Map();
+  if (key === "cells") {
+    const cls = a => S.get().heroes?.[a.id]?.cls, free = [0, 1, 2, 3, 4];
+    const psy = list.filter(x => cls(x.actor) === "psyker");
+    if (psy.length) { slot.set(psy[0].actor.id, 4); free.splice(4, 1); }
+    for (const x of list) if (!slot.has(x.actor.id) && free.length) slot.set(x.actor.id, free.shift());
+  }
   list.forEach(({ actor }, i) => {
-    const [cx, cy] = pts[i % pts.length], x = snap(cx), y = snap(cy);
+    const [cx, cy] = pts[(slot.get(actor.id) ?? i) % pts.length], x = snap(cx), y = snap(cy);
     const tok = scene.tokens.find(t => t.actorId === actor.id);
     if (tok) move.push({ _id: tok.id, x, y, hidden: false });
     else create.push({ actor, x, y });
