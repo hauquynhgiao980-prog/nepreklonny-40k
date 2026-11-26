@@ -232,7 +232,8 @@
   },
   "esmodules": [
     "scripts/schools40k.mjs",
-    "scripts/weaponfx.mjs"
+    "scripts/weaponfx.mjs",
+    "scripts/damage.mjs"
   ],
   "url": "https://github.com/hauquynhgiao980-prog/nepreklonny-40k",
   "manifest": "https://raw.githubusercontent.com/hauquynhgiao980-prog/nepreklonny-40k/main/module.json",
