@@ -1,5 +1,6 @@
 // Режиссёрский пульт: сцены акта I, события (макросы), тайлы, звуки и темнота — всё с одного места.
 import { h } from "./ui.mjs";
+import * as S from "./state.mjs";
 
 const MOD = "nepreklonny-40k";
 const M = `modules/${MOD}/maps/`;
@@ -50,6 +51,64 @@ const STATE = {
   lifeboats: s => s.tiles.some(t => t.flags?.[MOD]?.role === "turret-fire" && !t.hidden) ? "турель стреляет" : "турель молчит",
 };
 
+// Где появляются герои на каждой сцене: центры клеток, по порядку игроков.
+// Блок камер — стазис-ниши камер 1–5 (по тексту модуля), дальше — коридор; остальные — у входа, откуда приходят.
+const SPAWN = {
+  cells: [[570, 300], [1691, 300], [2915, 300], [4028, 300], [598, 2740], [1100, 1550], [1300, 1550]],
+  post: [[300, 1460], [300, 1590], [430, 1460], [430, 1590], [560, 1525], [560, 1400], [560, 1650]],
+  hall: [[1000, 2780], [1130, 2780], [1260, 2780], [1065, 2660], [1195, 2660], [1130, 2540], [1000, 2540]],
+  lifeboats: [[1210, 420], [1340, 420], [1210, 550], [1340, 550], [1080, 480], [1470, 480], [1275, 680]],
+  gallery: [[2080, 1900], [2210, 1900], [2340, 1900], [2145, 1770], [2275, 1770], [2210, 1640], [2080, 1640]],
+};
+
+/** Герои игроков — по порядку раздачи. Только назначенные игрокам и только существующие в мире. */
+function rosterActors() {
+  const st = S.get();
+  return Object.entries(st.roster || {}).map(([uid, aid]) => ({ user: game.users.get(uid), actor: game.actors.get(aid) }))
+    .filter(x => x.user && !x.user.isGM && x.actor);
+}
+
+/** Поставить героев игроков на сцену у входа: свои токены передвинуть, недостающие создать. Чужих прегенов — спрятать. */
+export async function placeHeroes(scene) {
+  const key = scene.flags?.[MOD]?.scene, pts = SPAWN[key];
+  if (!pts) return ui.notifications.warn(`Для сцены «${scene.name}» точки появления не заданы.`);
+  const list = rosterActors();
+  if (!list.length) return ui.notifications.warn("Никому из игроков не выдан герой: раздайте героев во вкладке «Герои и вера».");
+  const gs = scene.grid?.size || 128, snap = v => Math.round((v - gs / 2) / gs) * gs;
+  const mine = new Set(list.map(x => x.actor.id));
+  const create = [], move = [];
+  list.forEach(({ actor }, i) => {
+    const [cx, cy] = pts[i % pts.length], x = snap(cx), y = snap(cy);
+    const tok = scene.tokens.find(t => t.actorId === actor.id);
+    if (tok) move.push({ _id: tok.id, x, y, hidden: false });
+    else create.push({ actor, x, y });
+  });
+  if (move.length) await scene.updateEmbeddedDocuments("Token", move, { animate: false });
+  const docs = [];
+  for (const { actor, x, y } of create) docs.push((await actor.getTokenDocument({ x, y, hidden: false })).toObject());
+  if (docs.length) await scene.createEmbeddedDocuments("Token", docs);
+  // прегены, которые сейчас никому не выданы, на карте не нужны — прячем (не удаляем)
+  const pregenIds = new Set(S.pregens().map(a => a.id));
+  const hide = scene.tokens.filter(t => pregenIds.has(t.actorId) && !mine.has(t.actorId) && !t.hidden).map(t => ({ _id: t.id, hidden: true }));
+  if (hide.length) await scene.updateEmbeddedDocuments("Token", hide);
+  ui.notifications.info(`«${scene.name}»: герои на местах — ${list.map(x => x.actor.name).join(", ")}.`);
+}
+
+/** Начало акта: герои просыпаются в стазис-нишах блока камер, все игроки переходят на эту сцену. */
+async function startAct() {
+  const scene = game.scenes.find(s => s.flags?.[MOD]?.scene === "cells");
+  if (!scene) return ui.notifications.warn("В мире нет сцены «0. Тюремный блок».");
+  const names = rosterActors().map(x => `${x.actor.name} — ${x.user.name}`);
+  if (!names.length) return ui.notifications.warn("Никому из игроков не выдан герой: раздайте героев во вкладке «Герои и вера».");
+  const ok = await foundry.applications.api.DialogV2.confirm({
+    window: { title: "Начать акт I" },
+    content: `<p>Все игроки перейдут на «${scene.name}», герои проснутся в своих камерах:</p><p>${names.join("<br>")}</p>`,
+  });
+  if (!ok) return;
+  await placeHeroes(scene);
+  await scene.activate();
+}
+
 async function runMacro(name, scene) {
   if (canvas.scene?.id !== scene.id) {               // макросы работают с открытой сценой
     const ready = new Promise(r => Hooks.once("canvasReady", r));
@@ -77,8 +136,15 @@ export function directorTab(rerender) {
     try { await fn(); } catch (e) { console.error(e); ui.notifications.error(e.message); }
     finally { b.disabled = false; rerender(); }
   };
-  const out = [h("div.nk-hint", { style: "margin-bottom:12px" },
-    "Режиссёрский пульт. «Смотреть» — открыть сцену у себя, «Всем» — перевести на неё игроков. События запускают видео и меняют карту; повтор возвращает как было. Глаз у тайла и звука — показать или спрятать; ▶ — проиграть видео сначала.")];
+  const heroes = rosterActors();
+  const out = [h("div.nk-act", {},
+    h("div", {}, h("b", {}, "АКТ I"), h("span.nk-hint", {}, heroes.length
+      ? ` · в игре: ${heroes.map(x => x.actor.name).join(", ")}`
+      : " · героев ещё никому не выдали")),
+    h("div", { style: "flex:1" }),
+    h("button.nk-btn", { "data-start-act": 1, disabled: !heroes.length, onclick: busy(() => startAct()) }, "НАЧАТЬ АКТ")),
+    h("div.nk-hint", { style: "margin-bottom:12px" },
+    "«Начать акт» — герои игроков просыпаются в своих камерах блока, все переходят туда. «Герои сюда» — поставить героев игроков у входа на сцену; «Смотреть» — открыть сцену у себя, «Всем» — перевести на неё игроков. События запускают видео и меняют карту; повтор возвращает как было. Глаз у тайла и звука — показать или спрятать; ▶ — проиграть видео сначала.")];
   for (const s of scenes) {
     const key = s.flags[MOD].scene;
     const here = canvas.scene?.id === s.id;
@@ -88,6 +154,7 @@ export function directorTab(rerender) {
       STATE[key] ? h("span", {}, STATE[key](s)) : null,
       h("div", { style: "flex:1" }),
       h("button.nk-btn.small.ghost", { onclick: busy(() => s.view()) }, "СМОТРЕТЬ"),
+      SPAWN[key] ? h("button.nk-btn.small.ghost", { title: "Поставить героев игроков у входа на эту сцену", "data-place": key, onclick: busy(() => placeHeroes(s)) }, "ГЕРОИ СЮДА") : null,
       h("button.nk-btn.small", { disabled: s.active, onclick: busy(() => s.activate()) }, "ВСЕМ"));
     const rows = [];
     const ev = EVENTS[key] || [];

@@ -271,3 +271,5 @@
 #nk-trial .nk-orb-opt span { display: block; margin-top: 6px; font-size: 12.5px; font-style: italic; color: #a39888; }
 @keyframes nk-skull { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -51%) scale(1.025); } }
 @keyframes nk-ember { 0%, 100% { opacity: .35; } 50% { opacity: .9; } }
+#nk-panel .nk-act { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding: 12px 14px; border: 1px solid #3f8a52; border-radius: 6px; background: #0b2012; }
+#nk-panel .nk-act b { font-size: 15px; letter-spacing: .16em; color: var(--g2); }
