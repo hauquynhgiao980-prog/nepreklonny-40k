@@ -3,6 +3,7 @@ import * as S from "./dela/state.mjs";
 import { Anketa, Pad, Panel } from "./dela/ui.mjs";
 import { TrialUI } from "./dela/trial.mjs";
 import * as Servitor from "./dela/servitor.mjs";
+import * as Hack from "./dela/hack.mjs";
 
 const anketa = new Anketa();
 const trial = new TrialUI();
@@ -10,7 +11,7 @@ const panel = new Panel();
 let myPad = null;
 
 function sync(st = S.get()) {
-  if (game.user.isGM) { panel.render(st); return; }
+  if (game.user.isGM) { panel.render(st); Hack.hackUI.sync(st, null); return; }
   const aid = st.roster?.[game.user.id];
   const hero = aid ? st.heroes?.[aid] : null;
   if (hero && st.anketaOpen?.[game.user.id] && !hero.anketa?.done && !anketa.isOpen) anketa.open({ ...hero });
@@ -21,7 +22,7 @@ function sync(st = S.get()) {
     if (!myPad) myPad = new Pad(aid);
     myPad.render(st);
   } else if (myPad) { myPad.destroy(); myPad = null; }
-  if (!anketa.isOpen) trial.sync(st, hero ? aid : null);
+  if (!anketa.isOpen) { trial.sync(st, hero ? aid : null); Hack.hackUI.sync(st, hero ? aid : null); }
 }
 
 /** Игрок прячет и вызывает свой инфопланшет. */
@@ -63,6 +64,7 @@ Hooks.on("getSceneControlButtons", controls => {
 Hooks.once("ready", () => {
   game.socket.on(S.SOCKET, (msg, senderId) => S.handleSocket(msg, senderId));
   game.socket.on(S.SOCKET, (msg, senderId) => Servitor.onSocket(msg, senderId));
+  game.socket.on(S.SOCKET, (msg, senderId) => Hack.onSocket(msg, senderId));
   S.onChange(st => sync(st));
   Hooks.on("nkDelaAnketaClosed", () => sync());
   Hooks.on("userConnected", () => { if (game.user.isGM) panel.render(); });
@@ -78,5 +80,6 @@ Hooks.once("ready", () => {
   sync();
   const mod = game.modules.get(S.MOD);
   if (mod) mod.api = Object.assign(mod.api || {}, { dela: { panel, state: S.get, update: S.update, openAnketa: S.openAnketa, assign: S.assign, startTrial: S.startTrial, trial, togglePad,
-    servitor: { look: Servitor.look, calm: Servitor.calm, scare: Servitor.scare } } });
+    servitor: { look: Servitor.look, calm: Servitor.calm, scare: Servitor.scare },
+    hack: { open: Hack.openGame, start: Hack.forceStart, abort: Hack.abortGame, roll: Hack.rollHacker, show: () => Hack.hackUI.showGM() } } });
 });
