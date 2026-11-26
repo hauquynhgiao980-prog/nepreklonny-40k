@@ -46,6 +46,10 @@ Hooks.once("ready", () => {
   Hooks.on("nkDelaAnketaClosed", () => sync());
   Hooks.on("userConnected", () => { if (game.user.isGM) panel.render(); });
   Hooks.on("createActor", () => { if (game.user.isGM) panel.render(); });
+  // режиссёрский пульт следит за сценами, тайлами и звуками
+  let rt = null;
+  const reScenes = () => { if (!game.user.isGM || !panel.isOpen || panel.tab !== "scenes") return; clearTimeout(rt); rt = setTimeout(() => panel.render(), 120); };
+  for (const hk of ["createScene", "updateScene", "deleteScene", "createTile", "updateTile", "deleteTile", "createAmbientSound", "updateAmbientSound", "deleteAmbientSound", "canvasReady"]) Hooks.on(hk, reScenes);
   sync();
   const mod = game.modules.get(S.MOD);
   if (mod) mod.api = Object.assign(mod.api || {}, { dela: { panel, state: S.get, update: S.update, openAnketa: S.openAnketa, assign: S.assign, startTrial: S.startTrial, trial } });
