@@ -82,6 +82,25 @@ function redHatch(canvas, ms = 3600) {
   return () => cancelAnimationFrame(raf);
 }
 
+// ---------------------------------------------------------------- череп в центре выбора
+// Череп: свой силуэт; объём кости, огонь в глазницах и дым — процедурно (фильтры SVG).
+const SKULL_SVG = `<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs>
+<radialGradient id="nkSkF" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff5a24" stop-opacity=".95"/><stop offset=".35" stop-color="#c0160a" stop-opacity=".75"/><stop offset="1" stop-color="#2a0000" stop-opacity="0"/></radialGradient>
+<linearGradient id="nkSkB" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="#d6c9b4"/><stop offset=".55" stop-color="#8c7d68"/><stop offset="1" stop-color="#2f2720"/></linearGradient>
+<filter id="nkSkE" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur in="SourceAlpha" stdDeviation="5" result="b"/>
+<feDiffuseLighting in="b" surfaceScale="6" diffuseConstant="1.15" lighting-color="#fff" result="l"><feDistantLight azimuth="235" elevation="38"/></feDiffuseLighting>
+<feComposite in="l" in2="SourceAlpha" operator="in" result="li"/><feBlend in="SourceGraphic" in2="li" mode="multiply" result="m"/>
+<feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" result="n"/><feColorMatrix in="n" type="saturate" values="0" result="g"/>
+<feComposite in="g" in2="SourceAlpha" operator="in" result="gi"/><feBlend in="m" in2="gi" mode="multiply"/></filter>
+<filter id="nkSkS" x="-40%" y="-40%" width="180%" height="180%"><feTurbulence type="fractalNoise" baseFrequency=".012 .02" numOctaves="3" seed="7" result="t"><animate attributeName="seed" values="1;40" dur="8s" repeatCount="indefinite"/></feTurbulence>
+<feDisplacementMap in="SourceGraphic" in2="t" scale="70"/><feGaussianBlur stdDeviation="10"/></filter>
+</defs>
+<ellipse cx="256" cy="290" rx="230" ry="210" fill="#4a0a05" opacity=".55" filter="url(#nkSkS)"/>
+<ellipse class="nk-fire" cx="256" cy="320" rx="150" ry="110" fill="url(#nkSkF)"/>
+<path d="M256 34C152 34 90 102 90 200c0 62 14 100 36 126-10 14-12 30 0 40l20 6v76c0 20 12 30 32 30h156c20 0 32-10 32-30v-76l20-6c12-10 10-26 0-40 22-26 36-64 36-126 0-98-62-166-166-166ZM140 286c0-34 28-50 60-44 22 4 40 16 44 34 3 14-2 30-14 40-16 14-44 18-64 8-16-8-26-22-26-38ZM372 286c0-34-28-50-60-44-22 4-40 16-44 34-3 14 2 30 14 40 16 14 44 18 64 8 16-8 26-22 26-38ZM256 336l-30 62c10 8 50 8 60 0ZM196 426h13v48h-13ZM232 426h13v48h-13ZM268 426h13v48h-13ZM304 426h13v48h-13Z" fill="url(#nkSkB)" fill-rule="evenodd" filter="url(#nkSkE)" stroke="#120c09" stroke-width="3"/>
+</svg>`;
+
 // ---------------------------------------------------------------- экран испытания
 export class TrialUI {
   constructor() { this.root = null; this.step = null; this.trialId = null; this.seen = new Set(); }
@@ -153,7 +172,7 @@ export class TrialUI {
     typed.addEventListener("click", done);
   }
 
-  /** Ответ голосу: «да» (в декомпрессии — два), «нет» словами героя, промолчать. */
+  /** Ответ голосу: варианты медленно плывут по кругу вокруг черепа, все одного цвета, порядок случайный. */
   choose(M) {
     const L = LINES[this.hero.cls]?.[M.n - 1] || {}, o = this.gg(L.o || "");
     const pick = (c, shot = false) => {
@@ -162,13 +181,33 @@ export class TrialUI {
       S.send({ t: "dela.pick", n: M.n, c, shot });
       this.go("react");
     };
-    const card = (cls, title, sub, onclick, quote) => h(`button.nk-choice.${cls}`, { onclick },
-      h("b", {}, title), quote ? h("q", {}, quote) : null, sub ? h("span", {}, sub) : null);
-    const yes = (M.yes || [{ t: "ДА.", s: "" }]).map(y => card("w", y.t, y.s, () => pick("w", !!y.shot)));
-    this.frame().append(h("div.nk-voice", {}, h("div.nk-choices.in", {},
-      h("div.nk-col", {}, yes),
-      card("o", ANSWER_NO, null, () => pick("o"), o),
-      card("n", ANSWER_SILENT.t, ANSWER_SILENT.s, () => pick("n")))));
+    const opts = [...(M.yes || [{ t: "ДА.", s: "" }]).map(y => ({ t: y.t, s: y.s, go: () => pick("w", !!y.shot) })),
+      { t: ANSWER_NO, q: o, go: () => pick("o") },
+      { t: ANSWER_SILENT.t, s: ANSWER_SILENT.s, go: () => pick("n") }];
+    for (let k = opts.length - 1; k > 0; k--) { const r = Math.floor(Math.random() * (k + 1)); [opts[k], opts[r]] = [opts[r], opts[k]]; }
+    const cards = opts.map(x => h("button.nk-orb-opt", { onclick: x.go },
+      h("b", {}, x.t), x.q ? h("q", {}, x.q) : null, x.s ? h("span", {}, x.s) : null));
+    const skull = document.createElement("div"); skull.className = "nk-skull"; skull.innerHTML = SKULL_SVG;
+    const ring = h("div.nk-orbit", {}, skull, cards);
+    this.frame().append(ring);
+    let hover = false, t = 0, last = performance.now();
+    const a0 = Math.random() * Math.PI * 2, n = cards.length, PERIOD = 70000;
+    cards.forEach(c => { c.addEventListener("mouseenter", () => { hover = true; }); c.addEventListener("mouseleave", () => { hover = false; }); });
+    const step = now => {
+      if (!ring.isConnected) return;
+      if (!hover) t += now - last; last = now;
+      const W = window.innerWidth, H = window.innerHeight, rx = Math.min(W * 0.36, 560), ry = Math.min(H * 0.33, 300);
+      cards.forEach((c, k) => {
+        const a = a0 + (k / n) * Math.PI * 2 + (t / PERIOD) * Math.PI * 2;
+        const depth = (Math.sin(a) + 1) / 2;                       // 0 — за черепом, 1 — перед ним
+        c.style.left = `${W / 2 + Math.cos(a) * rx}px`; c.style.top = `${H / 2 + Math.sin(a) * ry}px`;
+        c.style.transform = `translate(-50%, -50%) scale(${0.82 + 0.18 * depth})`;
+        c.style.opacity = String(0.55 + 0.45 * depth); c.style.zIndex = String(depth > 0.5 ? 3 : 1);
+      });
+      this.raf = requestAnimationFrame(step);
+    };
+    this.raf = requestAnimationFrame(step);
+    this.stopFx = () => cancelAnimationFrame(this.raf);
   }
 
   react() {

@@ -257,3 +257,17 @@
 #nk-trial .nk-whisper.big { min-height: 0; max-width: 1000px; font-size: clamp(26px, 3.4vw, 44px); line-height: 1.45; }
 #nk-trial .nk-choice b { font-size: 17px; letter-spacing: .1em; }
 #nk-trial .nk-choice.n b { color: #b8b2ae; }
+
+/* выбор вокруг черепа: все варианты одного цвета */
+#nk-trial .nk-orbit { position: absolute; inset: 0; z-index: 2; }
+#nk-trial .nk-skull { position: absolute; left: 50%; top: 50%; width: min(46vh, 420px); transform: translate(-50%, -50%); z-index: 2; filter: drop-shadow(0 0 30px rgba(0,0,0,.9)); animation: nk-skull 6s ease-in-out infinite; pointer-events: none; }
+#nk-trial .nk-skull svg { display: block; width: 100%; height: auto; }
+#nk-trial .nk-skull .nk-fire { animation: nk-fire 2.6s ease-in-out infinite; }
+@keyframes nk-fire { 0%, 100% { opacity: .7; } 40% { opacity: 1; } 55% { opacity: .78; } 70% { opacity: .95; } }
+#nk-trial .nk-orb-opt { position: absolute; display: block; width: min(300px, 30vw); height: auto; padding: 12px 16px; text-align: center; background: rgba(10,7,6,.82); border: 1px solid #3a2e28; border-radius: 4px; color: #e6dccf; cursor: pointer; transition: border-color .3s, box-shadow .3s, background .3s; will-change: left, top, transform; }
+#nk-trial .nk-orb-opt:hover { border-color: #e6dccf; background: rgba(24,18,15,.95); box-shadow: 0 0 26px rgba(230,220,207,.18); opacity: 1 !important; }
+#nk-trial .nk-orb-opt b { display: block; font-size: 16px; font-weight: 600; letter-spacing: .12em; color: #e6dccf; }
+#nk-trial .nk-orb-opt q { display: block; margin-top: 8px; font-size: 13px; line-height: 1.45; font-style: italic; color: #b9ae9f; quotes: none; }
+#nk-trial .nk-orb-opt span { display: block; margin-top: 6px; font-size: 12.5px; font-style: italic; color: #a39888; }
+@keyframes nk-skull { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -51%) scale(1.025); } }
+@keyframes nk-ember { 0%, 100% { opacity: .35; } 50% { opacity: .9; } }
