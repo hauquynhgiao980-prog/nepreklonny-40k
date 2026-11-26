@@ -1,8 +1,10 @@
 // «Дело»: расстановка героев, анкета на старте, инфопланшет со сферой души и летописью, пульт мастера.
 import * as S from "./dela/state.mjs";
 import { Anketa, Pad, Panel } from "./dela/ui.mjs";
+import { TrialUI } from "./dela/trial.mjs";
 
 const anketa = new Anketa();
+const trial = new TrialUI();
 const panel = new Panel();
 let myPad = null;
 
@@ -18,6 +20,7 @@ function sync(st = S.get()) {
     if (!myPad) myPad = new Pad(aid);
     myPad.render(st);
   } else if (myPad) { myPad.destroy(); myPad = null; }
+  if (!anketa.isOpen) trial.sync(st, hero ? aid : null);
 }
 
 Hooks.once("init", () => {
@@ -45,5 +48,5 @@ Hooks.once("ready", () => {
   Hooks.on("createActor", () => { if (game.user.isGM) panel.render(); });
   sync();
   const mod = game.modules.get(S.MOD);
-  if (mod) mod.api = Object.assign(mod.api || {}, { dela: { panel, state: S.get, update: S.update, openAnketa: S.openAnketa, assign: S.assign } });
+  if (mod) mod.api = Object.assign(mod.api || {}, { dela: { panel, state: S.get, update: S.update, openAnketa: S.openAnketa, assign: S.assign, startTrial: S.startTrial, trial } });
 });

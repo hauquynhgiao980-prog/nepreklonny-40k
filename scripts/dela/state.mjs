@@ -1,5 +1,5 @@
 // Состояние «Дела»: настройка мира, запись только у мастера, сокеты от игроков.
-import { CLASS_BY_ID, heroNames, ANKETA, points, rewardsOf } from "./texts.mjs";
+import { CLASS_BY_ID, heroNames, ANKETA, points, rewardsOf, TRIAL_META, trialResult } from "./texts.mjs";
 
 export const MOD = "nepreklonny-40k";
 export const SOCKET = `module.${MOD}`;
@@ -111,6 +111,54 @@ export function resetAnketa(userId) {
   });
 }
 
+// ---------------------------------------------------------------- испытания
+/** Мастер запускает испытание n для всех назначенных героев. */
+export function startTrial(n) {
+  return update(s => {
+    const M = TRIAL_META[n - 1]; if (!M) return false;
+    s.trial = { n, id: Date.now(), phase: M.gate ? "choose" : "roll", heroes: Object.values(s.roster || {}).filter(a => s.heroes?.[a]), picks: {}, rolls: {} };
+  });
+}
+export const openRolls = () => update(s => { if (!s.trial) return false; s.trial.phase = "roll"; });
+export const cancelTrial = () => update(s => { if (!s.trial) return false; delete s.trial; });
+export function setPick(aid, c, shot = false) {
+  return update(s => {
+    const T = s.trial; if (!T || !T.heroes.includes(aid)) return false;
+    if (!c) delete T.picks[aid]; else T.picks[aid] = { c, shot: !!(shot && c === "w" && TRIAL_META[T.n - 1]?.shot), at: Date.now() };
+  });
+}
+export function setRoll(aid, r) {
+  return update(s => {
+    const T = s.trial; if (!T || !T.heroes.includes(aid)) return false;
+    if (!r) { delete T.rolls[aid]; return; }
+    const total = Number(r.total); if (!Number.isFinite(total)) return false;
+    T.rolls[aid] = { total, ability: String(r.ability || ""), d20: r.d20 ?? null, mode: r.mode || "", dar: !!r.dar, by: r.by || "" };
+  });
+}
+export function trialSum(T) { return trialResult(T.n, Object.values(T.rolls || {}).map(r => r.total)); }
+/** Применить: выборы в шкалы героев, итог в летопись и корпус. */
+export function applyTrial(outcome) {
+  return update(s => {
+    const T = s.trial; if (!T) return false;
+    const oc = outcome || trialSum(T).outcome; if (!oc) return false;
+    for (const [aid, p] of Object.entries(T.picks)) { const h = s.heroes[aid]; if (h) { h.trials = h.trials || {}; h.trials[T.n] = p.c; } }
+    s.outcomes = s.outcomes || {}; s.outcomes[T.n] = oc;
+    s.lastTrial = { id: T.id, n: T.n, outcome: oc };
+    delete s.trial;
+  });
+}
+/** Спасбросок героя: у игрока — его рукой, у мастера — за отсутствующего. */
+export async function rollSave(actorId, ability, mode) {
+  const actor = game.actors.get(actorId);
+  if (!actor?.rollSavingThrow) throw new Error("нет персонажа для броска");
+  const rolls = await actor.rollSavingThrow({ ability, advantage: mode === "adv", disadvantage: mode === "dis" },
+    { configure: false }, { rollMode: "gmroll" });
+  const r = Array.isArray(rolls) ? rolls[0] : rolls;
+  if (!r) return null;
+  const d20 = r.d20?.total ?? r.dice?.[0]?.total ?? null;
+  return { total: r.total, d20 };
+}
+
 // ---------------------------------------------------------------- сокет
 export function send(msg) { game.socket.emit(SOCKET, Object.assign({ t: "", userId: game.user.id }, msg)); }
 
@@ -135,6 +183,14 @@ export function handleSocket(msg, senderId) {
       delete s.anketaOpen[uid];
     });
     delete progress[uid];
+  } else if (msg.t === "dela.pick") {
+    const aid = get().roster?.[uid];
+    if (!aid || get().trial?.n !== msg.n || !["w", "o", "n"].includes(msg.c) || get().trial?.picks?.[aid]) return;
+    setPick(aid, msg.c, msg.shot);
+  } else if (msg.t === "dela.roll") {
+    const aid = get().roster?.[uid], T = get().trial;
+    if (!aid || T?.n !== msg.n || !T.picks?.[aid] || T.phase !== "roll") return;
+    setRoll(aid, { total: msg.total, ability: msg.ability, d20: msg.d20, mode: msg.mode, dar: msg.dar, by: "player" });
   } else if (msg.t === "dela.use") {
     update(s => {
       const h = heroOfUser(uid, s);

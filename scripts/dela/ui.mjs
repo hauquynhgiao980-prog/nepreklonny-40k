@@ -1,6 +1,7 @@
 // Интерфейс «Дела»: анкета игрока, инфопланшет с летописью, пульт мастера.
 import * as S from "./state.mjs";
-import { ANKETA, TRIALS, LINES, REWARDS, OUTCOME_LABEL, CLASS_LABEL, g, anketaEntry, chronicle, mood, points } from "./texts.mjs";
+import { ANKETA, TRIALS, LINES, REWARDS, OUTCOME_LABEL, CLASS_LABEL, TRIAL_META, g, anketaEntry, chronicle, mood, points } from "./texts.mjs";
+import { modeOf, saveMod } from "./trial.mjs";
 import { orbCanvas, setOrb, ArtReveal } from "./gl.mjs";
 
 const ART = (cls, n) => `modules/${S.MOD}/anketa/art/${cls}_${n}.webp`;
@@ -321,9 +322,56 @@ export class Panel {
     return [bar, h("table", {}, h("thead", {}, h("tr", {}, ["ИГРОК", "ГЕРОЙ", "РОД", "АНКЕТА", "СВЕТ / ЕРЕСЬ", "НАГРАДЫ", ""].map(t => h("th", {}, t)))), h("tbody", {}, rows))];
   }
 
+  trialLive(st, assigned) {
+    const T = st.trial;
+    if (!T) {
+      return h("div.nk-live", {},
+        h("div.nk-hint", {}, "Испытание уходит всем назначенным героям сразу. Каждый игрок услышит свой голос, тайно выберет, увидит ответ голоса и бросит спасбросок. Сумма и итог считаются здесь, «Применить» записывает шкалы, летопись и корпус."),
+        h("div.nk-bar", { style: "margin:10px 0 0" }, TRIAL_META.map(M => h("button.nk-btn", { "data-start": M.n, disabled: !assigned.length, onclick: () => S.startTrial(M.n) },
+          `НАЧАТЬ ${M.n} · ${M.title}${st.outcomes?.[M.n] ? " · ПРОЙДЕНО" : ""}`))));
+    }
+    const M = TRIAL_META[T.n - 1], R = S.trialSum(T);
+    const userOf = aid => game.users.get(Object.entries(st.roster || {}).find(([, a]) => a === aid)?.[0]);
+    const PL = { w: "ШЁПОТ", o: "ОБЕТ", n: "НИЧЕГО" };
+    const rows = T.heroes.map(aid => {
+      const hero = st.heroes[aid], pick = T.picks[aid], roll = T.rolls[aid], user = userOf(aid), actor = game.actors.get(aid);
+      const sel = h("select", {}, M.saves.map(([ab, label]) => h("option", { value: ab }, `${label} ${(v => v == null ? "" : v >= 0 ? `+${v}` : `${v}`)(saveMod(actor, ab))}`)));
+      const num = h("input", { type: "number", placeholder: "итог", style: "width:54px" });
+      const L = LINES[hero?.cls]?.[T.n - 1] || {};
+      return h("tr", {},
+        h("td", { style: "white-space:nowrap" }, h("span", { class: `nk-on ${user?.active ? "yes" : ""}` }), h("b", { style: "font-weight:600" }, hero?.name || "?"), h("span.nk-hint", {}, ` · ${user?.name || "без игрока"}`)),
+        h("td", {}, pick ? h("span", { class: `nk-pick ${pick.c}` }, PL[pick.c] + (pick.shot ? " + ВЫСТРЕЛ" : "")) : h("span.nk-hint", {}, "выбирает…"),
+          h("div.nk-line", { title: pick?.c === "w" ? g(L.w, hero?.gender) : pick?.c === "o" ? g(L.o, hero?.gender) : "" }, pick?.c === "w" ? g(L.w, hero?.gender) : pick?.c === "o" ? g(L.o, hero?.gender) : "")),
+        h("td", {}, h("span.nk-seg", {}, [["w", "Ш"], ["o", "О"], ["n", "Н"]].map(([c, t]) =>
+          h("button", { class: `${pick?.c === c ? "on" : ""} ${c}`, title: "Отметить выбор за игрока", onclick: () => S.setPick(aid, pick?.c === c ? null : c) }, t)))),
+        h("td", {}, roll ? h("b", { class: "nk-roll" }, `${roll.total}`, h("span.nk-hint", {}, ` ${M.saves.find(x => x[0] === roll.ability)?.[1]?.toLowerCase() || ""}${roll.mode === "adv" ? " · преим." : roll.mode === "dis" ? " · помеха" : ""}${roll.dar ? " · Дар" : ""}${roll.by === "gm" ? " · мастер" : ""}`))
+          : h("span.nk-hint", {}, T.phase === "roll" ? (pick ? "бросает…" : "—") : "ждёт")),
+        h("td", { style: "white-space:nowrap" }, sel,
+          h("button.nk-btn.small", { disabled: !pick, title: "Бросить спасбросок за героя с его листа", onclick: async () => {
+            try { const r = await S.rollSave(aid, sel.value, modeOf(pick, T.n)); if (r) S.setRoll(aid, { ...r, ability: sel.value, mode: modeOf(pick, T.n), by: "gm" }); }
+            catch (e) { ui.notifications.error(e.message); } } }, "БРОСИТЬ"),
+          num, h("button.nk-btn.small.ghost", { disabled: !pick, title: "Записать итог броска вручную", onclick: () => { if (num.value !== "") S.setRoll(aid, { total: Number(num.value), ability: sel.value, mode: modeOf(pick, T.n), by: "gm" }); } }, "ЗАПИСАТЬ"),
+          roll ? h("button.nk-x", { title: "Стереть бросок", onclick: () => S.setRoll(aid, null) }, "✕") : null));
+    });
+    const override = h("select", { onchange: ev => { const b = ev.target.parentElement.querySelector("[data-apply]"); if (b) b.disabled = !R.outcome && !ev.target.value; } }, h("option", { value: "" }, R.outcome ? `по сумме: ${OUTCOME_LABEL[R.outcome]}` : "по сумме: нет бросков"),
+      Object.entries(OUTCOME_LABEL).map(([k, t]) => h("option", { value: k }, t)));
+    const picked = Object.keys(T.picks).length, rolled = Object.keys(T.rolls).length;
+    return h("div.nk-live.on", {},
+      h("h3", {}, `ИДЁТ ИСПЫТАНИЕ ${T.n} · ${M.title}`, h("span", {}, T.phase === "choose" ? `ВЫБОР · ${picked} ИЗ ${T.heroes.length}` : `БРОСКИ · ${rolled} ИЗ ${T.heroes.length}`)),
+      h("table", {}, h("thead", {}, h("tr", {}, ["ГЕРОЙ", "ТАЙНЫЙ ВЫБОР", "ЗА ИГРОКА", "БРОСОК", "БРОСОК МАСТЕРА"].map(t => h("th", {}, t)))), h("tbody", {}, rows)),
+      h("div.nk-sum", {},
+        h("div", {}, `СУММА ${R.sum} · ПОРОГ ${R.thr || "—"} (${R.per} × ${R.N})`, R.outcome ? h("b", { class: `oc-${R.outcome}` }, ` → ${OUTCOME_LABEL[R.outcome].toUpperCase()}`) : null),
+        h("div", { style: "flex:1" }),
+        T.phase === "choose" ? h("button.nk-btn", { "data-open-rolls": 1, title: "Выстрелы с Шёпотом и огонь врагов уже позади — пусть ползут к шлюзу", onclick: () => S.openRolls() }, "ОТКРЫТЬ БРОСКИ") : null,
+        override,
+        h("button.nk-btn", { "data-apply": 1, disabled: !R.outcome && !override.value, onclick: () => S.applyTrial(override.value || null) }, "ПРИМЕНИТЬ"),
+        h("button.nk-btn.ghost", { onclick: () => S.cancelTrial() }, "ОТМЕНИТЬ")));
+  }
+
   trials(st) {
     const assigned = Object.entries(st.roster || {}).map(([u, a]) => ({ u, a, hero: st.heroes?.[a], user: game.users.get(u) })).filter(x => x.hero);
-    const out = [h("div.nk-hint", { style: "margin-bottom:12px" }, "Отметьте, кто что выбрал в испытании, и итог группы. Шкалы, награды и запись в летописи считаются сами. Провал отнимает 1 от корпуса.")];
+    const out = [this.trialLive(st, assigned),
+      h("div.nk-hint", { style: "margin:18px 0 12px" }, "РУЧНАЯ ПРАВКА. Здесь можно поправить, кто что выбрал, и итог группы. Шкалы, награды и запись в летописи считаются сами. Провал отнимает 1 от корпуса.")];
     for (const T of TRIALS) {
       const oc = st.outcomes?.[T.n] || "";
       const outSel = h("select", { onchange: ev => S.update(s => { s.outcomes = s.outcomes || {}; if (ev.target.value) s.outcomes[T.n] = ev.target.value; else delete s.outcomes[T.n]; }) },
