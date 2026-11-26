@@ -136,14 +136,35 @@ export const PALETTES = {
   volt:    { c: 0x38c8ff, hot: 0xeafaff, alt: 0x8fe6ff, dark: 0x001018, sound: "zap" },
   thunder: { c: 0xa8c8ff, hot: 0xffffff, alt: 0x6a8ab8, dark: 0x0a0e18, sound: "boom" },
   mech:    { c: 0xff3a2a, hot: 0xffe0d0, alt: 0x38c8ff, dark: 0x1a0402, sound: "zap" },
+  steel:   { c: 0xc8d4e6, hot: 0xffffff, alt: 0x8090a0, dark: 0x101418, sound: "blade" },
+  power:   { c: 0x3aa8ff, hot: 0xeaf8ff, alt: 0x9fe0ff, dark: 0x001020, sound: "blade" },
+  chain:   { c: 0xffa040, hot: 0xfff2d8, alt: 0xff5a10, dark: 0x1a0800, sound: "chain" },
+  claw:    { c: 0xd8284e, hot: 0xffd6e0, alt: 0x9a1a6a, dark: 0x1a0008, sound: "blade" },
+  blunt:   { c: 0xffd8a8, hot: 0xffffff, alt: 0x8a7a68, dark: 0x1a140e, sound: "blunt" },
+  frag:    { c: 0xff8a2a, hot: 0xfff6e0, alt: 0xffc060, dark: 0x2a2420, sound: "boom" },
+};
+
+/** Ближний бой: палитра, число дуг, радиус (доли токена цели), время замаха, толщина, особенности. */
+export const MELEE = {
+  sword: { P: "steel", arcs: 1, rad: 1.4, swing: 150, width: 0.075, span: 1.0 },
+  power: { P: "power", arcs: 1, rad: 1.45, swing: 150, width: 0.085, span: 1.05, crackle: true },
+  chain: { P: "chain", arcs: 1, rad: 1.4, swing: 230, width: 0.085, span: 0.95, teeth: 1, sparks: true, gore: 1.6 },
+  chainaxe: { P: "chain", arcs: 1, rad: 1.4, swing: 260, width: 0.09, span: 0.95, teeth: 1, sparks: true, gore: 2 },
+  axe: { P: "steel", arcs: 1, rad: 1.45, swing: 210, width: 0.085, span: 1.1, gore: 1.4 },
+  knife: { P: "steel", thrust: 2, reach: 1.1, width: 0.035 },
+  spear: { P: "steel", thrust: 1, reach: 1.9, width: 0.045 },
+  blunt: { P: "blunt", arcs: 1, rad: 1.0, swing: 190, width: 0.08, span: 0.7, blunt: true },
+  claw: { P: "claw", arcs: 3, rad: 1.3, swing: 140, width: 0.06, span: 0.9, gap: 0.32 },
+  bite: { P: "claw", arcs: 2, rad: 0.9, swing: 120, width: 0.05, span: 0.8, gap: 0.5, bite: true },
+  fist: { P: "blunt", fist: true },
 };
 
 /* ───────────────────────────── движок ───────────────────────────── */
 
 export class SpellFX {
   /** @param {{fxLayer:PIXI.Container, underLayer?:PIXI.Container, grid:number, audio?:{volume:number}, onHit?:function}} o */
-  constructor({ fxLayer, underLayer = null, grid, audio = null, onHit = null }) {
-    this.fx = fxLayer; this.under = underLayer || fxLayer; this.g = grid; this.audio = audio; this.onHit = onHit;
+  constructor({ fxLayer, underLayer = null, decalLayer = null, grid, audio = null, onHit = null, blood = true }) {
+    this.fx = fxLayer; this.under = underLayer || fxLayer; this.decals = decalLayer; this.g = grid; this.audio = audio; this.onHit = onHit; this.blood = blood;
     this.time = 0; this.items = []; this.events = []; this.particles = [];
     this.pg = new PIXI.Graphics(); this.pg.blendMode = PIXI.BLEND_MODES.ADD;
     this.fx.addChild(this.pg);
@@ -567,8 +588,227 @@ export class SpellFX {
     }
   }
 
+  /* ─────── кровь, пятна, подпалины ─────── */
+
+  gore(p, ang, n, speed, R = Math.random, big = 1) {
+    if (!this.blood) return;
+    const g = this.g, blood = [0xb3120f, 0x8f0a0a, 0x6a0606, 0x4c0404];
+    for (let i = 0; i < n; i++) {
+      const a = ang + (R() - 0.5) * 1.1, v = speed * g * (0.35 + R() * 0.9);
+      this.particles.push({ kind: "drop", x: p.x, y: p.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, born: this.time, life: 380 * (0.5 + R() * 0.8),
+        c0: blood[Math.floor(R() * 4)], size: g * (i < 4 ? 0.04 : 0.022) * big * (0.45 + R() * 1.1), drag: 6.5 });
+    }
+    this.mist({ x: p.x + Math.cos(ang) * g * 0.25, y: p.y + Math.sin(ang) * g * 0.25 }, 0x6e0808, g * 0.9 * big, 520, 0.45, R() * 50, 1.8);
+    this.splat({ x: p.x + Math.cos(ang) * g * 0.5, y: p.y + Math.sin(ang) * g * 0.5 }, ang, g * 1.1 * big, R() * 50, [0x7a0a0a, 0x2e0202], 1, 7000, 3000);
+  }
+  splat(p, ang, size, seed, colors, streak = 1, hold = 6000, fade = 2500) {
+    if (!this.decals) return;
+    const m = quadMesh(wprog().splat, { uColor: rgb(colors[0]), uDark: rgb(colors[1]), uSeed: seed, uAlpha: 0, uStreak: streak, uGrow: 0.35 }, 0, 0, size * 1.6, size, ang, PIXI.BLEND_MODES.NORMAL);
+    m.position.set(p.x, p.y);
+    this.add(m, hold + fade, (it, k, t) => {
+      const u = m.shader.uniforms;
+      u.uGrow = lerp(0.35, 1, 1 - Math.pow(1 - clamp01(t / 260), 3));
+      u.uAlpha = (t < 60 ? t / 60 : t > hold ? 1 - (t - hold) / fade : 1) * 0.92;
+    }, this.decals);
+  }
+  scorch(p, size, R = Math.random, hold = 11000) { this.splat(p, R() * 6.28, size, R() * 50, [0x2b2522, 0x0a0908], 0.15, hold, 3500); }
+
+  /* ─────── ближний бой ─────── */
+
+  /** Дуга росчерка: центр, радиус, углы от a0 до a1, замах swing, затем гаснет. */
+  sweep(c, rad, a0, a1, swing, P, { width = 0.06, teeth = 0, sparks = false, crackle = false, fade = 200 } = {}) {
+    const gr = new PIXI.Graphics(); gr.blendMode = PIXI.BLEND_MODES.ADD;
+    const W = this.g * width, dir = Math.sign(a1 - a0) || 1, N = 26;
+    let lastArc = 0;
+    this.add(gr, swing + fade, (it, k, t) => {
+      gr.clear();
+      const e = ease(Math.min(1, t / swing)), head = a0 + (a1 - a0) * e, al = t <= swing ? 1 : 1 - (t - swing) / fade;
+      const tail = a0 + (head - a0) * (t <= swing ? 0.05 : Math.min(1, (t - swing) / fade) * 0.9);
+      const pts = [];
+      for (let i = 0; i <= N; i++) {
+        const s = i / N, a = tail + (head - tail) * s, r = rad + (teeth ? ((i % 2) ? 1 : -1) * W * 0.6 : 0);
+        pts.push({ x: c.x + Math.cos(a) * r, y: c.y + Math.sin(a) * r, s });
+      }
+      for (const [mul, col, aa] of [[3.2, P.c, 0.22], [1.5, P.c, 0.6], [0.55, P.hot, 1]]) {
+        for (let i = 1; i < pts.length; i++) {
+          const s = pts[i].s, w = W * mul * (0.12 + 0.88 * Math.pow(s, 1.4));
+          gr.lineStyle({ width: Math.max(0.8, w), color: col, alpha: aa * al * (0.25 + 0.75 * s), cap: "round" });
+          gr.moveTo(pts[i - 1].x, pts[i - 1].y).lineTo(pts[i].x, pts[i].y);
+        }
+      }
+      const hp = pts[pts.length - 1];
+      if (t <= swing && sparks) this.spark(hp, P, head + dir * Math.PI / 2, 3, 5, 0.03, 260, 1.4);
+      if (t <= swing + 60 && crackle && t - lastArc > 45) {
+        lastArc = t; const a = head - dir * (0.2 + Math.random() * 0.5);
+        this.arc(hp, { x: c.x + Math.cos(a) * rad * (0.8 + Math.random() * 0.5), y: c.y + Math.sin(a) * rad * (0.8 + Math.random() * 0.5) }, P, 120, { width: 1.6, jag: 0.4, forks: 0 });
+      }
+    });
+  }
+
+  /** Удар в ближнем бою. kind — из MELEE. hit — попал ли. */
+  melee({ from, to, kind = "sword", hit = true, crit = false, R = Math.random }) {
+    const g = this.g, K = MELEE[kind] ?? MELEE.sword, P = PALETTES[K.P];
+    const dx = to.x - from.x, dy = to.y - from.y, d = Math.hypot(dx, dy) || 1, ux = dx / d, uy = dy / d, th = Math.atan2(dy, dx);
+    const side = R() < 0.5 ? 1 : -1, nx = -uy * side, ny = ux * side;
+    const miss = hit ? 0 : to.r * 0.95;                                    // промах — мимо, вбок
+    const tp = { x: to.x + nx * miss, y: to.y + ny * miss, r: to.r, id: to.id };
+    this.sound(P.sound, kind === "chain" || kind === "chainaxe" ? "chain" : K.blunt || K.fist ? "swing-heavy" : "swing");
+    if (K.fist) {
+      this.at(80, () => { this.flash(tp, P.c, P.hot, to.r * 1.3, 180, 6, th); this.ring(tp, P, to.r * 0.2, to.r * 1.1, 260, { w: 0.06 }); if (hit) { this.onHit?.(to.id, 0xff7070); this.sound("blunt", "hit"); } });
+      return;
+    }
+    if (K.thrust) {
+      for (let i = 0; i < K.thrust; i++) this.at(i * 120, () => {
+        const off = (R() - 0.5) * to.r * 0.5, a = { x: tp.x - ux * to.r * K.reach + nx * off * side, y: tp.y - uy * to.r * K.reach + ny * off * side };
+        const b = { x: tp.x + ux * to.r * 0.35 + nx * off * 0.3, y: tp.y + uy * to.r * 0.35 + ny * off * 0.3 };
+        this.ray(a, b, P, g * K.width * 2.2, 220, { grow: 70 });
+        this.at(60, () => hit ? (this.gore(tp, th, crit ? 26 : 14, 5, R, 0.7), this.flash(tp, P.c, P.hot, to.r * 0.8, 140, 5, th), this.onHit?.(to.id, 0xff6a6a), this.sound("blade", "hit"))
+          : (this.spark(b, P, th + Math.PI, 7, 4, 0.03, 220, 1.6, R), this.sound("blade", "parry")));
+      });
+      return;
+    }
+    const rad = to.r * K.rad * (crit ? 1.15 : 1), span = K.span;
+    for (let j = 0; j < K.arcs; j++) {
+      const lane = (j - (K.arcs - 1) / 2) * (K.gap ?? 0) * to.r;
+      const flip = K.bite && j % 2 ? -1 : 1;
+      const c = { x: tp.x - ux * rad * 0.75 + nx * lane, y: tp.y - uy * rad * 0.75 + ny * lane };
+      const a0 = th - side * span * flip, a1 = th + side * span * flip;
+      this.at(j * 35, () => this.sweep(c, rad, a0, a1, K.swing, P, { width: K.width * (crit ? 1.3 : 1), teeth: K.teeth, sparks: !!K.sparks, crackle: !!K.crackle }));
+    }
+    const tang = th + side * Math.PI / 2;                                  // куда летит кровь — по ходу росчерка
+    this.at(K.swing * 0.55, () => {
+      if (hit) {
+        if (K.blunt) {
+          this.flash(tp, P.c, P.hot, to.r * 1.8, 220, 8, th); this.ring(tp, P, to.r * 0.3, to.r * 1.6, 360, { w: 0.07, noise: 0.06 });
+          this.mist(tp, 0x5a5048, to.r * 1.8, 700, 0.35, R() * 50, 1.8); this.gore(tp, th, crit ? 14 : 6, 3, R, 0.6); this.sound("blunt", "hit");
+        } else {
+          this.flash(tp, P.c, P.hot, to.r * 1.1, 160, 6, tang);
+          this.gore(tp, tang, Math.round((crit ? 40 : 24) * (K.gore ?? 1)), 6.5, R, K.gore ?? 1);
+          if (K.crackle) { this.flash(tp, P.c, P.hot, to.r * 1.8, 220, 10); this.sound("zap", "hit"); }
+          this.sound("blade", "hit");
+        }
+        this.onHit?.(to.id, crit ? 0xff3030 : 0xff6a6a);
+      } else {
+        const hp = { x: tp.x - nx * to.r * 0.3, y: tp.y - ny * to.r * 0.3 };
+        this.spark(hp, P.c === PALETTES.claw.c ? PALETTES.steel : P, tang + Math.PI, 10, 5, 0.035, 260, 1.8, R);
+        this.sound("blade", "parry");
+      }
+    });
+  }
+
+  /** Брошенный нож: короткий стальной росчерк в цель. */
+  knifeThrow({ from, to, hit = true, R = Math.random }) {
+    const P = PALETTES.steel, th = Math.atan2(to.y - from.y, to.x - from.x);
+    const end = hit ? to : { x: to.x + Math.cos(th) * this.g * 1.5 + Math.cos(th + 1.57) * to.r, y: to.y + Math.sin(th) * this.g * 1.5 + Math.sin(th + 1.57) * to.r };
+    this.sound("blade", "swing");
+    const dist = Math.hypot(end.x - from.x, end.y - from.y), travel = Math.max(120, dist / (this.g * 22) * 1000);
+    this.orb({ x: from.x + Math.cos(th) * from.r * 0.7, y: from.y + Math.sin(th) * from.r * 0.7 }, end, P, this.g * 0.09, travel, { tail: 1.6,
+      onArrive: () => hit ? (this.gore(to, th, 12, 4, R, 0.6), this.onHit?.(to.id, 0xff6a6a), this.sound("blade", "hit")) : (this.spark(end, P, th + Math.PI, 8, 4, 0.03, 240, 2, R), this.sound("blade", "parry")) });
+  }
+
+  /* ─────── гранаты ─────── */
+
+  /** Бросок по дуге: тёмный корпус летит, тень ползёт по полу, мигает огонёк. */
+  lob(from, at, travel) {
+    const gr = new PIXI.Graphics(), g = this.g;
+    this.add(gr, travel, (it, k, t) => {
+      gr.clear();
+      const x = lerp(from.x, at.x, k), y = lerp(from.y, at.y, k), h = Math.sin(Math.PI * k) * g * 1.1, sc = 1 + h / g * 0.5;
+      gr.beginFill(0x000000, 0.35 * (1 - h / (g * 1.6))).drawEllipse(x, y, g * 0.09, g * 0.06).endFill();
+      gr.beginFill(0x3c4232).drawCircle(x, y - h, g * 0.085 * sc).endFill();
+      gr.lineStyle({ width: 2, color: 0x1a1c16 }).drawCircle(x, y - h, g * 0.085 * sc).lineStyle(0);
+      gr.beginFill(0x9aa08a, 0.8).drawCircle(x - g * 0.03 * sc, y - h - g * 0.03 * sc, g * 0.025 * sc).endFill();
+      if (Math.floor(t / 110) % 2) gr.beginFill(0xff2a1a).drawCircle(x + g * 0.04 * sc, y - h - g * 0.02 * sc, g * 0.018 * sc).endFill();
+    });
+  }
+
+  /** Взрыв гранаты. kind: frag | smoke | melta. radius — радиус шаблона в пикселях. */
+  explode({ from = null, at, radius, kind = "frag", R = Math.random }) {
+    const g = this.g, dist = from ? Math.hypot(at.x - from.x, at.y - from.y) : 0;
+    const travel = from ? Math.max(380, Math.min(1000, dist / (g * 9) * 1000)) : 0;
+    if (from) { this.lob(from, at, travel); this.sound("blade", "swing"); }
+    this.at(travel, () => {
+      if (kind === "smoke") {
+        this.sound("smoke", "hit");
+        for (let i = 0; i < 7; i++) {
+          const a = R() * 6.28, r = radius * 0.45 * Math.sqrt(R());
+          this.at(i * 140, () => this.mist({ x: at.x + Math.cos(a) * r, y: at.y + Math.sin(a) * r }, 0x8a8a86, radius * (1.1 + R() * 0.5), 9000, 0.75, R() * 50, 1.6));
+        }
+        this.flash(at, 0xdddddd, 0xffffff, g * 0.8, 160, 5);
+        return;
+      }
+      const P = kind === "melta" ? { c: 0xfff0c0, hot: 0xffffff, alt: 0x40a0ff, dark: 0x201810, sound: "boom" } : PALETTES.frag;
+      this.flash(at, P.c, P.hot, radius * 1.15, 380, 14);
+      this.flare(at, kind === "melta" ? { c: 0x9ad8ff, hot: 0xffffff } : PALETTES.plasma, radius * 0.95, 750, { rays: 14, hold: 0.05, grow: 0.6 });
+      this.light(at, P.c, radius * 3.4, 1000, 0.75);
+      this.ring(at, { c: 0xffd8a0, hot: 0xffffff }, g * 0.3, radius, 420, { w: 0.06, noise: 0.05, fill: 0.5 });
+      this.ring(at, { c: 0xb0a090, hot: 0xffffff }, g * 0.3, radius * 1.25, 700, { w: 0.03, delay: 80, alpha: 0.6 });
+      this.spark(at, { c: 0xff9a30, hot: 0xfff2c0 }, 0, kind === "melta" ? 30 : 70, 15, 0.034, 380, 6.28, R);
+      this.shards(at, { c: 0x3a3632, hot: 0x8a8278 }, 22, 9, 520, R);
+      for (let i = 0; i < 3; i++) this.at(120 + i * 160, () => { const a = R() * 6.28; this.mist({ x: at.x + Math.cos(a) * radius * 0.25, y: at.y + Math.sin(a) * radius * 0.25 }, 0x2a2622, radius * 1.4, 3800, 0.6, R() * 50, 1.8); });
+      this.scorch(at, radius * 1.1, R);
+      this.sound("boom", "hit");
+    });
+    return travel;
+  }
+
+  /* ─────── прорыв варпа ─────── */
+
+  /** Лиловая расщелина рвёт пространство: трещина, разрыв, молнии, вихрь, в конце вспышка. */
+  breach({ at, P = PALETTES.warp, duration = 10000, R = Math.random }) {
+    const g = this.g, L = g * 2.8, ang = -Math.PI / 2 + (R() - 0.5) * 0.6, ca = Math.cos(ang), sa = Math.sin(ang), nx = -sa, ny = ca;
+    const N = 24, jag = Array.from({ length: N + 1 }, (_, i) => (R() - 0.5) * g * 0.28 * Math.sin(Math.PI * i / N));
+    const pt = (i, w) => { const s = i / N - 0.5; return { x: at.x + ca * s * L + nx * (jag[i] + w), y: at.y + sa * s * L + ny * (jag[i] + w) }; };
+    const dark = new PIXI.Graphics(), gr = new PIXI.Graphics(); gr.blendMode = PIXI.BLEND_MODES.ADD;
+    this.mist(at, P.dark, g * 7, duration, 0.55, R() * 50, 1.25);
+    this.light(at, P.c, g * 9, duration, 0.6);
+    this.flare(at, P, g * 3.2, duration, { rays: 0, alpha: 0.8, hold: 0.85, grow: 0.6 });
+    this.add(dark, duration, () => {}, this.fx);
+    this.add(gr, duration, (it, k, t) => {
+      const open = k < 0.12 ? 0 : k < 0.85 ? ease((k - 0.12) / 0.73) * 0.55 : 0.55 + ease((k - 0.85) / 0.15) * 0.45;
+      const grow = Math.min(1, k / 0.12), pulse = 1 + 0.12 * Math.sin(t / 140) + 0.06 * Math.sin(t / 37);
+      const lo = Math.round(N / 2 - (N / 2) * grow), hi = Math.round(N / 2 + (N / 2) * grow);
+      const w = i => Math.max(0.5, g * open * pulse * Math.sin(Math.PI * i / N));
+      dark.clear(); gr.clear();
+      if (hi - lo < 2) return;
+      const up = [], dn = [];
+      for (let i = lo; i <= hi; i++) { up.push(pt(i, w(i))); dn.push(pt(i, -w(i))); }
+      if (open > 0.01) { dark.beginFill(0x07000e, 0.96).drawPolygon([...up, ...dn.reverse()].flatMap(q => [q.x, q.y])).endFill(); dn.reverse(); }
+      for (const [wd, col, aa] of [[g * 0.32, P.c, 0.28], [g * 0.12, P.c, 0.7], [g * 0.04, P.hot, 1]]) {
+        for (const edge of open > 0.01 ? [up, dn] : [up]) {
+          gr.lineStyle({ width: wd, color: col, alpha: aa, cap: "round", join: "round" });
+          gr.moveTo(edge[0].x, edge[0].y); for (const q of edge.slice(1)) gr.lineTo(q.x, q.y);
+        }
+      }
+    });
+    // молнии чаще и чаще; пульсы кольцами; огоньки затягивает в разрыв
+    let t = 900;
+    while (t < duration - 600) {
+      const tt = t, step = lerp(420, 90, tt / duration);
+      this.at(tt, () => {
+        const i = 2 + Math.floor(R() * (N - 4)), from = pt(i, (R() - 0.5) * g * 0.6), a = ang + Math.PI / 2 * (R() < 0.5 ? 1 : -1) + (R() - 0.5) * 1.6, len = g * (1.5 + R() * 3.5 * Math.min(1, tt / 4000));
+        this.arc(from, { x: from.x + Math.cos(a) * len, y: from.y + Math.sin(a) * len }, P, 140 + R() * 160, { width: 2.2 + R() * 2.2, jag: 0.32, forks: 2 });
+        if (R() < 0.35) this.sound("zap", "crack");
+      });
+      t += step;
+    }
+    for (let q = 1500; q < duration - 600; q += 1300) this.at(q, () => this.ring(at, P, g * 0.6, g * 4, 1200, { w: 0.03, noise: 0.2, alpha: 0.7 }));
+    for (let q = 600; q < duration - 800; q += 450) this.at(q, () => {
+      for (let i = 0; i < 6; i++) {
+        const a = R() * 6.28, r = g * (3 + R() * 2.5), x = at.x + Math.cos(a) * r, y = at.y + Math.sin(a) * r, v = g * (2 + R() * 2);
+        this.particles.push({ kind: "mote", x, y, cx: at.x, cy: at.y, swirl: 1.4, vx: (at.x - x) / r * v, vy: (at.y - y) / r * v, born: this.time, life: 1300, c0: R() < 0.4 ? P.hot : P.c, size: g * 0.03, drag: 0.2 });
+      }
+    });
+    this.sound("rift", "cast", duration);
+    this.at(duration - 650, () => {
+      this.flash(at, P.c, P.hot, g * 10, 750, 16);
+      this.ring(at, P, g * 0.5, g * 11, 800, { w: 0.05, fill: 0.4 });
+      this.sound("boom", "hit");
+    });
+  }
+
   /* ─────── звук ─────── */
-  sound(family, part) {
+  sound(family, part, dur = 0) {
     const vol = this.audio?.volume ?? 0; if (!vol) return;
     const ac = (SpellFX.ac ??= new (globalThis.AudioContext || globalThis.webkitAudioContext)());
     if (ac.state === "suspended") ac.resume().catch(() => {});
@@ -578,6 +818,26 @@ export class SpellFX {
     const noise = (dur, type, f, q = 0.8, at = 0) => { const b = ac.createBuffer(1, Math.ceil(ac.sampleRate * dur), ac.sampleRate), d = b.getChannelData(0); for (let k = 0; k < d.length; k++) d[k] = Math.random() * 2 - 1; const s = ac.createBufferSource(); s.buffer = b; const fl = ac.createBiquadFilter(); fl.type = type; fl.frequency.value = f; fl.Q.value = q; s.connect(fl); s.start(t + at); return fl; };
     const bell = (freqs, dur, peak) => freqs.forEach((f, i) => envl(osc("sine", f, null, dur, i * 0.015), 0.01, dur, peak / (1 + i * 0.6)));
     const F = family, P = part;
+    if (F === "rift" && P === "cast") {                      // нарастающий гул на всё время прорыва
+      const d = Math.max(1, dur / 1000), o = osc("sawtooth", 38, 55, d), lp = ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 260; o.connect(lp);
+      const gn = ac.createGain(); gn.gain.setValueAtTime(0.0001, t); gn.gain.exponentialRampToValueAtTime(0.5, t + d * 0.9); gn.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.3); lp.connect(gn); gn.connect(out);
+      const n = noise(d, "bandpass", 700, 0.7), gn2 = ac.createGain(); gn2.gain.setValueAtTime(0.0001, t); gn2.gain.exponentialRampToValueAtTime(0.25, t + d * 0.9); gn2.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.3); n.connect(gn2); gn2.connect(out);
+      return;
+    }
+    if (P === "swing" || P === "swing-heavy") {             // свист клинка
+      const n = noise(0.25, "bandpass", P === "swing" ? 2400 : 900, 1.2); n.frequency.setValueAtTime(P === "swing" ? 3200 : 1200, t); n.frequency.exponentialRampToValueAtTime(P === "swing" ? 700 : 300, t + 0.2);
+      envl(n, 0.03, 0.18, P === "swing" ? 0.35 : 0.45); return;
+    }
+    if (P === "chain") {                                     // мотор цепного меча
+      const o = osc("sawtooth", 85, 110, 0.5), am = ac.createOscillator(), ag = ac.createGain(); am.frequency.value = 38; ag.gain.value = 0.5; am.connect(ag); am.start(t); am.stop(t + 0.55);
+      const lp = ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1400; o.connect(lp); const gn = envl(lp, 0.02, 0.45, 0.35); ag.connect(gn.gain);
+      envl(noise(0.4, "bandpass", 3000, 1), 0.02, 0.35, 0.18); return;
+    }
+    if (P === "parry") { bell([2200, 3300], 0.25, 0.12); envl(noise(0.08, "highpass", 4000), 0.002, 0.06, 0.2); return; }
+    if (P === "crack") { envl(noise(0.12, "highpass", 2500, 0.7), 0.002, 0.1, 0.25); return; }
+    if (F === "blade" && P === "hit") { envl(noise(0.15, "lowpass", 900), 0.004, 0.12, 0.5); return; }
+    if (F === "blunt" && P === "hit") { envl(osc("sine", 120, 45, 0.25), 0.003, 0.25, 0.8); envl(noise(0.15, "lowpass", 500), 0.003, 0.12, 0.5); return; }
+    if (F === "smoke" && P === "hit") { envl(noise(1.6, "highpass", 2500, 0.5), 0.05, 1.5, 0.35); return; }
     if (P === "cast") {
       if (F === "holy" || F === "heal") bell(F === "heal" ? [784, 988, 1175] : [523, 659, 784, 1046], 1.4, 0.18);
       else if (F === "warp" || F === "psy") { envl(noise(0.7, "bandpass", 900, 2), 0.35, 0.35, 0.3); envl(osc("sawtooth", 110, 220, 0.6), 0.3, 0.3, 0.08); }
@@ -603,6 +863,15 @@ export class SpellFX {
     }
   }
 
+  stain(p) {
+    if (!this.decals || !this.blood) return;
+    const gr = new PIXI.Graphics(), a = Math.atan2(p.vy, p.vx);
+    gr.beginFill(p.c0, 0.85).drawEllipse(0, 0, p.size * 1.5, p.size * 0.75).endFill();
+    gr.beginFill(0x2a0202, 0.5).drawCircle(-p.size * 0.5, 0, p.size * 0.45).endFill();
+    gr.position.set(p.x, p.y); gr.rotation = a;
+    this.add(gr, 9000, (it, k) => { gr.alpha = k < 0.7 ? 1 : 1 - (k - 0.7) / 0.3; }, this.decals);
+  }
+
   /** Шаг времени в миллисекундах. Возвращает true, пока есть что рисовать. */
   update(dt) {
     this.time += dt;
@@ -621,7 +890,8 @@ export class SpellFX {
     gr.clear();
     if (gr.parent) gr.parent.addChild(gr);              // частицы поверх всего в слое
     this.particles = this.particles.filter(p => {
-      const age = this.time - p.born; if (age < 0) return true; if (age >= p.life) return false;
+      const age = this.time - p.born; if (age < 0) return true;
+      if (age >= p.life) { if (p.kind === "drop") this.stain(p); return false; }
       const k = age / p.life, damp = Math.exp(-p.drag * s);
       p.vx *= damp; p.vy *= damp; p.x += p.vx * s; p.y += p.vy * s;
       if (p.swirl) { const dx = p.x - p.cx, dy = p.y - p.cy; p.x = p.cx + dx * Math.cos(p.swirl * s) - dy * Math.sin(p.swirl * s); p.y = p.cy + dx * Math.sin(p.swirl * s) + dy * Math.cos(p.swirl * s); }
@@ -632,6 +902,10 @@ export class SpellFX {
         const a = Math.sin(Math.PI * k) * (0.7 + 0.3 * Math.sin(age / 60 + p.x));
         gr.lineStyle(0); gr.beginFill(p.c0, a * 0.35).drawCircle(p.x, p.y, p.size * 2.2).endFill();
         gr.beginFill(p.c0, a).drawCircle(p.x, p.y, p.size).endFill();
+      } else if (p.kind === "drop") {
+        const sp = Math.hypot(p.vx, p.vy);
+        if (sp > this.g * 1.2) { gr.lineStyle({ width: p.size * 1.6, color: p.c0, alpha: 0.95, cap: "round" }); gr.moveTo(p.x, p.y).lineTo(p.x - p.vx * 0.016, p.y - p.vy * 0.016); gr.lineStyle(0); }
+        else gr.beginFill(p.c0, 0.95).drawCircle(p.x, p.y, p.size * 0.8).endFill();
       } else if (p.kind === "shard") {
         p.rot += p.spin * s; const z = p.size, c = Math.cos(p.rot), sn = Math.sin(p.rot);
         gr.lineStyle(0); gr.beginFill(p.c0, 1 - k);

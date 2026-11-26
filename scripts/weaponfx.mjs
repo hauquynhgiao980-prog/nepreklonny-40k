@@ -20,7 +20,7 @@ Hooks.once("init", () => {
     scope: "client", config: true, type: Number, range: { min: 0, max: 1, step: 0.05 }, default: 0.5,
   });
   game.settings.register(MOD, "spellFx", {
-    name: "Эффекты заклинаний", hint: "Варп, свет Императора и плазма машин, когда кто-то читает заклинание или пользуется силой.",
+    name: "Эффекты заклинаний и ближнего боя", hint: "Варп, свет Императора и плазма машин для заклинаний; росчерки клинков, гранаты, прорыв варпа.",
     scope: "client", config: true, type: Boolean, default: true,
   });
   game.settings.register(MOD, "spellFxVolume", {
@@ -40,7 +40,7 @@ Hooks.once("ready", () => {
   });
   const spells = createSpellFX({
     broadcast: p => game.socket.emit(`module.${MOD}`, p),
-    settings: { enabled: () => game.settings.get(MOD, "spellFx"), volume: () => game.settings.get(MOD, "spellFxVolume") },
+    settings: { enabled: () => game.settings.get(MOD, "spellFx"), volume: () => game.settings.get(MOD, "spellFxVolume"), blood: () => game.settings.get(MOD, "weaponFxBlood") },
   });
   game.socket.on(`module.${MOD}`, p => { if (p?.t === "wfx") api.play(p); else if (p?.t === "sfx") spells.play(p); });
   Hooks.on("dnd5e.postUseActivity", (activity, config, results) => {

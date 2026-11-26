@@ -97,7 +97,7 @@ await valve.update({ hidden: !valve.hidden });
 ui.notifications.info(valve.hidden ? "Вентиль снова дёргается." : "Вентиль открыт и замер.");
 '''
 
-WARP = HEAD + r'''// СМОТРОВАЯ ГАЛЕРЕЯ — ПРОРЫВ ВАРПА. Меняет фон: чистая галерея ⇄ осквернённая. Стены у обеих версий одни.
+WARP = HEAD + r'''// СМОТРОВАЯ ГАЛЕРЕЯ — ПРОРЫВ ВАРПА. Лиловая расщелина 10 с, вспышка, фон: чистая галерея ⇄ осквернённая. Стены у обеих версий одни.
 const dir = "modules/nepreklonny-40k/maps/05_gallery/";
 const src = String(scene.background.src ?? "");
 if (!src.includes("gallery_")) return ui.notifications.warn("Откройте сцену «4. Смотровая галерея».");
@@ -105,6 +105,12 @@ const lite = light(src);
 const CLEAN = dir + (lite ? "gallery_clean_anim_1536x1152.webm" : "gallery_clean_anim_3072x2304.webm");
 const DES = dir + (lite ? "gallery_desecrated_anim_1536x1152.webm" : "gallery_desecrated_anim_3072x2304.webm");
 const toDes = !src.includes("desecrated");
+if (toDes) {                                               // сначала лиловая расщелина и молнии 10 с, потом вспышка и смена карты
+  const fx = game.modules.get(MOD)?.api?.spellFx;
+  const rift = scene.lights.find(l => l.flags?.[MOD]?.role === "rift");
+  const at = rift ? { x: rift.x, y: rift.y - (scene.grid?.size ?? 128) * 0.45 } : { x: scene.width * 0.72, y: scene.height * 0.56 };
+  if (fx?.breach && game.settings.get(MOD, "spellFx")) { ui.notifications.info("Прорыв варпа: разлом открывается…"); await fx.breach(scene, at, { duration: 10000, preload: DES, title: "ЗАВЕСА РАЗОРВАНА", sub: "ВАРП ВХОДИТ В ГАЛЕРЕЮ" }); }
+}
 await scene.update({ "background.src": toDes ? DES : CLEAN });
 await roleHide("AmbientLight", ["rift"], !toDes); await roleHide("AmbientSound", ["rift"], !toDes);
 ui.notifications.info(toDes ? "Прорыв варпа. Из разлома поднимается Нерождённый." : "Галерея снова чистая.");

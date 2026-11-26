@@ -75,6 +75,29 @@ export const SPELLS = {
   "Освящение оружия": { fx: "ward", pal: "mech", style: "mech" },
 };
 
+/** Вид удара в ближнем бою по названию оружия. */
+export function meleeKind(item) {
+  const n = String(item?.name ?? "").toLowerCase(), nat = item?.system?.type?.value === "natural";
+  if (/цепн/.test(n)) return /топор|секир/.test(n) ? "chainaxe" : "chain";
+  if (/силов|энерг|power/.test(n)) return "power";
+  if (/когт|клешн|лап|коготь|claw/.test(n)) return "claw";
+  if (/укус|пасть|челюст|зуб|bite/.test(n)) return "bite";
+  if (/безоруж|кулак|удар|unarmed/.test(n)) return "fist";
+  if (/нож|кинжал|штык|стилет|knife|dagger/.test(n)) return "knife";
+  if (/копь|пика|трезуб|spear/.test(n)) return "spear";
+  if (/топор|секир|алебард|глеф|коса|axe/.test(n)) return "axe";
+  if (/булав|молот|дубин|палиц|посох|моргенштерн|цеп|клевец|hammer|mace|staff/.test(n)) return "blunt";
+  return nat ? "claw" : "sword";
+}
+/** Граната по названию: frag | smoke | melta, иначе null. */
+export function grenadeKind(item) {
+  const n = String(item?.name ?? "").toLowerCase();
+  if (/мелта/.test(n)) return "melta";
+  if (/гранат/.test(n) && /дым/.test(n)) return "smoke";
+  if (/гранат|grenade/.test(n)) return "frag";
+  return null;
+}
+
 const DMG_PAL = { fire: "plasma", cold: "frost", lightning: "volt", radiant: "holy", necrotic: "death", psychic: "psychic", force: "warp", thunder: "thunder", acid: "plasma", poison: "death" };
 
 function styleOf(actor) {
@@ -111,14 +134,14 @@ export function pick(item, activity) {
  * @param {{enabled:function, volume:function}} o.settings
  */
 export function createSpellFX({ broadcast, settings }) {
-  let eng = null, layer = null, under = null, sceneId = null, manual = false;
+  let eng = null, layer = null, under = null, decals = null, sceneId = null, manual = false;
   const tick = () => { if (eng && !manual) eng.update(canvas.app.ticker.deltaMS); };
 
   function teardown() {
     canvas?.app?.ticker?.remove(tick);
     eng?.destroy(); eng = null;
-    for (const c of [layer, under]) if (c && !c.destroyed) { c.parent?.removeChild(c); c.destroy({ children: true }); }
-    layer = under = null; sceneId = null;
+    for (const c of [layer, under, decals]) if (c && !c.destroyed) { c.parent?.removeChild(c); c.destroy({ children: true }); }
+    layer = under = decals = null; sceneId = null;
   }
   function ensure() {
     if (!canvas?.ready || !canvas.scene) return null;
@@ -127,7 +150,11 @@ export function createSpellFX({ broadcast, settings }) {
     layer = new PIXI.Container(); layer.name = "nk-spellfx"; layer.eventMode = "none";
     under = new PIXI.Container(); under.name = "nk-spellfx-under"; under.eventMode = "none";
     canvas.interface.addChild(under, layer);
-    eng = new SpellFX({ fxLayer: layer, underLayer: under, grid: canvas.grid.size, onHit: tintToken, audio: { get volume() { return settings.volume(); } } });
+    decals = new PIXI.Container(); decals.name = "nk-spellfx-decals"; decals.eventMode = "none";
+    try { Object.assign(decals, { elevation: 0, sortLayer: 690, sort: 1, zIndex: 0 }); canvas.primary.addChild(decals); canvas.primary.sortDirty = true; }
+    catch (e) { under.addChildAt(decals, 0); }
+    eng = new SpellFX({ fxLayer: layer, underLayer: under, decalLayer: decals, grid: canvas.grid.size, onHit: tintToken, blood: settings.blood?.() ?? true,
+      audio: { get volume() { return settings.volume(); } } });
     canvas.app.ticker.add(tick);
     sceneId = canvas.scene.id;
     return eng;
@@ -140,8 +167,68 @@ export function createSpellFX({ broadcast, settings }) {
     setTimeout(() => { if (!t.destroyed && t.mesh) t.mesh.tint = old; }, 160);
   }
   function visibleHere(p) {
-    if (game.user.isGM) return true;
+    if (game.user.isGM || p.fx === "breach") return true;
     return [p.from?.id, ...(p.tos ?? []).map(t => t.id)].filter(Boolean).some(id => canvas.tokens?.get(id)?.visible);
+  }
+
+  /** Вспышка на весь экран: закрывает смену фона, гаснет, когда сцена перерисуется. */
+  /** Тайтл прорыва: буквы проступают с дрожью поверх карты и держатся через вспышку до новой сцены. */
+  function breachTitle(p) {
+    const dur = p.duration ?? 10000, title = p.title ?? "ЗАВЕСА РАЗОРВАНА", sub = p.sub ?? "";
+    setTimeout(() => {
+      document.getElementById("nk-breach-title")?.remove();
+      const box = document.createElement("div"); box.id = "nk-breach-title";
+      box.style.cssText = "position:fixed;inset:0;z-index:99910;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2vh;" +
+        "opacity:1;transition:opacity 1.4s ease-out;font-family:'Cinzel','Modesto Condensed','Signika',serif;text-align:center";
+      const h = document.createElement("div");
+      h.style.cssText = "font-size:min(6.4vw,92px);letter-spacing:.1em;white-space:nowrap;font-weight:700;color:#f3e2ff;transition:color .5s,text-shadow .5s;" +
+        "text-shadow:0 0 18px #b04dff,0 0 42px #7a1fd0,0 0 90px #3d006b,3px 0 0 rgba(255,40,120,.55),-3px 0 0 rgba(60,220,255,.45)";
+      [...title].forEach((ch, i) => {
+        const sp = document.createElement("span"); sp.textContent = ch === " " ? "\u00a0" : ch;
+        sp.style.cssText = `display:inline-block;opacity:0;filter:blur(14px);transform:translateY(${(i % 2 ? -1 : 1) * 18}px) scale(1.6);` +
+          `transition:opacity .5s ${120 + i * 70}ms,filter .9s ${120 + i * 70}ms,transform .9s ${120 + i * 70}ms cubic-bezier(.2,.9,.2,1)`;
+        h.append(sp);
+      });
+      box.append(h);
+      if (sub) { const s2 = document.createElement("div"); s2.textContent = sub;
+        s2.style.cssText = "font-size:min(2.2vw,26px);letter-spacing:.5em;white-space:nowrap;color:#d9b8ff;opacity:0;transition:opacity 1.2s 1.6s,color .5s;text-shadow:0 0 12px #8a2be2"; box.append(s2); }
+      setTimeout(() => {                                       // во вспышке буквы темнеют — читаются на белом
+        h.style.color = "#1c0033"; h.style.textShadow = "0 0 8px #fff,0 0 26px #f0dcff,0 0 60px #c58bff";
+        if (box.children[1]) { box.children[1].style.color = "#2a0050"; box.children[1].style.textShadow = "0 0 8px #fff"; }
+      }, 2900);
+      document.body.append(box);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        for (const sp of h.children) { sp.style.opacity = "1"; sp.style.filter = "blur(0)"; sp.style.transform = "none"; }
+        if (box.children[1]) box.children[1].style.opacity = ".9";
+      }));
+      const shake = setInterval(() => {                        // мелкая дрожь отдельных букв
+        const sp = h.children[Math.floor(Math.random() * h.children.length)]; if (!sp) return;
+        sp.style.transition = "none"; sp.style.transform = `translate(${(Math.random() - .5) * 10}px,${(Math.random() - .5) * 8}px)`;
+        setTimeout(() => { sp.style.transform = "none"; }, 90);
+      }, 140);
+      let done = false;
+      const out = () => { if (done) return; done = true; box.style.opacity = "0"; setTimeout(() => { clearInterval(shake); box.remove(); }, 1500); };
+      Hooks.once("canvasReady", () => setTimeout(out, 1600));
+      setTimeout(out, 8000 + 3600);
+    }, Math.max(0, dur - 3600));
+  }
+  function flashLater(p) {
+    const at = Math.max(0, (p.duration ?? 10000) - 700);
+    setTimeout(() => {
+      const el = document.createElement("div");
+      el.style.cssText = "position:fixed;inset:0;z-index:99900;pointer-events:none;opacity:0;transition:opacity .35s ease-in;" +
+        "background:radial-gradient(ellipse at 50% 50%, #fff6ff 0%, #e2b8ff 30%, #7a22c0 70%, #14001f 100%)";
+      document.body.append(el);
+      requestAnimationFrame(() => { el.style.opacity = "1"; });
+      let done = false;
+      const out = () => { if (done) return; done = true; el.style.transition = "opacity 1.2s ease-out"; el.style.opacity = "0"; setTimeout(() => el.remove(), 1300); };
+      Hooks.once("canvasReady", () => setTimeout(out, 350));
+      setTimeout(out, 6500);
+    }, at);
+  }
+  function preload(src) {
+    if (!src) return;
+    try { (foundry.canvas?.TextureLoader ?? globalThis.TextureLoader)?.loader?.load?.([src], { displayProgress: false }); } catch (e) { /* не страшно */ }
   }
 
   function play(p) {
@@ -150,7 +237,7 @@ export function createSpellFX({ broadcast, settings }) {
     const e = ensure(); if (!e) return false;
     const R = rng(p.seed), P = PALETTES[p.pal] ?? PALETTES.warp, o = p.o ?? {}, g = canvas.grid.size;
     const from = p.from, tos = p.tos?.length ? p.tos : [from];
-    const center = p.at ?? (o.center === "self" || !p.tos?.length ? from : { x: tos.reduce((a, t) => a + t.x, 0) / tos.length, y: tos.reduce((a, t) => a + t.y, 0) / tos.length });
+    const center = p.at ?? (o.center === "self" || !p.tos?.length ? (from ?? p.at) : { x: tos.reduce((a, t) => a + t.x, 0) / tos.length, y: tos.reduce((a, t) => a + t.y, 0) / tos.length });
     const radius = p.radius ?? ((o.r ?? 10) / FT) * g;
     switch (p.fx) {
       case "bolt": {
@@ -173,6 +260,10 @@ export function createSpellFX({ broadcast, settings }) {
       case "area": e.area({ at: center, from, P, kind: o.kind ?? "wave", radius, R }); break;
       case "summon": e.summon({ at: p.at ?? (p.tos?.length ? center : { x: from.x + g, y: from.y }), P, style: o.style ?? p.style ?? "holy", R }); break;
       case "self": e.self({ from, P, kind: o.kind ?? "glyph", R }); break;
+      case "melee": e.blood = settings.blood?.() ?? true; p.tos.forEach((to, i) => e.at(i * 90, () => e.melee({ from, to, kind: p.kind, hit: to.hit !== false, crit: p.crit, R }))); break;
+      case "throw": e.blood = settings.blood?.() ?? true; p.tos.forEach(to => e.knifeThrow({ from, to, hit: to.hit !== false, R })); break;
+      case "grenade": e.explode({ from, at: center, radius: p.radius ?? (20 / FT) * g, kind: p.kind, R }); break;
+      case "breach": e.breach({ at: p.at, duration: p.duration ?? 10000, R }); flashLater(p); if (p.title !== false) breachTitle(p); preload(p.preload); break;
       default: return false;
     }
     return true;
@@ -220,9 +311,22 @@ export function createSpellFX({ broadcast, settings }) {
 
   function send(p) { if (!p) return null; broadcast(p); play(p); return p; }
 
+  /** Граната: из рук бросающего в центр шаблона (или в выделенную цель, или на две клетки вперёд). */
+  function buildGrenade(item, activity, kind, templates) {
+    const src = tokOf(activity?.actor ?? item.actor); if (!src) return null;
+    const zone = templates?.length ? area(templates[0]) : null;
+    const tgt = [...(game.user.targets ?? [])].find(t => t !== src && t.document?.parent === canvas.scene);
+    const at = zone?.at ?? (tgt ? { x: tgt.center.x, y: tgt.center.y } : { x: src.center.x + canvas.grid.size * 2, y: src.center.y });
+    const radius = zone?.radius || ((Number(activity?.target?.template?.size) || 20) / (canvas.scene.grid?.distance || FT)) * canvas.grid.size;
+    return { t: "sfx", scene: canvas.scene.id, fx: "grenade", kind, pal: "frag", o: {}, seed: Math.floor(Math.random() * 1e9), from: pt(src), tos: [], at, radius };
+  }
+
   /** dnd5e.postUseActivity — всё, кроме атак (они — по броску). */
   function onUse(activity, usageConfig, results) {
-    const item = activity?.item; if (!item || item.type === "weapon") return null;
+    const item = activity?.item; if (!item) return null;
+    const gk = grenadeKind(item);
+    if (gk) { const templates = results?.templates ?? []; setTimeout(() => send(buildGrenade(item, activity, gk, templates)), templates.length ? 80 : 0); return true; }
+    if (item.type === "weapon") return null;
     if (activity.type === "attack") return null;
     if (item.type !== "spell" && !SPELLS[item.name]) return null;
     const templates = results?.templates ?? [];
@@ -232,12 +336,34 @@ export function createSpellFX({ broadcast, settings }) {
   /** dnd5e.rollAttackV2 — заклинания с атакой: попадание по КД каждой цели. */
   function onAttack(rolls, data) {
     const activity = data?.subject, item = activity?.item, roll = rolls?.[0];
-    if (!item || !roll || item.type === "weapon") return null;
+    if (!item || !roll) return null;
+    if (item.type === "weapon") return onWeapon(activity, item, roll, data);
     if (item.type !== "spell" && !SPELLS[item.name]) return null;
     const crit = !!roll.isCritical, fumble = !!roll.isFumble;
     const hitFor = t => crit || (!fumble && roll.total >= (t.actor?.system?.attributes?.ac?.value ?? 10));
     return send(build(item, activity, { hitFor }));
   }
+  /** Ближний бой и метание: росчерк по цели или брошенный нож. Стрельба — у эффектов стрельбы. */
+  function onWeapon(activity, item, roll, data) {
+    const wt = item.system?.type?.value ?? "", thrown = /thrown/i.test(roll.options?.attackMode ?? data?.attackMode ?? "");
+    const atype = activity.attack?.type?.value || (wt.endsWith("M") || wt === "natural" ? "melee" : "ranged");
+    if (atype !== "melee" && !thrown) return null;
+    const src = tokOf(activity.actor); if (!src) return null;
+    const targets = [...(game.user.targets ?? [])].filter(t => t !== src && t.document?.parent === canvas.scene);
+    if (!targets.length) return null;
+    const crit = !!roll.isCritical, fumble = !!roll.isFumble;
+    const hitFor = t => crit || (!fumble && roll.total >= (t.actor?.system?.attributes?.ac?.value ?? 10));
+    return send({ t: "sfx", scene: canvas.scene.id, fx: thrown ? "throw" : "melee", kind: meleeKind(item), crit, pal: "steel", o: {}, seed: Math.floor(Math.random() * 1e9),
+      from: pt(src), tos: targets.map(t => pt(t, hitFor(t))) });
+  }
+
+  /** Прорыв варпа на сцене: расщелина и молнии duration мс, вспышка у всех. Промис — когда пора менять фон. */
+  function breach(scene, at, { duration = 10000, preload: src = null, title = "ЗАВЕСА РАЗОРВАНА", sub = "" } = {}) {
+    const p = { t: "sfx", fx: "breach", scene: scene.id, at, duration, preload: src, title, sub, pal: "warp", o: {}, seed: Math.floor(Math.random() * 1e9), from: { ...at, r: 64 }, tos: [] };
+    send(p);
+    return new Promise(r => setTimeout(r, Math.max(0, duration - 420)));
+  }
+
   /** Ручной вызов: NepreklonnyFX.spell("Священное пламя", заклинатель, цели). */
   function cast(name, src, targets = [], extra = {}) {
     const e = SPELLS[name] ?? extra; if (!e?.fx || !src) return null;
@@ -248,5 +374,5 @@ export function createSpellFX({ broadcast, settings }) {
       tos: (targets.length ? targets : [src]).map(t => pt(t, extra.hit)) });
   }
 
-  return { play, onUse, onAttack, cast, teardown, ensure, get engine() { return eng; }, manual(on) { manual = !!on; }, step(ms) { eng?.update(ms); } };
+  return { play, onUse, onAttack, cast, breach, teardown, ensure, get engine() { return eng; }, manual(on) { manual = !!on; }, step(ms) { eng?.update(ms); } };
 }
