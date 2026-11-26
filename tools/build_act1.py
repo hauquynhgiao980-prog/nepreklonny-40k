@@ -77,6 +77,10 @@ ENV = {"darknessLevel": 0.35, "darknessLock": False,
                        "saturation": 0, "contrast": 0, "shadows": 0, "darkness": {"min": 0, "max": 0.6}}}
 
 
+THUMBS = {k: M + d + '/thumb.webp' for k, d in (('cells', '01_prison_block'), ('post', '02_guard_post'), ('hall', '03_transit_hall'),
+                                                 ('lifeboats', '04_lifeboat_deck'), ('gallery', '05_gallery'))}
+
+
 def apply_markup(s):
     """Стены, свет, звуки и зоны из tools/markup/<сцена>.json (их собирает конвейер tools/markup/pipeline)."""
     key = s["flags"][MOD]["scene"]
@@ -89,8 +93,9 @@ def apply_markup(s):
     walls = []
     for i, w in enumerate(m["walls"]):
         wid = fid('wall', key, str(i), *map(str, w["c"]))
-        doc = {k: v for k, v in w.items() if k != 'role'}
-        doc.update({"_id": wid, "flags": {MOD: {"markup": True, **({"role": w["role"]} if w.get("role") else {})}}, "_key": f"!scenes.walls!{sid}.{wid}"})
+        doc = {k: v for k, v in w.items() if k not in ('role', 'states', 'on')}
+        fl = {"markup": True, **({"role": w["role"]} if w.get("role") else {}), **({"states": w["states"], "on": w["on"]} if w.get("states") else {})}
+        doc.update({"_id": wid, "flags": {MOD: fl}, "_key": f"!scenes.walls!{sid}.{wid}"})
         walls.append(doc)
     s["walls"] = walls
     lights = []
@@ -118,6 +123,8 @@ def apply_markup(s):
                         "elevation": {"bottom": None, "top": None}, "behaviors": beh, "visibility": 0, "locked": False,
                         "flags": {MOD: {"role": r["name"], "markup": True}}, "_key": f"!scenes.regions!{sid}.{rid}"})
     s["regions"] = regions
+    th = THUMBS.get(key)
+    if th: s["thumb"] = th
     return s
 
 
@@ -129,7 +136,10 @@ def build_scenes():
     sid, s = scene('cells', '1. Тюремный блок', 1, 4608, 3072, M + '01_prison_block/cells8_anim_4608x3072.webm'); out.append(s)
     sid = fid('scene', 'post')
     snd = [sound(sid, 'vox', M + '02_guard_post/vox_imperator_zashishaet.ogg', 1750, 520, 40, 0.6)]
-    _, s = scene('post', '1. Пост охраны', 2, 2304, 3072, M + '02_guard_post/post_guard_anim_2304x3072.webm', sounds=snd); out.append(s)
+    # череп-протоколист парит в допросной между когитатором и койкой
+    tl = [tile(sid, fid('tile', 'servo-skull'), 'servo-skull', M + '02_guard_post/servo_skull.webm', 1572, 322, 256, 256, False, 1,
+               {"loop": True, "autoplay": True, "volume": 0})]
+    _, s = scene('post', '1. Пост охраны', 2, 2304, 3072, M + '02_guard_post/post_guard_anim_2304x3072.webm', tiles=tl, sounds=snd); out.append(s)
     sid = fid('scene', 'hall'); P = M + '03_transit_hall/'
     tl = [tile(sid, fid('tile', 'zone'), 'zone', P + 'hall_breach_zone_anim_1248x2104.webm', 1056, 756, 1248, 2104, True, 1,
                {"loop": True, "autoplay": False, "volume": 0}),

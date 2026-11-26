@@ -19,7 +19,7 @@
   "alphaThreshold": 0
  },
  "foreground": null,
- "thumb": null,
+ "thumb": "modules/nepreklonny-40k/maps/02_guard_post/thumb.webp",
  "width": 2304,
  "height": 3072,
  "padding": 0,
@@ -1998,7 +1998,53 @@
   }
  ],
  "templates": [],
- "tiles": [],
+ "tiles": [
+  {
+   "_id": "myRwTCVGey0kxEEn",
+   "texture": {
+    "src": "modules/nepreklonny-40k/maps/02_guard_post/servo_skull.webm",
+    "anchorX": 0.5,
+    "anchorY": 0.5,
+    "offsetX": 0,
+    "offsetY": 0,
+    "fit": "fill",
+    "scaleX": 1,
+    "scaleY": 1,
+    "rotation": 0,
+    "tint": "#ffffff",
+    "alphaThreshold": 0.75
+   },
+   "width": 256,
+   "height": 256,
+   "x": 1572,
+   "y": 322,
+   "elevation": 0,
+   "sort": 1,
+   "rotation": 0,
+   "alpha": 1,
+   "hidden": false,
+   "locked": true,
+   "restrictions": {
+    "light": false,
+    "weather": false
+   },
+   "occlusion": {
+    "mode": 0,
+    "alpha": 0
+   },
+   "flags": {
+    "nepreklonny-40k": {
+     "role": "servo-skull"
+    }
+   },
+   "_key": "!scenes.tiles!xP1RUeliXrkzOMEE.myRwTCVGey0kxEEn",
+   "video": {
+    "loop": true,
+    "autoplay": true,
+    "volume": 0
+   }
+  }
+ ],
  "walls": [
   {
    "c": [

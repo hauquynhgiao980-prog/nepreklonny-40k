@@ -16,6 +16,14 @@ const roleHide = async (type, roles, hidden) => {
   const upd = coll.filter(d => roles.includes(d.flags?.[MOD]?.role)).map(d => ({ _id: d.id, hidden }));
   if (upd.length) await scene.updateEmbeddedDocuments(type, upd);
 };
+// стены, которые есть только в части состояний сцены (flags.states): в остальных — без ограничений
+const wallState = async st => {
+  const upd = scene.walls.filter(w => w.flags?.[MOD]?.states).map(w => {
+    const f = w.flags[MOD], on = f.states.includes(st), r = f.on || {};
+    return { _id: w.id, move: on ? r.move ?? 20 : 0, sight: on ? r.sight ?? 20 : 0, light: on ? r.light ?? 20 : 0, sound: on ? r.sound ?? 20 : 0 };
+  });
+  if (upd.length) await scene.updateEmbeddedDocuments("Wall", upd);
+};
 '''
 
 BREACH = HEAD + r'''// ЗАЛ ЭТАПА — ПРОЛОМ.
@@ -25,11 +33,14 @@ const breach = tileBy("breach"), zone = tileBy("zone");
 if (!breach || !zone) return ui.notifications.warn("На этой сцене нет тайлов пролома. Откройте сцену «2. Зал этапа».");
 if (!zone.hidden) {
   await stop(zone); await stop(breach);
+  await wallState("intact"); await roleHide("AmbientLight", ["torpedo"], true); await roleHide("AmbientSound", ["torpedo"], true);
   return ui.notifications.info("Зал этапа: вернул состояние до пролома.");
 }
 await play(breach, 0);
 await sleep(3760 + 300);
 await play(zone, 0.5);          // последний кадр пролома совпадает с кадром 0,5 с петли зоны
+await wallState("torpedo");     // корпус торпеды и разбросанные ящики — укрытия
+await roleHide("AmbientLight", ["torpedo"], false); await roleHide("AmbientSound", ["torpedo"], false);
 await sleep(250);
 await stop(breach);
 ui.notifications.info("Пролом. На колени, агнцы!");
@@ -49,6 +60,7 @@ if (String(scene.background.src).includes("hall_dark_anim")) {
   for (const t of [rip, zone, breach]) if (t) await stop(t);
   await roleHide("AmbientLight", ["hall-light"], false); await roleHide("AmbientLight", ["lock-alarm"], true);
   await roleHide("AmbientSound", ["wind"], true);
+  await wallState("intact"); await roleHide("AmbientLight", ["torpedo"], true); await roleHide("AmbientSound", ["torpedo"], true);
   return ui.notifications.info("Зал этапа: вернул состояние до пролома.");
 }
 await play(rip, 0);
@@ -56,6 +68,8 @@ await sleep(3760 + 200);
 scene.update({ "background.src": DARK, "environment.darknessLevel": 0.6 });   // сцена перерисуется — свет «мигает»
 await roleHide("AmbientLight", ["hall-light"], true); await roleHide("AmbientLight", ["lock-alarm"], false);
 await roleHide("AmbientSound", ["wind"], false);
+await wallState("dark");        // торпеды и средних ящиков больше нет — их вынесло в пустоту
+await roleHide("AmbientLight", ["torpedo"], true); await roleHide("AmbientSound", ["torpedo"], true);
 const hide = [rip, zone, breach].filter(Boolean).map(t => ({ _id: t.id, hidden: true, "video.autoplay": false }));
 await scene.updateEmbeddedDocuments("Tile", hide);
 ui.notifications.info("Декомпрессия. Испытание 1.");

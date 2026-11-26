@@ -22,7 +22,7 @@ SOUNDS = {
           snd('candles-office', 'candles.ogg', 330, 480, 15, .7, True), snd('candles-interrogation', 'candles.ogg', 1950, 420, 15, .7, True)],
  'hall': [snd('hum', 'ship_hum.ogg', 1152, 1536, 150, .3), snd('steam-n', 'steam_vents.ogg', 1130, 900, 25, .6),
           snd('steam-s', 'steam_vents.ogg', 1130, 2300, 25, .6), snd('cogitator', 'cogitator.ogg', 340, 1700, 20, .45, True),
-          snd('wind', 'wind_breach.ogg', 1980, 1530, 150, .9, False, True)],
+          snd('wind', 'wind_breach.ogg', 1980, 1530, 150, .9, False, True), snd('torpedo', 'sparks.ogg', 1600, 1540, 30, .8, False, True)],
  'boats': [snd('hum', 'ship_hum.ogg', 1152, 1664, 160, .3), snd('turret', 'turret_servo.ogg', 1288, 2896, 40, .6),
            snd('steam-valve', 'steam_vents.ogg', 300, 1100, 15, .5, True)] +
           [snd(f'sparks-{n}', 'sparks.ogg', 2050, y, 15, .7, True) for n, y in ((5, 480), (6, 1086), (8, 2308), (9, 2922))],
@@ -49,7 +49,8 @@ REGIONS = {
  'gallery': [exitz('Лифт', rect(1960, 1830, 2460, 2050), 'у дверей лифта.')],
 }
 
-def wall_doc(w):
+INITIAL = {'hall': 'intact'}
+def wall_doc(w, initial=None):
     k = w['kind']; d = {'c': w['c'], 'light': 20, 'move': 20, 'sight': 20, 'sound': 20, 'dir': 0, 'door': 0, 'ds': 0,
                         'threshold': {'light': None, 'sight': None, 'sound': None, 'attenuation': False}, 'animation': None}
     if k == 'limited': d.update(light=10, sight=10, sound=0)
@@ -59,11 +60,19 @@ def wall_doc(w):
         d['door'] = 1; d['ds'] = 2 if w.get('locked') else (1 if w.get('open') else 0)
         d['doorSound'] = 'futuristicHydraulic'
         d['role'] = w.get('name')
+    if w.get('states'):   # стена есть только в части состояний сцены: в остальных — без ограничений
+        d['states'] = w['states']; d['on'] = {k: d[k] for k in ('light', 'move', 'sight', 'sound')}
+        if initial not in w['states']: d.update(light=0, move=0, sight=0, sound=0)
     return d
 
 for m, key in KEY.items():
     spec = json.load(open(f'{m}.spec.json'))
     walls = json.load(open(f'{m}.walls.json'))
+    for e in spec.get('state_walls', []):
+        P = e['pts']; k = len(P)
+        for i in (range(k) if e.get('closed') else range(k - 1)):
+            a, b = P[i], P[(i + 1) % k]
+            walls.append({'c': [round(a[0]), round(a[1]), round(b[0]), round(b[1])], 'kind': e['kind'], 'states': e['states']})
     opened = {d['name'] for d in spec.get('doors', []) if d.get('open')}
     for w in walls:
         if w['kind'] == 'door' and w.get('name') in opened: w['open'] = True
@@ -83,10 +92,16 @@ for m, key in KEY.items():
                   'config': {'dim': 25, 'bright': 6, 'color': '#ff1a0d', 'alpha': 0.55, 'angle': 360, 'coloration': 1, 'attenuation': 0.5,
                              'luminosity': 0.5, 'saturation': 0, 'contrast': 0, 'shadows': 0, 'negative': False, 'priority': 0,
                              'animation': {'type': 'siren', 'speed': 6, 'intensity': 6, 'reverse': False}, 'darkness': {'min': 0, 'max': 1}}})
+    if m == 'hall':   # торпеда в проломе: огонь у носа и по рваным краям, искры
+        for x, y, dim in ((1400, 1530, 14), (1700, 1360, 9), (2050, 1700, 9)):
+            L.append({'x': x, 'y': y, 'hidden': True, 'role': 'torpedo',
+                      'config': {'dim': dim, 'bright': 3, 'color': '#ff7a1a', 'alpha': 0.45, 'angle': 360, 'coloration': 1, 'attenuation': 0.5,
+                                 'luminosity': 0.5, 'saturation': 0, 'contrast': 0, 'shadows': 0, 'negative': False, 'priority': 0,
+                                 'animation': {'type': 'torch', 'speed': 5, 'intensity': 5, 'reverse': False}, 'darkness': {'min': 0, 'max': 1}}})
     R = REGIONS.get(m, [])
     if m == 'prison':
         c8 = [r for r in json.load(open('prison.polys.json')) if r['name'] == 'cell8'][0]['poly']
         R[2]['pts'] = [v for p in c8 for v in p]
-    doc = {'walls': [wall_doc(w) for w in walls], 'lights': L, 'sounds': SOUNDS[m], 'regions': R}
+    doc = {'walls': [wall_doc(w, INITIAL.get(m)) for w in walls], 'lights': L, 'sounds': SOUNDS[m], 'regions': R}
     json.dump(doc, open(OUT + key + '.json', 'w'), ensure_ascii=False, indent=1)
     print(key, len(doc['walls']), 'walls', len(L), 'lights', len(doc['sounds']), 'sounds', len(R), 'regions')
