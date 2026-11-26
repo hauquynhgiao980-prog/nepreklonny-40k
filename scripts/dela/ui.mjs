@@ -5,6 +5,7 @@ import { modeOf, saveMod } from "./trial.mjs";
 import { directorTab } from "./director.mjs";
 import { guideTab } from "./guide.mjs";
 import { orbCanvas, setOrb, ArtReveal } from "./gl.mjs";
+import { dramaDoc, dramaReady, dramaPart } from "./drama.mjs";
 
 const ART = (cls, n) => `modules/${S.MOD}/anketa/art/${cls}_${n}.webp`;
 
@@ -367,6 +368,7 @@ export class Panel {
     const picked = Object.keys(T.picks).length, rolled = Object.keys(T.rolls).length;
     return h("div.nk-live.on", {},
       h("h3", {}, `ИДЁТ ИСПЫТАНИЕ ${T.n} · ${M.title}`, h("span", {}, T.phase === "choose" ? `ВЫБОР · ${picked} ИЗ ${T.heroes.length}` : `БРОСКИ · ${rolled} ИЗ ${T.heroes.length}`)),
+      this.dramaBox(T, M, R, st),
       h("table", {}, h("thead", {}, h("tr", {}, ["ГЕРОЙ", "ТАЙНЫЙ ВЫБОР", "ЗА ИГРОКА", "БРОСОК", "БРОСОК МАСТЕРА"].map(t => h("th", {}, t)))), h("tbody", {}, rows)),
       h("div.nk-sum", {},
         h("div", {}, `СУММА ${R.sum} · ПОРОГ ${R.thr || "—"} (${R.per} × ${R.N})`, R.outcome ? h("b", { class: `oc-${R.outcome}` }, ` → ${OUTCOME_LABEL[R.outcome].toUpperCase()}`) : null),
@@ -376,6 +378,38 @@ export class Panel {
         override,
         h("button.nk-btn", { "data-apply": 1, disabled: !R.outcome && !override.value, onclick: () => S.applyTrial(override.value || null) }, "ПРИМЕНИТЬ"),
         h("button.nk-btn.ghost", { onclick: () => S.cancelTrial() }, "ОТМЕНИТЬ")));
+  }
+
+  /** Зачитка к идущему испытанию: вступление, строки героя по его броску и выбору, итог. Тексты — guide/drama.html. */
+  dramaBox(T, M, R, st) {
+    if (this.dv?.id !== T.id) this.dv = { id: T.id, v: "open" };
+    if (!dramaReady()) {
+      dramaDoc().then(() => this.render()).catch(() => {});
+      return h("div.nk-drama-live", {}, h("div.nk-hint", {}, "Загружаю зачитки…"));
+    }
+    const v = this.dv.v, set = x => { this.dv.v = x; this.render(); };
+    const top = Object.entries(T.rolls || {}).sort((a, b) => b[1].total - a[1].total)[0]?.[0];
+    let html = "", label = "";
+    if (v === "open") { html = dramaPart(T.n, '[data-part="open"]'); label = "вступление, до выбора"; }
+    else if (v === "enemies") { html = dramaPart(T.n, '[data-part="enemies"]'); label = "враги, после их спасбросков"; }
+    else if (v.startsWith("oc:")) { const oc = v.slice(3); html = dramaPart(T.n, `[data-part="oc"][data-oc="${oc}"]`); label = `итог: ${OUTCOME_LABEL[oc]}`; }
+    else {
+      const hero = st.heroes[v], pick = T.picks[v], roll = T.rolls[v];
+      label = `${hero?.name || "?"}: ${roll ? `бросок ${roll.total}` : "ещё не бросал"}${pick ? "" : ", ещё не выбрал"}`;
+      if (roll?.ability) html += dramaPart(T.n, `[data-part="save"][data-ab="${roll.ability}"][data-ok="${roll.total >= M.per ? 1 : 0}"]`);
+      if (T.n === 1 && v === top && roll) html += dramaPart(1, '[data-part="top"]');
+      if (pick) html += dramaPart(T.n, `[data-part="pick"][data-c="${pick.shot ? "shot" : pick.c}"]`);
+    }
+    const btn = (id, t, dis = false) => h("button", { class: v === id ? "on" : "", disabled: dis, onclick: () => set(id) }, t);
+    const text = h("div.nk-drama-text"); text.innerHTML = html || '<p class="nk-hint">Пока нечего читать.</p>';
+    return h("div.nk-drama-live", {},
+      h("div.nk-drama-bar", {}, h("b", {}, "ЧИТАТЬ ВСЛУХ"), h("span.nk-hint", {}, label), h("div", { style: "flex:1" }),
+        h("span.nk-seg", {}, btn("open", "ВСТУПЛЕНИЕ"), T.n === 1 ? btn("enemies", "ВРАГИ") : null,
+          T.heroes.map(aid => btn(aid, (st.heroes[aid]?.name || "?").toUpperCase(), !T.picks[aid] && !T.rolls[aid]))),
+        h("span.nk-seg", {}, Object.entries(OUTCOME_LABEL).map(([k, t]) => h("button", {
+          class: `${v === "oc:" + k ? "on" : ""} ${R.outcome === k ? "sum" : ""}`, title: R.outcome === k ? "Так выходит по сумме бросков" : "",
+          onclick: () => set("oc:" + k) }, t.toUpperCase())))),
+      text);
   }
 
   trials(st) {

@@ -23,7 +23,9 @@ function eventsTool(key, title) {
 
 export const LOCATIONS = [
   { key: "intro", title: "О МОДУЛЕ · КТО, ЧТО, ЗАЧЕМ", file: "intro" },
+  { key: "prep", title: "ПЕРЕД ИГРОЙ · БЕЗОПАСНОСТЬ · ЕСЛИ ЧТО-ТО ПОШЛО НЕ ТАК", file: "prep" },
   { key: "lore", title: "ШПАРГАЛКА ПО МИРУ · НЕУДОБНЫЕ ВОПРОСЫ", file: "lore" },
+  { key: "drama", title: "ДРАМАТИЧЕСКИЕ ЗАЧИТКИ · СОБЫТИЯ И ВЫБОРЫ", file: "drama" },
   { key: "prologue", title: "ПРОЛОГ · МОСТИК", scene: "bridge", file: "prologue" },
   { key: "cells", title: "0. ТЮРЕМНЫЙ БЛОК", scene: "cells", tools: [nudgeTools, servitorTools, hackTools], file: "cells" },
   { key: "post", title: "1. ПОСТ ОХРАНЫ", scene: "post", file: "post" },
@@ -50,8 +52,34 @@ function load(file) {
   return loading.get(file);
 }
 
+/** Зачитки: кнопка события над текстом, подсветка сработавшего события, идущего испытания и его итога. */
+function dramaState(root, rerender) {
+  const st = S.get();
+  for (const el of root.querySelectorAll(".nk-g-drama[data-ev]")) {
+    const { scene, list } = sceneEvents(el.dataset.scene);
+    const e = list.find(x => x.id === el.dataset.ev);
+    el.classList.toggle("on", !!e?.on);
+    let bar = el.querySelector(":scope > .nk-g-dbar");
+    if (!bar) { bar = h("div.nk-g-dbar"); el.prepend(bar); }
+    bar.replaceChildren(scene && e
+      ? h("button", { class: `nk-btn small ${e.on ? "on" : ""}`, title: e.hint, "data-dev": e.id, onclick: async ev => {
+          const b = ev.currentTarget; b.disabled = true;
+          try { await e.fire(); } catch (err) { console.error(err); ui.notifications.error(err.message); }
+          if (rerender) rerender(); else dramaState(root);
+        } }, e.on ? `${e.label} ✓` : e.label)
+      : h("span.nk-g-hint", {}, "сцены нет в мире"));
+  }
+  for (const el of root.querySelectorAll(".nk-g-drama[data-trial]")) {
+    const n = Number(el.dataset.trial), live = st.trial?.n === n;
+    el.classList.toggle("on", live);
+    let oc = st.outcomes?.[n] || null;
+    if (live) { try { oc = S.trialSum(st.trial).outcome || oc; } catch { /* нет бросков */ } }
+    el.querySelectorAll("[data-oc]").forEach(x => x.classList.toggle("on", x.dataset.oc === oc));
+  }
+}
+
 /** Картинки промежуточных мест: превью и кнопки «Показать игрокам», «Убрать у всех». */
-function decorate(root, key) {
+function decorate(root, key, rerender) {
   for (const el of root.querySelectorAll(".nk-g-pic[data-pic]")) {
     const pic = el.dataset.pic, title = el.dataset.title || pic;
     const img = h("img", { src: picSrc(pic), alt: title, loading: "lazy" });
@@ -62,6 +90,7 @@ function decorate(root, key) {
         h("button.nk-btn.small", { "data-pic-show": pic, onclick: () => showPic(pic, title) }, "ПОКАЗАТЬ ИГРОКАМ"),
         h("button.nk-btn.small", { onclick: () => hidePic() }, "УБРАТЬ У ВСЕХ")));
   }
+  if (root.querySelector(".nk-g-drama")) dramaState(root, rerender);
   root.querySelectorAll("details").forEach((d, i) => {
     const k = `${key}:${i}`;
     if (details.has(k)) d.open = details.get(k);
@@ -69,9 +98,9 @@ function decorate(root, key) {
   });
 }
 
-function textBlock(L) {
+function textBlock(L, rerender) {
   const d = h("div.nk-g-text");
-  const fill = t => { d.innerHTML = t; decorate(d, L.key); };
+  const fill = t => { d.innerHTML = t; decorate(d, L.key, rerender); };
   if (html.has(L.file)) fill(html.get(L.file));
   else { d.append(h("div.nk-g-hint", {}, "Загружаю…")); load(L.file).then(fill); }
   return d;
@@ -80,7 +109,7 @@ function textBlock(L) {
 function section(L, rerender, extra) {
   const on = !!open[L.key];
   const body = h("div.nk-g-body");
-  const fill = () => { if (!body.childElementCount) body.append(...(L.tools || []).map(t => t(rerender)), textBlock(L)); };
+  const fill = () => { if (!body.childElementCount) body.append(...(L.tools || []).map(t => t(rerender)), textBlock(L, rerender)); };
   if (on) fill();
   return h("section", { class: `nk-g-sec ${on ? "on" : ""}`, "data-sec": L.key },
     h("div.nk-g-head", {},
