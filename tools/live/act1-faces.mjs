@@ -1,4 +1,4 @@
-/* «Непреклонный» 3.4.3 — для уже импортированного мира (Нерождённый — живой токен с аурой варпа и лиловым светом):
+/* «Непреклонный» 3.4.3 — для уже импортированного мира (Нерождённый — огромный, 3×3, живой токен с аурой варпа и лиловым светом):
    1) портреты и токены NPC и врагов акта I: Крюк, Тихий Сол, Варро, культисты, стрелок, Отмеченный Хаосом, Нерождённый,
       турель (только портрет); у культистов на сцене лица чередуются;
    2) макросы сервиторов в папке «Акт I» (создаёт, если их нет; иначе обновляет код);
@@ -14,8 +14,8 @@ export default async function ({ log }) {
     { name: "Культист-ренегат", img: "kultist_a", tok: "token_kultist_a", size: 1 },
     { name: "Предатель-стрелок", img: "strelok", tok: "token_strelok", size: 1 },
     { name: "Отмеченный Хаосом", img: "otmechenny", tok: "token_otmechenny", size: 1 },
-    { name: "Нерождённый", img: "nerozhdenny", tok: "token_nerozhdenny_aura.webm", size: 2, scale: 1.7,
-      light: { dim: 15, bright: 5, color: "#a01cff", alpha: 0.5, coloration: 1, luminosity: 0.5, animation: { type: "pulse", speed: 3, intensity: 5, reverse: false } } },
+    { name: "Нерождённый", img: "nerozhdenny", tok: "token_nerozhdenny_aura.webm", size: 3, scale: 1.5, sys: { "system.traits.size": "huge" },
+      light: { dim: 20, bright: 5, color: "#a01cff", alpha: 0.5, coloration: 1, luminosity: 0.5, animation: { type: "pulse", speed: 3, intensity: 5, reverse: false } } },
     { name: "Сторожевая турель палубы", img: "turret", tok: null, size: 2 },
   ];
   const report = [];
@@ -26,6 +26,7 @@ export default async function ({ log }) {
       const upd = { img: `${T}${s.img}.webp`, "prototypeToken.texture": tex, "prototypeToken.width": s.size, "prototypeToken.height": s.size };
       if (s.disp !== undefined) upd["prototypeToken.disposition"] = s.disp;
       if (s.light) upd["prototypeToken.light"] = s.light;
+      if (s.sys) Object.assign(upd, s.sys);
       await a.update(upd);
       report.push({ actor: a.name });
       for (const scene of game.scenes) {

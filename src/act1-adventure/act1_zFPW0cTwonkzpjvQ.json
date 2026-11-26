@@ -34895,7 +34895,7 @@
      "book": "MM 2024"
     },
     "traits": {
-     "size": "lg",
+     "size": "huge",
      "di": {
       "value": [
        "poison",
@@ -34951,8 +34951,8 @@
     "actorLink": false,
     "appendNumber": false,
     "prependAdjective": false,
-    "width": 2,
-    "height": 2,
+    "width": 3,
+    "height": 3,
     "texture": {
      "src": "modules/nepreklonny-40k/icons/gen/act1/token_nerozhdenny_aura.webm",
      "anchorX": 0.5,
@@ -34960,8 +34960,8 @@
      "offsetX": 0,
      "offsetY": 0,
      "fit": "contain",
-     "scaleX": 1.7,
-     "scaleY": 1.7,
+     "scaleX": 1.5,
+     "scaleY": 1.5,
      "rotation": 0,
      "tint": "#ffffff",
      "alphaThreshold": 0.75
@@ -34985,7 +34985,7 @@
      "bright": 5,
      "color": "#a01cff",
      "coloration": 1,
-     "dim": 15,
+     "dim": 20,
      "attenuation": 0.5,
      "luminosity": 0.5,
      "saturation": 0,

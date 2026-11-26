@@ -392,8 +392,9 @@ def build_actors():
         feat(aid, 'Легендарные действия (2 за раунд)', '<p>После хода другого существа: удар когтем или шаг сквозь дымку — телепорт на 30 футов в видимую точку внутри лиловой дымки у разлома.</p>', {step_id: step}),
         feat(aid, 'Логово: разлом', lair_html),
         feat(aid, 'Тактика', '<p>Первой идёт на того, у кого больше Света. Тех, кто принял Шёпот в испытании 2, обходит, пока есть другие цели: «эти уже наши».</p>')]
-    a['img'] = A1 + 'nerozhdenny.webp'; token(a, 'Нерождённый', A1 + 'token_nerozhdenny_aura.webm', 2, 2, 1.7, -1)   # живой: петля MiniMax с аурой варпа
-    a['prototypeToken']['light'].update({'dim': 15, 'bright': 5, 'color': '#a01cff', 'alpha': 0.5, 'coloration': 1, 'luminosity': 0.5,
+    a['img'] = A1 + 'nerozhdenny.webp'; token(a, 'Нерождённый', A1 + 'token_nerozhdenny_aura.webm', 3, 3, 1.5, -1)   # живой: петля MiniMax с аурой варпа, огромный
+    a['system']['traits']['size'] = 'huge'
+    a['prototypeToken']['light'].update({'dim': 20, 'bright': 5, 'color': '#a01cff', 'alpha': 0.5, 'coloration': 1, 'luminosity': 0.5,
                                          'animation': {'type': 'pulse', 'speed': 3, 'intensity': 5, 'reverse': False}})
     out.append(a)
 
