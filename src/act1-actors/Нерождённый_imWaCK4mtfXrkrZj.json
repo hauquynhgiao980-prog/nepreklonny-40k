@@ -653,14 +653,14 @@
   "width": 2,
   "height": 2,
   "texture": {
-   "src": "modules/nepreklonny-40k/icons/gen/act1/token_nerozhdenny.webp",
+   "src": "modules/nepreklonny-40k/icons/gen/act1/token_nerozhdenny_anim.webm",
    "anchorX": 0.5,
    "anchorY": 0.5,
    "offsetX": 0,
    "offsetY": 0,
    "fit": "contain",
-   "scaleX": 1,
-   "scaleY": 1,
+   "scaleX": 1.3,
+   "scaleY": 1.3,
    "rotation": 0,
    "tint": "#ffffff",
    "alphaThreshold": 0.75

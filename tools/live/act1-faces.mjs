@@ -1,4 +1,4 @@
-/* «Непреклонный» 3.4.3 — для уже импортированного мира:
+/* «Непреклонный» 3.4.3 — для уже импортированного мира (Нерождённый — живой токен, петля WebM):
    1) портреты и токены NPC и врагов акта I: Крюк, Тихий Сол, Варро, культисты, стрелок, Отмеченный Хаосом, Нерождённый,
       турель (только портрет); у культистов на сцене лица чередуются;
    2) макросы сервиторов в папке «Акт I» (создаёт, если их нет; иначе обновляет код);
@@ -14,12 +14,12 @@ export default async function ({ log }) {
     { name: "Культист-ренегат", img: "kultist_a", tok: "token_kultist_a", size: 1 },
     { name: "Предатель-стрелок", img: "strelok", tok: "token_strelok", size: 1 },
     { name: "Отмеченный Хаосом", img: "otmechenny", tok: "token_otmechenny", size: 1 },
-    { name: "Нерождённый", img: "nerozhdenny", tok: "token_nerozhdenny", size: 2 },
+    { name: "Нерождённый", img: "nerozhdenny", tok: "token_nerozhdenny_anim.webm", size: 2, scale: 1.3 },
     { name: "Сторожевая турель палубы", img: "turret", tok: null, size: 2 },
   ];
   const report = [];
   for (const s of SET) {
-    const tex = { src: `${T}${s.tok}.webp`, scaleX: 1, scaleY: 1, fit: "contain" };
+    const tex = { src: `${T}${s.tok?.includes(".") ? s.tok : `${s.tok}.webp`}`, scaleX: s.scale || 1, scaleY: s.scale || 1, fit: "contain" };
     for (const a of game.actors.filter(x => x.name === s.name)) {
       if (!s.tok) { await a.update({ img: `${T}${s.img}.webp` }); report.push({ actor: a.name }); continue; }   // турель: на карте остаётся вид сверху
       const upd = { img: `${T}${s.img}.webp`, "prototypeToken.texture": tex, "prototypeToken.width": s.size, "prototypeToken.height": s.size };
