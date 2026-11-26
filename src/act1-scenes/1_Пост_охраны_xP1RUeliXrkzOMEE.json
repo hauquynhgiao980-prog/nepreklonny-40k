@@ -1879,7 +1879,7 @@
       "events": [
        "tokenEnter"
       ],
-      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у прохода обратно в блок камер.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у прохода обратно в блок камер.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
      },
      "disabled": false,
      "flags": {},
@@ -1929,7 +1929,7 @@
       "events": [
        "tokenEnter"
       ],
-      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у правого прохода: дальше в корабль.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у правого прохода: дальше в корабль.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
      },
      "disabled": false,
      "flags": {},
@@ -1979,7 +1979,7 @@
       "events": [
        "tokenEnter"
       ],
-      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у двери с шевронами: дальше «Зал этапа».`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у двери с шевронами: дальше «Зал этапа».`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
      },
      "disabled": false,
      "flags": {},

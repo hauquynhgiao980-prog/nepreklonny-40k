@@ -2255,7 +2255,7 @@
         "events": [
          "tokenEnter"
         ],
-        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у западного выхода из блока: дальше «Пост охраны».`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у западного выхода из блока: дальше «Пост охраны».`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
        },
        "disabled": false,
        "flags": {}
@@ -2303,7 +2303,7 @@
         "events": [
          "tokenEnter"
         ],
-        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у восточного выхода из блока.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у восточного выхода из блока.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
        },
        "disabled": false,
        "flags": {}
@@ -11267,7 +11267,7 @@
         "events": [
          "tokenEnter"
         ],
-        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у прохода обратно в блок камер.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у прохода обратно в блок камер.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
        },
        "disabled": false,
        "flags": {}
@@ -11315,7 +11315,7 @@
         "events": [
          "tokenEnter"
         ],
-        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у правого прохода: дальше в корабль.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у правого прохода: дальше в корабль.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
        },
        "disabled": false,
        "flags": {}
@@ -11363,7 +11363,7 @@
         "events": [
          "tokenEnter"
         ],
-        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у двери с шевронами: дальше «Зал этапа».`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у двери с шевронами: дальше «Зал этапа».`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
        },
        "disabled": false,
        "flags": {}
@@ -17045,7 +17045,7 @@
         "events": [
          "tokenEnter"
         ],
-        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у верхнего шлюза.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у верхнего шлюза.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
        },
        "disabled": false,
        "flags": {}
@@ -17093,7 +17093,7 @@
         "events": [
          "tokenEnter"
         ],
-        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у нижнего прохода.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у нижнего прохода.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
        },
        "disabled": false,
        "flags": {}
@@ -22343,7 +22343,7 @@
         "events": [
          "tokenEnter"
         ],
-        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у верхнего шлюза.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у верхнего шлюза.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
        },
        "disabled": false,
        "flags": {}
@@ -22391,7 +22391,7 @@
         "events": [
          "tokenEnter"
         ],
-        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у нижнего шлюза.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у нижнего шлюза.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
        },
        "disabled": false,
        "flags": {}
@@ -29710,7 +29710,7 @@
         "events": [
          "tokenEnter"
         ],
-        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у дверей лифта.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+        "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у дверей лифта.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
        },
        "disabled": false,
        "flags": {}
@@ -185203,6 +185203,30 @@
    }
   },
   {
+   "_id": "Pl2O5N7z9Ep4oKGH",
+   "name": "Все сервиторы оборачиваются",
+   "type": "script",
+   "img": "icons/svg/terror.svg",
+   "scope": "global",
+   "command": "const api = game.modules.get(\"nepreklonny-40k\")?.api?.dela?.servitor;\nif (!api) return ui.notifications.warn(\"Модуль «Непреклонный» не загружен.\");\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\n// Все сервиторы блока разом поворачиваются к героям: экран и спасбросок у каждого.\nawait api.look();\n",
+   "folder": "UXCsI8dHKEjJ5EQa",
+   "sort": 800,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.3",
+    "createdTime": 1764072000000,
+    "modifiedTime": 1764072000000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+   }
+  },
+  {
    "_id": "d6WQO1uAIosgIJG7",
    "name": "Декомпрессия",
    "type": "script",
@@ -185283,6 +185307,54 @@
    "command": "const MOD = \"nepreklonny-40k\";\nconst scene = canvas.scene;\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\nif (!scene) return ui.notifications.warn(\"Нет открытой сцены.\");\nconst tileBy = role => scene.tiles.find(t => t.flags?.[MOD]?.role === role);\nconst sleep = ms => new Promise(r => setTimeout(r, ms));\nconst light = s => String(s ?? \"\").includes(\"1152x1536\") || String(s ?? \"\").includes(\"1536x1152\") || String(s ?? \"\").includes(\"1152x1664\");\nconst play = (tile, offset = 0, extra = {}) => tile.update({ hidden: false, \"video.autoplay\": true, ...extra }, { diff: false, playVideo: true, offset });\nconst stop = (tile, extra = {}) => tile.update({ hidden: true, \"video.autoplay\": false, ...extra }, { diff: false, playVideo: false, offset: 0 });\n// свет и звуки сцены по роли (flags.nepreklonny-40k.role)\nconst roleHide = async (type, roles, hidden) => {\n  const coll = type === \"AmbientLight\" ? scene.lights : scene.sounds;\n  const upd = coll.filter(d => roles.includes(d.flags?.[MOD]?.role)).map(d => ({ _id: d.id, hidden }));\n  if (upd.length) await scene.updateEmbeddedDocuments(type, upd);\n};\n// стены, которые есть только в части состояний сцены (flags.states): в остальных — без ограничений\nconst wallState = async st => {\n  const upd = scene.walls.filter(w => w.flags?.[MOD]?.states).map(w => {\n    const f = w.flags[MOD], on = f.states.includes(st), r = f.on || {};\n    return { _id: w.id, move: on ? r.move ?? 20 : 0, sight: on ? r.sight ?? 20 : 0, light: on ? r.light ?? 20 : 0, sound: on ? r.sound ?? 20 : 0 };\n  });\n  if (upd.length) await scene.updateEmbeddedDocuments(\"Wall\", upd);\n};\n// СМОТРОВАЯ ГАЛЕРЕЯ — ПРОРЫВ ВАРПА. Меняет фон: чистая галерея ⇄ осквернённая. Стены у обеих версий одни.\nconst dir = \"modules/nepreklonny-40k/maps/05_gallery/\";\nconst src = String(scene.background.src ?? \"\");\nif (!src.includes(\"gallery_\")) return ui.notifications.warn(\"Откройте сцену «4. Смотровая галерея».\");\nconst lite = light(src);\nconst CLEAN = dir + (lite ? \"gallery_clean_anim_1536x1152.webm\" : \"gallery_clean_anim_3072x2304.webm\");\nconst DES = dir + (lite ? \"gallery_desecrated_anim_1536x1152.webm\" : \"gallery_desecrated_anim_3072x2304.webm\");\nconst toDes = !src.includes(\"desecrated\");\nawait scene.update({ \"background.src\": toDes ? DES : CLEAN });\nawait roleHide(\"AmbientLight\", [\"rift\"], !toDes); await roleHide(\"AmbientSound\", [\"rift\"], !toDes);\nui.notifications.info(toDes ? \"Прорыв варпа. Из разлома поднимается Нерождённый.\" : \"Галерея снова чистая.\");\n",
    "folder": "UXCsI8dHKEjJ5EQa",
    "sort": 600,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.3",
+    "createdTime": 1764072000000,
+    "modifiedTime": 1764072000000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+   }
+  },
+  {
+   "_id": "ofYn7cbOWyXFl7rR",
+   "name": "Сервитор смотрит",
+   "type": "script",
+   "img": "icons/svg/eye.svg",
+   "scope": "global",
+   "command": "const api = game.modules.get(\"nepreklonny-40k\")?.api?.dela?.servitor;\nif (!api) return ui.notifications.warn(\"Модуль «Непреклонный» не загружен.\");\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\n// Сервитор смотрит на выделенных героев: экран «Я ТЕБЯ ВИЖУ» (или «ПРОСНИСЬ»), потом спасбросок Мудрости, Сл 12.\nconst ids = (canvas.tokens?.controlled ?? []).map(t => t.actor?.id).filter(Boolean);\nif (!ids.length) return ui.notifications.warn(\"Выделите токен героя, который подошёл к сервитору.\");\nawait api.look(ids);\n",
+   "folder": "UXCsI8dHKEjJ5EQa",
+   "sort": 700,
+   "ownership": {
+    "default": 0
+   },
+   "flags": {},
+   "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.3",
+    "createdTime": 1764072000000,
+    "modifiedTime": 1764072000000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+   }
+  },
+  {
+   "_id": "dgN5ZOdinFdhX2AY",
+   "name": "Снять испуг",
+   "type": "script",
+   "img": "icons/svg/sun.svg",
+   "scope": "global",
+   "command": "const api = game.modules.get(\"nepreklonny-40k\")?.api?.dela?.servitor;\nif (!api) return ui.notifications.warn(\"Модуль «Непреклонный» не загружен.\");\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\n// Снять испуг со всех героев.\nawait api.calm();\n",
+   "folder": "UXCsI8dHKEjJ5EQa",
+   "sort": 900,
    "ownership": {
     "default": 0
    },

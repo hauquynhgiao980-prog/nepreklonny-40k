@@ -110,6 +110,22 @@ await roleHide("AmbientLight", ["rift"], !toDes); await roleHide("AmbientSound",
 ui.notifications.info(toDes ? "Прорыв варпа. Из разлома поднимается Нерождённый." : "Галерея снова чистая.");
 '''
 
+SERV_HEAD = '''const api = game.modules.get("nepreklonny-40k")?.api?.dela?.servitor;
+if (!api) return ui.notifications.warn("Модуль «Непреклонный» не загружен.");
+if (!game.user.isGM) return ui.notifications.warn("Этот макрос запускает мастер.");
+'''
+SERV_LOOK = SERV_HEAD + '''// Сервитор смотрит на выделенных героев: экран «Я ТЕБЯ ВИЖУ» (или «ПРОСНИСЬ»), потом спасбросок Мудрости, Сл 12.
+const ids = (canvas.tokens?.controlled ?? []).map(t => t.actor?.id).filter(Boolean);
+if (!ids.length) return ui.notifications.warn("Выделите токен героя, который подошёл к сервитору.");
+await api.look(ids);
+'''
+SERV_ALL = SERV_HEAD + '''// Все сервиторы блока разом поворачиваются к героям: экран и спасбросок у каждого.
+await api.look();
+'''
+SERV_CALM = SERV_HEAD + '''// Снять испуг со всех героев.
+await api.calm();
+'''
+
 MACROS = [
     ("Пролом", "icons/svg/fire.svg", BREACH),
     ("Декомпрессия", "icons/svg/hazard.svg", DECOMP),
@@ -117,4 +133,7 @@ MACROS = [
     ("Капсула 7", "icons/svg/door-exit.svg", CAPSULE),
     ("Вентиль", "icons/svg/regen.svg", VALVE),
     ("Прорыв варпа", "icons/svg/lightning.svg", WARP),
+    ("Сервитор смотрит", "icons/svg/eye.svg", SERV_LOOK),
+    ("Все сервиторы оборачиваются", "icons/svg/terror.svg", SERV_ALL),
+    ("Снять испуг", "icons/svg/sun.svg", SERV_CALM),
 ]

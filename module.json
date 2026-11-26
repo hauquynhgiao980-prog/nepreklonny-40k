@@ -2,7 +2,7 @@
   "id": "nepreklonny-40k",
   "title": "Непреклонный — Warhammer 40,000 на D&D 2024",
   "description": "<p>Автономный набор для игры по Warhammer 40,000 на правилах D&D 2024: тринадцать классов под 41-е тысячелетие со своими заклинаниями, снаряжением, чертами, происхождениями и существами, десять прегенов 5 уровня.</p><p>Самостоятельный модуль «Последний курс „Непреклонного“», акт I: шесть сцен с анимированными картами, тайлами и звуками, текст для мастера, раздатки, персонажи и макросы.</p>",
-  "version": "3.4.2",
+  "version": "3.4.3",
   "compatibility": {
     "minimum": "13",
     "verified": "14"
@@ -44,7 +44,7 @@
     {
       "name": "act1-scenes",
       "label": "Акт I — сцены",
-      "path": "packs/act1-scenes-341",
+      "path": "packs/act1-scenes-343",
       "type": "Scene",
       "ownership": {
         "PLAYER": "NONE",
@@ -65,7 +65,7 @@
     {
       "name": "act1-macros",
       "label": "Акт I — макросы",
-      "path": "packs/act1-macros-340",
+      "path": "packs/act1-macros-343",
       "type": "Macro",
       "ownership": {
         "PLAYER": "NONE",

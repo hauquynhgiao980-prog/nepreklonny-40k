@@ -1,0 +1,25 @@
+{
+ "_id": "ofYn7cbOWyXFl7rR",
+ "name": "Сервитор смотрит",
+ "type": "script",
+ "img": "icons/svg/eye.svg",
+ "scope": "global",
+ "command": "const api = game.modules.get(\"nepreklonny-40k\")?.api?.dela?.servitor;\nif (!api) return ui.notifications.warn(\"Модуль «Непреклонный» не загружен.\");\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\n// Сервитор смотрит на выделенных героев: экран «Я ТЕБЯ ВИЖУ» (или «ПРОСНИСЬ»), потом спасбросок Мудрости, Сл 12.\nconst ids = (canvas.tokens?.controlled ?? []).map(t => t.actor?.id).filter(Boolean);\nif (!ids.length) return ui.notifications.warn(\"Выделите токен героя, который подошёл к сервитору.\");\nawait api.look(ids);\n",
+ "folder": null,
+ "sort": 700,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!macros!ofYn7cbOWyXFl7rR"
+}

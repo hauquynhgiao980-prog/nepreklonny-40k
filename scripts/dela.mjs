@@ -2,6 +2,7 @@
 import * as S from "./dela/state.mjs";
 import { Anketa, Pad, Panel } from "./dela/ui.mjs";
 import { TrialUI } from "./dela/trial.mjs";
+import * as Servitor from "./dela/servitor.mjs";
 
 const anketa = new Anketa();
 const trial = new TrialUI();
@@ -61,6 +62,7 @@ Hooks.on("getSceneControlButtons", controls => {
 
 Hooks.once("ready", () => {
   game.socket.on(S.SOCKET, (msg, senderId) => S.handleSocket(msg, senderId));
+  game.socket.on(S.SOCKET, (msg, senderId) => Servitor.onSocket(msg, senderId));
   S.onChange(st => sync(st));
   Hooks.on("nkDelaAnketaClosed", () => sync());
   Hooks.on("userConnected", () => { if (game.user.isGM) panel.render(); });
@@ -68,8 +70,13 @@ Hooks.once("ready", () => {
   // режиссёрский пульт следит за сценами, тайлами и звуками
   let rt = null;
   const reScenes = () => { if (!game.user.isGM || !panel.isOpen || panel.tab !== "scenes") return; clearTimeout(rt); rt = setTimeout(() => panel.render(), 120); };
+  // вкладка «Сценарий» показывает испуг героев
+  let gt = null;
+  const reGuide = () => { if (!game.user.isGM || !panel.isOpen || panel.tab !== "guide") return; clearTimeout(gt); gt = setTimeout(() => panel.render(), 150); };
+  for (const hk of ["createActiveEffect", "deleteActiveEffect", "updateActor"]) Hooks.on(hk, reGuide);
   for (const hk of ["createScene", "updateScene", "deleteScene", "createTile", "updateTile", "deleteTile", "createAmbientSound", "updateAmbientSound", "deleteAmbientSound", "createToken", "updateToken", "deleteToken", "canvasReady"]) Hooks.on(hk, reScenes);
   sync();
   const mod = game.modules.get(S.MOD);
-  if (mod) mod.api = Object.assign(mod.api || {}, { dela: { panel, state: S.get, update: S.update, openAnketa: S.openAnketa, assign: S.assign, startTrial: S.startTrial, trial, togglePad } });
+  if (mod) mod.api = Object.assign(mod.api || {}, { dela: { panel, state: S.get, update: S.update, openAnketa: S.openAnketa, assign: S.assign, startTrial: S.startTrial, trial, togglePad,
+    servitor: { look: Servitor.look, calm: Servitor.calm, scare: Servitor.scare } } });
 });

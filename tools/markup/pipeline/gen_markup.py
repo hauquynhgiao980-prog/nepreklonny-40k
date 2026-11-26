@@ -6,7 +6,7 @@ KEY = {'prison': 'cells', 'post': 'post', 'hall': 'hall', 'boats': 'lifeboats', 
 NOTE = 'const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\n' \
        'const gm = ChatMessage.getWhisperRecipients("GM").map(u => u.id);\n'
 def notify(text):
-    return NOTE + f'ChatMessage.create({{ content: `<b>${{tok.name}}</b> ${text}`, whisper: gm, speaker: {{ alias: "Непреклонный" }} }});'
+    return NOTE + f'ChatMessage.create({{ content: `<b>${{tok.name}}</b> {text}`, whisper: gm, speaker: {{ alias: "Непреклонный" }} }});'
 def rect(x0, y0, x1, y1): return [x0, y0, x1, y0, x1, y1, x0, y1]
 def region(name, pts, behaviors, color='#8a1c1c'):
     return {'name': name, 'color': color, 'pts': pts, 'behaviors': behaviors}

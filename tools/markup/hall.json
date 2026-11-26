@@ -3415,7 +3415,7 @@
       "events": [
        "tokenEnter"
       ],
-      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у верхнего шлюза.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у верхнего шлюза.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
      }
     }
    ]
@@ -3441,7 +3441,7 @@
       "events": [
        "tokenEnter"
       ],
-      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> $у нижнего прохода.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
+      "source": "const tok = event.data.token; if (!tok || !event.user?.isSelf) return;\nconst gm = ChatMessage.getWhisperRecipients(\"GM\").map(u => u.id);\nChatMessage.create({ content: `<b>${tok.name}</b> у нижнего прохода.`, whisper: gm, speaker: { alias: \"Непреклонный\" } });"
      }
     }
    ]

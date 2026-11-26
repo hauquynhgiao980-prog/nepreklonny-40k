@@ -1,0 +1,25 @@
+{
+ "_id": "dgN5ZOdinFdhX2AY",
+ "name": "Снять испуг",
+ "type": "script",
+ "img": "icons/svg/sun.svg",
+ "scope": "global",
+ "command": "const api = game.modules.get(\"nepreklonny-40k\")?.api?.dela?.servitor;\nif (!api) return ui.notifications.warn(\"Модуль «Непреклонный» не загружен.\");\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\n// Снять испуг со всех героев.\nawait api.calm();\n",
+ "folder": null,
+ "sort": 900,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!macros!dgN5ZOdinFdhX2AY"
+}

@@ -3,6 +3,7 @@ import * as S from "./state.mjs";
 import { ANKETA, TRIALS, LINES, REWARDS, OUTCOME_LABEL, CLASS_LABEL, TRIAL_META, g, anketaEntry, chronicle, mood, points } from "./texts.mjs";
 import { modeOf, saveMod } from "./trial.mjs";
 import { directorTab } from "./director.mjs";
+import { guideTab } from "./guide.mjs";
 import { orbCanvas, setOrb, ArtReveal } from "./gl.mjs";
 
 const ART = (cls, n) => `modules/${S.MOD}/anketa/art/${cls}_${n}.webp`;
@@ -265,9 +266,9 @@ export class Panel {
       h("button.nk-btn.small", { title: "Корпус −1", onclick: () => S.update(s => { s.hullAdj = (s.hullAdj || 0) - 1; }) }, "−"),
       h("button.nk-btn.small", { title: "Корпус +1", onclick: () => S.update(s => { s.hullAdj = (s.hullAdj || 0) + 1; }) }, "+"),
       h("button.nk-x", { title: "Закрыть пульт", style: "margin-left:6px", onclick: () => this.close() }, "✕"));
-    const tabs = h("div.nk-tabs", {}, [["heroes", "ГЕРОИ И ВЕРА"], ["trials", "ИСПЫТАНИЯ"], ["scenes", "СЦЕНЫ"]].map(([id, label]) =>
+    const tabs = h("div.nk-tabs", {}, [["guide", "СЦЕНАРИЙ"], ["heroes", "ГЕРОИ И ВЕРА"], ["trials", "ИСПЫТАНИЯ"], ["scenes", "СЦЕНЫ"]].map(([id, label]) =>
       h("button", { class: `nk-tab ${this.tab === id ? "on" : ""}`, onclick: () => { this.tab = id; this.render(); } }, label)));
-    const body = h("div.nk-body", {}, this.tab === "heroes" ? this.heroes(st) : this.tab === "scenes" ? directorTab(() => this.render()) : this.trials(st));
+    const body = h("div.nk-body", {}, this.tab === "heroes" ? this.heroes(st) : this.tab === "scenes" ? directorTab(() => this.render()) : this.tab === "guide" ? guideTab(() => this.render()) : this.trials(st));
     const scroll = this.el.querySelector(".nk-body")?.scrollTop || 0;
     this.el.replaceChildren(h("div.nk-screen", {}, top, tabs, body, h("div.nk-scan")));
     this.el.querySelector(".nk-body").scrollTop = scroll;

@@ -1,0 +1,25 @@
+{
+ "_id": "Pl2O5N7z9Ep4oKGH",
+ "name": "Все сервиторы оборачиваются",
+ "type": "script",
+ "img": "icons/svg/terror.svg",
+ "scope": "global",
+ "command": "const api = game.modules.get(\"nepreklonny-40k\")?.api?.dela?.servitor;\nif (!api) return ui.notifications.warn(\"Модуль «Непреклонный» не загружен.\");\nif (!game.user.isGM) return ui.notifications.warn(\"Этот макрос запускает мастер.\");\n// Все сервиторы блока разом поворачиваются к героям: экран и спасбросок у каждого.\nawait api.look();\n",
+ "folder": null,
+ "sort": 800,
+ "ownership": {
+  "default": 0
+ },
+ "flags": {},
+ "_stats": {
+  "coreVersion": "13.351",
+  "systemId": "dnd5e",
+  "systemVersion": "5.3.3",
+  "createdTime": 1764072000000,
+  "modifiedTime": 1764072000000,
+  "lastModifiedBy": null,
+  "compendiumSource": null,
+  "duplicateSource": null
+ },
+ "_key": "!macros!Pl2O5N7z9Ep4oKGH"
+}
