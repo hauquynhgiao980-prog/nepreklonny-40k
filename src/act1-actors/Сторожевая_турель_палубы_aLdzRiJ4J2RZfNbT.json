@@ -3,7 +3,7 @@
  "name": "Сторожевая турель палубы",
  "type": "npc",
  "_id": "aLdzRiJ4J2RZfNbT",
- "img": "modules/nepreklonny-40k/maps/04_lifeboat_deck/turret/lifeboats_turret_off_1024.png",
+ "img": "modules/nepreklonny-40k/icons/gen/act1/turret.webp",
  "system": {
   "currency": {
    "pp": 0,

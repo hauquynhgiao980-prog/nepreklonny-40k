@@ -1,0 +1,74 @@
+[
+ {
+  "src": "/mnt/user-data/uploads/278c2780-image.png",
+  "cx": 640,
+  "cy": 430,
+  "side": 800,
+  "style": "chaos",
+  "out": "token_kultist_c.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/b6197c69-image.png",
+  "cx": 660,
+  "cy": 470,
+  "side": 820,
+  "style": "chaos",
+  "out": "token_kultist_d.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/b4fa5e1a-image.png",
+  "cx": 660,
+  "cy": 470,
+  "side": 820,
+  "style": "chaos",
+  "out": "token_kultist_e.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/e5c4bd78-image.png",
+  "cx": 640,
+  "cy": 470,
+  "side": 820,
+  "style": "chaos",
+  "out": "token_kultist_f.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/018c9979-image.png",
+  "cx": 650,
+  "cy": 430,
+  "side": 820,
+  "style": "chaos",
+  "out": "token_kultist_g.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/859f43b1-image.png",
+  "cx": 630,
+  "cy": 600,
+  "side": 980,
+  "style": "naval",
+  "out": "token_turret.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/14eb6c7a-image.png",
+  "cx": 640,
+  "cy": 540,
+  "side": 880,
+  "style": "chaos",
+  "out": "token_otmechenny.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/9605864b-image.png",
+  "cx": 630,
+  "cy": 440,
+  "side": 820,
+  "style": "warp",
+  "out": "token_nerozhdenny.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/dbe03354-image.png",
+  "cx": 640,
+  "cy": 520,
+  "side": 820,
+  "style": "chaos",
+  "out": "token_strelok.webp"
+ }
+]

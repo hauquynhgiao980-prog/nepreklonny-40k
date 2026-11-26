@@ -1,7 +1,7 @@
 {
   "name": "Предатель-стрелок",
   "type": "npc",
-  "img": "modules/nepreklonny-40k/icons/gen/enemies40k/bwPbcTQZ05aMwwEl.webp",
+  "img": "modules/nepreklonny-40k/icons/gen/act1/strelok.webp",
   "system": {
     "currency": {
       "pp": 0,
@@ -641,7 +641,7 @@
     "width": 1,
     "height": 1,
     "texture": {
-      "src": "modules/nepreklonny-40k/icons/gen/enemies40k/bwPbcTQZ05aMwwEl.webp",
+      "src": "modules/nepreklonny-40k/icons/gen/act1/token_strelok.webp",
       "anchorX": 0.5,
       "anchorY": 0.5,
       "offsetX": 0,

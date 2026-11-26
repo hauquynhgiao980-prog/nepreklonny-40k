@@ -1,0 +1,42 @@
+[
+ {
+  "src": "/mnt/user-data/uploads/eea05c77-image.png",
+  "cx": 640,
+  "cy": 420,
+  "side": 760,
+  "style": "chaos",
+  "out": "token_kultist_b.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/8f84c11a-image.png",
+  "cx": 650,
+  "cy": 520,
+  "side": 800,
+  "style": "naval",
+  "out": "token_varro.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/107b433e-image.png",
+  "cx": 620,
+  "cy": 420,
+  "side": 760,
+  "style": "chaos",
+  "out": "token_kultist_a.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/2b5742ae-image.png",
+  "cx": 630,
+  "cy": 440,
+  "side": 760,
+  "style": "convict",
+  "out": "token_sol.webp"
+ },
+ {
+  "src": "/mnt/user-data/uploads/eab8ed26-image.png",
+  "cx": 640,
+  "cy": 520,
+  "side": 800,
+  "style": "convict",
+  "out": "token_kryuk.webp"
+ }
+]

@@ -65,7 +65,7 @@ const SPAWN = {
 // from: компендиум, откуда взять актёра, если в мире его нет; at: центры токенов; neutral — без красной рамки (не выдать заранее).
 const T1 = `modules/${MOD}/icons/gen/act1/`;
 // разные лица рядовых: токены группы берут портреты по кругу (сюда добавляются новые варианты)
-const CULTIST_FACES = ["kultist_a", "kultist_b"].map(k => `${T1}token_${k}.webp`);
+const CULTIST_FACES = ["kultist_a", "kultist_b", "kultist_c", "kultist_d", "kultist_e", "kultist_f", "kultist_g"].map(k => `${T1}token_${k}.webp`);
 const CAST = {
   post: [
     { id: "kryuk", label: "Крюк", actor: "Крюк", from: "act1-actors", at: [[560, 430]], neutral: true },

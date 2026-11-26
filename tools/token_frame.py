@@ -11,6 +11,7 @@ def ring_rgba(style):
     light = 0.72 + 0.28 * np.cos(ang + np.deg2rad(135))          # свет слева сверху
     bevel = 1 - 0.55 * (2 * t - 1) ** 2                          # выпуклость кольца
     if style == "chaos":   base = np.array([62, 46, 40]); edge = np.array([120, 24, 18])
+    elif style == "warp":  base = np.array([52, 40, 56]); edge = np.array([150, 60, 200])
     elif style == "naval": base = np.array([96, 92, 86]); edge = np.array([170, 128, 62])
     else:                  base = np.array([78, 76, 74]); edge = np.array([40, 38, 36])
     rng = np.random.default_rng(3); grain = rng.normal(0, 1, (N, N)).astype(np.float32)
@@ -26,13 +27,13 @@ def ring_rgba(style):
     img = np.dstack([np.clip(col, 0, 255), a * 255]).astype(np.uint8)
     im = Image.fromarray(img, "RGBA"); d = ImageDraw.Draw(im)
     rm = (RIN + ROUT) / 2
-    if style == "chaos":       # восемь стрелок наружу — знак, но рядовой: узкие и тёмные
+    if style in ("chaos", "warp"):       # восемь стрелок наружу — знак, но рядовой: узкие и тёмные
         for k in range(8):
             a0 = k * np.pi / 4 - np.pi / 2
             tip = (C + np.cos(a0) * (ROUT + 13 * K), C + np.sin(a0) * (ROUT + 13 * K))
             b1 = (C + np.cos(a0 - 0.045) * (ROUT - 1 * K), C + np.sin(a0 - 0.045) * (ROUT - 1 * K))
             b2 = (C + np.cos(a0 + 0.045) * (ROUT - 1 * K), C + np.sin(a0 + 0.045) * (ROUT - 1 * K))
-            d.polygon([tip, b1, b2], fill=(92, 30, 24, 255), outline=(24, 10, 8, 255))
+            d.polygon([tip, b1, b2], fill=(92, 30, 24, 255) if style == "chaos" else (96, 44, 130, 255), outline=(24, 10, 8, 255))
         for k in range(16):
             a0 = k * np.pi / 8 + np.pi / 16
             x, y = C + np.cos(a0) * rm, C + np.sin(a0) * rm
