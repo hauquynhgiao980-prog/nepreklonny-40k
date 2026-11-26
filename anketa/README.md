@@ -11,6 +11,6 @@
 | 1. Начало | `shturmovik_1` | `komissar_1` | `ispovednik_1` | `psyker_1` | `tehnozhrec_1` |
 | 2. Служба | `shturmovik_2` | `komissar_2` | `ispovednik_2` | `psyker_2` | `tehnozhrec_2` |
 | 3. Тот день | `shturmovik_3` | `komissar_3` | `ispovednik_3` | `psyker_3` | `tehnozhrec_3` |
-| 4. Суд | — | — | — | — | — |
+| 4. Суд | `shturmovik_4` | `komissar_4` | `ispovednik_4` | `psyker_4` | `tehnozhrec_4` |
 
 В анкете арт «рисуется на глазах»: сначала проступают контуры, потом штриховка от светлых тонов к тёмным, в конце красный акцент.
