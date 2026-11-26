@@ -144,7 +144,7 @@ export class Pad {
   save() {
     if (this.gm) return;
     const r = this.el.getBoundingClientRect();
-    game.settings.set(S.MOD, "delaPad", { mini: this.mini, open: this.open, left: Math.round(r.left), top: Math.round(r.top) });
+    game.settings.set(S.MOD, "delaPad", { ...(game.settings.get(S.MOD, "delaPad") || {}), mini: this.mini, open: this.open, left: Math.round(r.left), top: Math.round(r.top) });
   }
   destroy() { this.el.remove(); }
 
@@ -222,9 +222,11 @@ export class Pad {
     const list = chronicle(hero, st.outcomes || {});
     const heads = ["ДЕЛО · ДО СУДА", ...TRIALS.map(t => t.head)];
     const done = list.filter(Boolean).length;
+    // игроку — только то, что уже случилось: без названий будущих мест и без счёта записей
+    const rows = list.map((e, i) => [e, heads[i]]).filter(([e]) => this.gm || e);
     return h("div.nk-chron.nk-slate", {}, h("div.nk-screen", {},
-      h("div.nk-head", {}, h("div", {}, `ЛЕТОПИСЬ · ${hero.head}`), h("div", {}, `${done} ИЗ 4`)),
-      h("div.nk-list", {}, list.map((e, i) => entryView(e, false, heads[i]))),
+      h("div.nk-head", {}, h("div", {}, `ЛЕТОПИСЬ · ${hero.head}`), this.gm ? h("div", {}, `${done} ИЗ 4`) : null),
+      h("div.nk-list", {}, rows.map(([e, head]) => entryView(e, false, head))),
       h("div.nk-scan")));
   }
 }

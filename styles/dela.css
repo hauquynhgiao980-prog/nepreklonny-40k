@@ -254,3 +254,6 @@
 #nk-panel .nk-chip button:hover { background: #1b4a2a; color: #eafff0; }
 #nk-panel .nk-chip > span { padding-right: 4px; }
 #nk-trial .nk-hint3 { max-width: 680px; margin-top: -14px; font-size: 14px; line-height: 1.6; color: #9a8078; font-style: italic; }
+#nk-trial .nk-whisper.big { min-height: 0; max-width: 1000px; font-size: clamp(26px, 3.4vw, 44px); line-height: 1.45; }
+#nk-trial .nk-choice b { font-size: 17px; letter-spacing: .1em; }
+#nk-trial .nk-choice.n b { color: #b8b2ae; }

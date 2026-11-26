@@ -1,7 +1,7 @@
 // Испытание у игрока: голос → тайный выбор → ответ голоса на весь экран → спасбросок → итог группы.
 import * as S from "./state.mjs";
 import { h } from "./ui.mjs";
-import { TRIAL_META, LINES, reaction, g, OUTCOME_LABEL, OUTCOME_TEXT, points, rewardsOf } from "./texts.mjs";
+import { TRIAL_META, LINES, reaction, g, OUTCOME_LABEL, OUTCOME_TEXT, ANSWER_NO, ANSWER_SILENT, points, rewardsOf } from "./texts.mjs";
 
 const MODE_LABEL = { adv: "с преимуществом", dis: "с помехой", "": "обычный" };
 export const modeOf = (pick, n) => !pick ? "" : pick.c === "w" ? (pick.shot ? "" : "adv") : pick.c === "o" ? "dis" : "";
@@ -99,7 +99,7 @@ export class TrialUI {
         this.close(); this.trialId = T.id; this.myRoll = T.rolls?.[aid] || null;
         const pick = T.picks?.[aid];
         this.pick = pick || null;
-        this.go(!pick ? "intro" : T.rolls?.[aid] ? "rolled" : T.phase === "roll" ? "roll" : "wait");
+        this.go(!pick ? "voice" : T.rolls?.[aid] ? "rolled" : T.phase === "roll" ? "roll" : "wait");
         return;
       }
       if (this.step === "wait" && T.phase === "roll") return this.go("roll");
@@ -127,15 +127,8 @@ export class TrialUI {
     const M = TRIAL_META[(this.T?.n ?? this.last?.n) - 1];
     if (!M) return;
     const R = this.step;
-    if (R === "intro") {
-      this.frame().append(h("div.nk-center", {},
-        h("div.nk-tsub", {}, `ИСПЫТАНИЕ ${M.n} ИЗ 3`), h("div.nk-title", {}, M.title),
-        h("button.nk-btn.nk-quiet", { onclick: () => this.go("rules") }, "НАЧАТЬ")));
-    } else if (R === "rules") {
-      this.frame().append(h("div.nk-center", {},
-        h("div.nk-scene", {}, M.scene), h("div.nk-rules", {}, M.rules), M.hint ? h("div.nk-hint3", {}, M.hint) : null,
-        h("button.nk-btn.nk-big", { onclick: () => this.go("voice") }, "ДАЛЕЕ")));
-    } else if (R === "voice") this.voice(M);
+    if (R === "voice") this.voice(M);
+    else if (R === "choose") this.choose(M);
     else if (R === "react") this.react();
     else if (R === "wait") {
       const shot = this.pick?.shot;
@@ -148,10 +141,21 @@ export class TrialUI {
     else if (R === "outcome") this.outcome(M);
   }
 
+  /** Голос крупно, по буквам; под ним — тихое «продолжить». */
   voice(M) {
-    const L = LINES[this.hero.cls]?.[M.n - 1] || {}, w = this.gg(L.w || ""), o = this.gg(L.o || "");
-    const typed = h("div.nk-whisper");
-    const choices = h("div.nk-choices", { style: "visibility:hidden" });
+    const L = LINES[this.hero.cls]?.[M.n - 1] || {}, w = this.gg(L.w || "");
+    const typed = h("div.nk-whisper.big");
+    const more = h("button.nk-btn.nk-quiet", { style: "visibility:hidden", onclick: () => this.go("choose") }, "ПРОДОЛЖИТЬ");
+    this.frame().append(h("div.nk-voice", {}, typed, more));
+    let i = 0;
+    const done = () => { clearInterval(this.typer); typed.textContent = w; more.style.visibility = "visible"; };
+    this.typer = setInterval(() => { i += 1; typed.textContent = w.slice(0, i); if (i >= w.length) done(); }, 45);
+    typed.addEventListener("click", done);
+  }
+
+  /** Ответ голосу: «да» (в декомпрессии — два), «нет» словами героя, промолчать. */
+  choose(M) {
+    const L = LINES[this.hero.cls]?.[M.n - 1] || {}, o = this.gg(L.o || "");
     const pick = (c, shot = false) => {
       if (this.pick) return;
       this.pick = { c, shot }; sfx(c);
@@ -160,18 +164,11 @@ export class TrialUI {
     };
     const card = (cls, title, sub, onclick, quote) => h(`button.nk-choice.${cls}`, { onclick },
       h("b", {}, title), quote ? h("q", {}, quote) : null, sub ? h("span", {}, sub) : null);
-    choices.append(
-      h("div.nk-col", {},
-        card("w", "ПРИНЯТЬ СИЛУ", "Ты станешь сильнее.", () => pick("w")),
-        M.shot ? card("w", "ПРИНЯТЬ СИЛУ", "Ты сможешь дать отпор врагу.", () => pick("w", true)) : null),
-      card("o", "ОТКАЗАТЬ", null, () => pick("o"), o),
-      card("n", "ПРОМОЛЧАТЬ", null, () => pick("n")));
-    const root = this.frame();
-    root.append(h("div.nk-voice", {}, h("div.nk-vlabel", {}, "ГОЛОС"), typed, choices));
-    let i = 0;
-    const done = () => { clearInterval(this.typer); typed.textContent = w; choices.style.visibility = "visible"; choices.classList.add("in"); };
-    this.typer = setInterval(() => { i += 1; typed.textContent = w.slice(0, i); if (i >= w.length) done(); }, 38);
-    typed.addEventListener("click", done);
+    const yes = (M.yes || [{ t: "ДА.", s: "" }]).map(y => card("w", y.t, y.s, () => pick("w", !!y.shot)));
+    this.frame().append(h("div.nk-voice", {}, h("div.nk-choices.in", {},
+      h("div.nk-col", {}, yes),
+      card("o", ANSWER_NO, null, () => pick("o"), o),
+      card("n", ANSWER_SILENT.t, ANSWER_SILENT.s, () => pick("n")))));
   }
 
   react() {
