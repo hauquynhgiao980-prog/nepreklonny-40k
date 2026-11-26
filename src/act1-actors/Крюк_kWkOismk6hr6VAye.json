@@ -3,7 +3,7 @@
  "name": "Крюк",
  "type": "npc",
  "_id": "kWkOismk6hr6VAye",
- "img": "modules/nepreklonny-40k/icons/gen/enemies40k/KGeNBz04eqDue5Ed.webp",
+ "img": "modules/nepreklonny-40k/icons/gen/act1/kryuk.webp",
  "system": {
   "currency": {
    "pp": 0,
@@ -659,7 +659,7 @@
   "width": 1,
   "height": 1,
   "texture": {
-   "src": "modules/nepreklonny-40k/icons/gen/enemies40k/KGeNBz04eqDue5Ed.webp",
+   "src": "modules/nepreklonny-40k/icons/gen/act1/token_kryuk.webp",
    "anchorX": 0.5,
    "anchorY": 0.5,
    "offsetX": 0,
@@ -674,7 +674,7 @@
   "lockRotation": true,
   "rotation": 0,
   "alpha": 1,
-  "disposition": -1,
+  "disposition": 0,
   "displayBars": 20,
   "bar1": {
    "attribute": "attributes.hp"

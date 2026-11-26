@@ -272,6 +272,9 @@ def dmg(n, die, bonus, types):
     return {"custom": {"enabled": False, "formula": ""}, "number": n, "denomination": die, "bonus": bonus, "types": types, "scaling": {"number": 1}}
 
 
+A1 = f'modules/{MOD}/icons/gen/act1/'   # портреты и токены NPC и врагов акта I (рамки — tools/token_frame.py)
+
+
 def build_actors():
     d = reset('act1-actors')
     cult, _ = load_enemy('Культист_ренегат')
@@ -292,7 +295,9 @@ def build_actors():
     for name, bio in (("Крюк", "<p>Попутчик-смертник из камеры 6 или 7. Улыбчивый парень из нижнего улья, болтает без умолку и всё время спрашивает: кто вы, за что вас, кто из вас псайкер.</p><p>Уже принадлежит пастве Апостола. Когда из торпеды прозвучит «На колени, агнцы!», встаёт на колени и в первом раунде бьёт ближайшего героя в спину.</p>"),
                       ("Тихий Сол", "<p>Попутчик-смертник, молчун, всё время шепчет себе под нос — литанию задом наперёд. На запястье под рукавом вырезана восьмиконечная звезда. Прячет под робой папку из ящика пульта: дело единицы 5, псайкера.</p><p>Уже принадлежит пастве Апостола и в зале этапа встанет на колени.</p>")):
         aid = fid('actor', name)
-        a = rekey(cult, aid); a['name'] = name; set_bio(a, bio); token(a, name)
+        a = rekey(cult, aid); a['name'] = name; set_bio(a, bio)
+        key = {'Крюк': 'kryuk', 'Тихий Сол': 'sol'}[name]
+        a['img'] = A1 + key + '.webp'; token(a, name, A1 + 'token_' + key + '.webp', disp=0)
         out.append(a)
 
     # Варро — выживший матрос, простолюдин 2/4 хита
@@ -308,7 +313,7 @@ def build_actors():
     a['items'] = [feat(aid, 'Хромает', '<p>Пока Варро не подлечили стимулятором или проверкой Мудрости (Медицина) Сл 10, его скорость вдвое меньше.</p>'),
                   feat(aid, 'Образок паствы', '<p>Жестяной образок: агнец, на обороте звезда из восьми стрелок. Исповедник узнаёт работу своего ученика Ионы.</p>')]
     src = M + '04_lifeboat_deck/lifeboats_survivor_token_384.png'
-    a['img'] = src; token(a, 'Варро', src, 1.5, 1.5, 1, 0)
+    a['img'] = A1 + 'varro.webp'; token(a, 'Варро', A1 + 'token_varro.webp', 1, 1, 1, 0)
     out.append(a)
 
     # Сторожевая турель

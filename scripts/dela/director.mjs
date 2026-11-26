@@ -63,13 +63,16 @@ const SPAWN = {
 
 // Персонажи мастера и враги по сценам. Токены создаются скрытыми при первом показе, дальше — показать/спрятать.
 // from: компендиум, откуда взять актёра, если в мире его нет; at: центры токенов; neutral — без красной рамки (не выдать заранее).
+const T1 = `modules/${MOD}/icons/gen/act1/`;
+// разные лица рядовых: токены группы берут портреты по кругу (сюда добавляются новые варианты)
+const CULTIST_FACES = ["kultist_a", "kultist_b"].map(k => `${T1}token_${k}.webp`);
 const CAST = {
   post: [
     { id: "kryuk", label: "Крюк", actor: "Крюк", from: "act1-actors", at: [[560, 430]], neutral: true },
     { id: "sol", label: "Тихий Сол", actor: "Тихий Сол", from: "act1-actors", at: [[430, 880]], neutral: true },
   ],
   hall: [
-    { id: "cultists", label: "Культисты", actor: "Культист-ренегат", from: "enemies40k",
+    { id: "cultists", label: "Культисты", actor: "Культист-ренегат", from: "enemies40k", faces: CULTIST_FACES,
       at: [[1344, 1216], [1344, 1856], [1216, 1344], [1216, 1728], [1472, 1344], [1472, 1728], [1472, 1088], [1472, 1984]] },
     { id: "shooters", label: "Стрелки в люках", actor: "Предатель-стрелок", from: "enemies40k", at: [[1728, 1472], [1728, 1600]] },
     { id: "leader", label: "Отмеченный Хаосом", actor: "Отмеченный Хаосом", from: "enemies40k", at: [[1216, 1472]] },
@@ -99,6 +102,7 @@ async function castActor(g) {
 const castTokens = (scene, gid) => scene.tokens.filter(t => t.flags?.[MOD]?.cast === gid);
 
 /** Показать или спрятать группу. Если токенов ещё нет — создать на местах. */
+export { CAST, CULTIST_FACES };
 export async function setCast(scene, gid, show) {
   const g = (CAST[scene.flags?.[MOD]?.scene] || []).find(x => x.id === gid); if (!g) return;
   let toks = castTokens(scene, gid);
@@ -110,6 +114,7 @@ export async function setCast(scene, gid, show) {
       const td = (await actor.getTokenDocument({ x, y, hidden: true })).toObject();
       if (g.at.length > 1) td.name = `${td.name} ${i + 1}`;
       if (g.neutral) td.disposition = 0;
+      if (g.faces?.length) td.texture = { ...(td.texture || {}), src: g.faces[i % g.faces.length] };
       td.flags = { ...(td.flags || {}), [MOD]: { ...(td.flags?.[MOD] || {}), cast: gid } };
       docs.push(td);
     }

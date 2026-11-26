@@ -3,7 +3,7 @@
  "name": "Варро, матрос пусковой команды",
  "type": "npc",
  "_id": "0xg8ZqpasgC0xn2o",
- "img": "modules/nepreklonny-40k/maps/04_lifeboat_deck/lifeboats_survivor_token_384.png",
+ "img": "modules/nepreklonny-40k/icons/gen/act1/varro.webp",
  "system": {
   "currency": {
    "pp": 0,
@@ -656,10 +656,10 @@
   "actorLink": false,
   "appendNumber": false,
   "prependAdjective": false,
-  "width": 1.5,
-  "height": 1.5,
+  "width": 1,
+  "height": 1,
   "texture": {
-   "src": "modules/nepreklonny-40k/maps/04_lifeboat_deck/lifeboats_survivor_token_384.png",
+   "src": "modules/nepreklonny-40k/icons/gen/act1/token_varro.webp",
    "anchorX": 0.5,
    "anchorY": 0.5,
    "offsetX": 0,
