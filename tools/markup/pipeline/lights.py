@@ -65,7 +65,11 @@ def pull_inside(polys, x, y, inset=24):
         vx, vy = cx - px, cy - py; L = math.hypot(vx, vy) or 1; qx, qy = px + vx / L * inset, py + vy / L * inset
     return qx, qy, d
 
+LAB = {}
 def run(spec_path, polys_path):
+    import os
+    lp = spec_path.replace('.spec.json', '.labels.npy')
+    if os.path.exists(lp): LAB[spec_path] = np.load(lp)
     spec = json.load(open(spec_path)); polys = [p['poly'] for p in json.load(open(polys_path))]
     L = merge(detect(spec['img']), spec.get('merge', 150))
     for r in spec.get('light_exclude', []):
@@ -85,7 +89,11 @@ def run(spec_path, polys_path):
     for l in L:
         k = l['kind']
         if k == 'warm' and l['area'] < spec.get('candle_area', 60): k = 'candle'
-        x, y, moved = pull_inside(polys, l['x'], l['y'])
+        lab = LAB.get(spec_path)
+        if lab is not None and lab[min(lab.shape[0] - 1, int(l['y'] / 4)), min(lab.shape[1] - 1, int(l['x'] / 4))] > 0:
+            x, y, moved = l['x'], l['y'], 0      # лампа на стене: внутренняя стена теперь невидимая, свет не гасит
+        else:
+            x, y, moved = pull_inside(polys, l['x'], l['y'])
         if moved > spec.get('max_pull', 260): continue
         cfg = dict(KINDS[k])
         if k in ('red', 'warm') and l['area'] > 200: cfg['dim'] = int(cfg['dim'] * 1.4); cfg['bright'] = int(cfg['bright'] * 1.4)

@@ -54,6 +54,7 @@ def wall_doc(w):
                         'threshold': {'light': None, 'sight': None, 'sound': None, 'attenuation': False}, 'animation': None}
     if k == 'limited': d.update(light=10, sight=10, sound=0)
     elif k in ('glass', 'window'): d.update(light=0, sight=0, sound=20)
+    elif k == 'invisible': d.update(light=0, sight=0, sound=0)   # кромка пола: не пройти, но видно до дальней кромки стены
     elif k == 'door':
         d['door'] = 1; d['ds'] = 2 if w.get('locked') else (1 if w.get('open') else 0)
         d['doorSound'] = 'futuristicHydraulic'

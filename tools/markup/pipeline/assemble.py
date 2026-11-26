@@ -50,7 +50,7 @@ def build(spec, polys):
             walls.append({'c': [round(a[0]), round(a[1]), round(b[0]), round(b[1])], 'kind': o.get('kind', 'wall')})
     return walls
 
-COL = {'wall': (0, 255, 0), 'door': (255, 0, 255), 'window': (0, 200, 255), 'limited': (255, 200, 0), 'invisible': (180, 180, 255), 'glass': (0, 200, 255)}
+COL = {'wall': (0, 255, 0), 'invisible': (150, 150, 255), 'door': (255, 0, 255), 'window': (0, 200, 255), 'limited': (255, 200, 0), 'glass': (0, 200, 255)}
 def render(img, walls, out, sc=0.33, lights=(), sounds=(), regions=()):
     im = Image.open(img).convert('RGB'); W, H = im.size
     im = im.resize((int(W * sc), int(H * sc))); d = ImageDraw.Draw(im, 'RGBA')
