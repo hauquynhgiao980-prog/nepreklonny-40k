@@ -34966,7 +34966,7 @@
      "tint": "#ffffff",
      "alphaThreshold": 0.75
     },
-    "lockRotation": true,
+    "lockRotation": false,
     "rotation": 0,
     "alpha": 1,
     "disposition": -1,
@@ -36295,7 +36295,7 @@
      "tint": "#ffffff",
      "alphaThreshold": 0.75
     },
-    "lockRotation": true,
+    "lockRotation": false,
     "rotation": 0,
     "alpha": 1,
     "disposition": -1,

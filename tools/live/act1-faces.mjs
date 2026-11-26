@@ -14,25 +14,34 @@ export default async function ({ log }) {
     { name: "Культист-ренегат", img: "kultist_a", tok: "token_kultist_a", size: 1 },
     { name: "Предатель-стрелок", img: "strelok", tok: "token_strelok", size: 1 },
     { name: "Отмеченный Хаосом", img: "otmechenny", tok: "token_otmechenny", size: 1 },
-    { name: "Нерождённый", img: "nerozhdenny", tok: "token_nerozhdenny_aura.webm", size: 3, scale: 1.5, sys: { "system.traits.size": "huge" },
+    { name: "Нерождённый", img: "nerozhdenny", tok: "token_nerozhdenny_aura.webm", size: 3, scale: 1.5, sys: { "system.traits.size": "huge" }, spin: true,
       light: { dim: 20, bright: 5, color: "#a01cff", alpha: 0.5, coloration: 1, luminosity: 0.5, animation: { type: "pulse", speed: 3, intensity: 5, reverse: false } } },
-    { name: "Сторожевая турель палубы", img: "turret", tok: null, size: 2 },
+    { name: "Сторожевая турель палубы", img: "turret", tok: null, size: 2, spin: true },
   ];
   const report = [];
   for (const s of SET) {
     const tex = { src: `${T}${s.tok?.includes(".") ? s.tok : `${s.tok}.webp`}`, scaleX: s.scale || 1, scaleY: s.scale || 1, fit: "contain" };
     for (const a of game.actors.filter(x => x.name === s.name)) {
-      if (!s.tok) { await a.update({ img: `${T}${s.img}.webp` }); report.push({ actor: a.name }); continue; }   // турель: на карте остаётся вид сверху
+      if (!s.tok) {                                   // турель: на карте остаётся вид сверху
+        await a.update({ img: `${T}${s.img}.webp`, ...(s.spin ? { "prototypeToken.lockRotation": false } : {}) });
+        report.push({ actor: a.name });
+        if (s.spin) for (const scene of game.scenes) {
+          const toks = scene.tokens.filter(t => t.actorId === a.id && t.lockRotation);
+          if (toks.length) await scene.updateEmbeddedDocuments("Token", toks.map(t => ({ _id: t.id, lockRotation: false })));
+        }
+        continue;
+      }
       const upd = { img: `${T}${s.img}.webp`, "prototypeToken.texture": tex, "prototypeToken.width": s.size, "prototypeToken.height": s.size };
       if (s.disp !== undefined) upd["prototypeToken.disposition"] = s.disp;
       if (s.light) upd["prototypeToken.light"] = s.light;
       if (s.sys) Object.assign(upd, s.sys);
+      if (s.spin) upd["prototypeToken.lockRotation"] = false;   // вид сверху — можно крутить Shift+колесо
       await a.update(upd);
       report.push({ actor: a.name });
       for (const scene of game.scenes) {
         const toks = scene.tokens.filter(t => t.actorId === a.id).sort((p, q) => p.name.localeCompare(q.name, "ru", { numeric: true }));
         if (!toks.length) continue;
-        const tu = toks.map((t, i) => ({ _id: t.id, width: s.size, height: s.size, ...(s.light ? { light: s.light } : {}),
+        const tu = toks.map((t, i) => ({ _id: t.id, width: s.size, height: s.size, ...(s.light ? { light: s.light } : {}), ...(s.spin ? { lockRotation: false } : {}),
           texture: { ...tex, src: s.name === "Культист-ренегат" ? FACES[i % FACES.length] : tex.src } }));
         await scene.updateEmbeddedDocuments("Token", tu);
         report.push({ scene: scene.name, actor: a.name, tokens: tu.length });

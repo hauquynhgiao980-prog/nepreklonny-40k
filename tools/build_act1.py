@@ -343,6 +343,7 @@ def build_actors():
         feat(aid, 'Как обезвредить', '<p>Подобраться вплотную и потратить действие: Техножрец отключает её без броска, остальные — Ловкость (воровские инструменты) Сл 15. Или обесточить в щитовой (первая комната слева, кабель виден без броска): действие, без броска. Или сломать. Макрос «Турель» прячет тайл стрельбы.</p>')]
     src = M + '04_lifeboat_deck/turret/lifeboats_turret_off_1024.png'
     a['img'] = A1 + 'turret.webp'; token(a, 'Турель', src, 2, 2, 1.6, -1)   # на карте — вид сверху, в листе — портрет
+    a['prototypeToken']['lockRotation'] = False                                # вид сверху — можно крутить
     out.append(a)
 
     # Нерождённый — тварь варпа, ПО 9
@@ -394,6 +395,7 @@ def build_actors():
         feat(aid, 'Тактика', '<p>Первой идёт на того, у кого больше Света. Тех, кто принял Шёпот в испытании 2, обходит, пока есть другие цели: «эти уже наши».</p>')]
     a['img'] = A1 + 'nerozhdenny.webp'; token(a, 'Нерождённый', A1 + 'token_nerozhdenny_aura.webm', 3, 3, 1.5, -1)   # живой: петля MiniMax с аурой варпа, огромный
     a['system']['traits']['size'] = 'huge'
+    a['prototypeToken']['lockRotation'] = False                                # вид сверху — можно крутить
     a['prototypeToken']['light'].update({'dim': 20, 'bright': 5, 'color': '#a01cff', 'alpha': 0.5, 'coloration': 1, 'luminosity': 0.5,
                                          'animation': {'type': 'pulse', 'speed': 3, 'intensity': 5, 'reverse': False}})
     out.append(a)
