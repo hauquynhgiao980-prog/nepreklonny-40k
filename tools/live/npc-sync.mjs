@@ -4,8 +4,8 @@
 export default async function ({ log }) {
   const MOD = "nepreklonny-40k", G = `modules/${MOD}/icons/gen/act1/`, M = `modules/${MOD}/maps/`;
   const NPC = {
-    "Нерождённый": { img: `${G}nerozhdenny.webp`, src: `${G}token_nerozhdenny_aura.webm`, scale: 1.5, size: 3 },
-    "Сторожевая турель палубы": { img: `${G}turret.webp`, src: `${M}04_lifeboat_deck/turret/lifeboats_turret_off_1024.png`, scale: 1.6, size: 2 },
+    "Нерождённый": { img: `${G}nerozhdenny.webp`, src: `${G}token_nerozhdenny_aura.webm`, scale: 1.5, size: 3, rotate: true },
+    "Сторожевая турель палубы": { img: `${G}turret.webp`, src: `${M}04_lifeboat_deck/turret/lifeboats_turret_off_1024.png`, scale: 1.6, size: 2, rotate: true },
     "Крюк": { img: `${G}kryuk.webp`, src: `${G}token_kryuk.webp`, scale: 0.96, size: 1 },
     "Тихий Сол": { img: `${G}sol.webp`, src: `${G}token_sol.webp`, scale: 0.96, size: 1 },
     "Варро, матрос пусковой команды": { img: `${G}varro.webp`, src: `${G}token_varro.webp`, scale: 0.96, size: 1 },
@@ -20,6 +20,7 @@ export default async function ({ log }) {
     if (t.texture.src !== n.src) data["prototypeToken.texture.src"] = n.src;
     if (t.texture.scaleX !== n.scale || t.texture.scaleY !== n.scale) { data["prototypeToken.texture.scaleX"] = n.scale; data["prototypeToken.texture.scaleY"] = n.scale; }
     if (t.width !== n.size || t.height !== n.size) { data["prototypeToken.width"] = n.size; data["prototypeToken.height"] = n.size; }
+    if (n.rotate && t.lockRotation !== false) data["prototypeToken.lockRotation"] = false;
     const what = Object.keys(data).map(k => k.split(".").pop()).join(", ");
     if (what) { await a.update(data); out.actors++; log(`актёр «${name}»: ${what}`); }
   }
@@ -35,6 +36,7 @@ export default async function ({ log }) {
         const gs = scene.grid?.size || 128, d = (n.size - tok.width) * gs / 2;
         Object.assign(u, { width: n.size, height: n.size, x: Math.round((tok.x - d) / gs) * gs, y: Math.round((tok.y - d) / gs) * gs });
       }
+      if (n.rotate && tok.lockRotation !== false) u.lockRotation = false;
       if (Object.keys(u).length > 1) upd.push(u);
     }
     if (upd.length) { await scene.updateEmbeddedDocuments("Token", upd); out.tokens += upd.length; log(`${scene.name}: поправлено токенов — ${upd.length}`); }

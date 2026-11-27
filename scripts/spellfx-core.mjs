@@ -561,6 +561,71 @@ export class SpellFX {
   }
 
   /** Призыв: сигил на месте, вспышка, искры. */
+  /** Ломаная молнии один раз на удар: смещение середин отрезков, ветки вниз. Возвращает [главная, ...ветки]. */
+  boltPath(a, b, R, rough = 0.2, depth = 6, branches = 3) {
+    const split = (p, q, d, out) => {
+      if (d === 0) { out.push(q); return; }
+      const mx = (p.x + q.x) / 2, my = (p.y + q.y) / 2, L = Math.hypot(q.x - p.x, q.y - p.y), nx = -(q.y - p.y) / (L || 1), ny = (q.x - p.x) / (L || 1);
+      const off = (R() - 0.5) * L * rough, m = { x: mx + nx * off, y: my + ny * off };
+      split(p, m, d - 1, out); split(m, q, d - 1, out);
+    };
+    const main = [a]; split(a, b, depth, main);
+    const paths = [main];
+    for (let k = 0; k < branches; k++) {
+      const i = Math.floor(main.length * (0.2 + R() * 0.55)), s0 = main[i], rest = Math.hypot(b.x - s0.x, b.y - s0.y);
+      const ang = Math.PI / 2 + (R() < 0.5 ? -1 : 1) * (0.35 + R() * 0.7), len = rest * (0.25 + R() * 0.3);
+      const br = [s0]; split(s0, { x: s0.x + Math.cos(ang) * len, y: s0.y + Math.sin(ang) * len }, depth - 2, br); paths.push(br);
+    }
+    return paths;
+  }
+  /** Нарисовать молнию по готовым ломаным: ореол, свечение, белое ядро; мерцает и гаснет. */
+  boltDraw(paths, P, life, width, delay = 0) {
+    const gr = new PIXI.Graphics(); gr.blendMode = PIXI.BLEND_MODES.ADD;
+    const flick = [1, 0.35, 1, 0.7, 1, 0.5, 0.85];
+    this.at(delay, () => this.add(gr, life, (it, k) => {
+      gr.clear();
+      const al = (1 - k * k) * flick[Math.min(flick.length - 1, Math.floor(k * flick.length))];
+      paths.forEach((pts, j) => {
+        const w = j ? width * 0.45 : width;
+        for (const [ww, c, aa] of [[w * 5, P.c, 0.16], [w * 2.2, P.c, 0.5], [w * 0.8, P.hot, 1]]) {
+          gr.lineStyle({ width: ww, color: c, alpha: aa * al * (j ? 0.8 : 1), cap: "round", join: "round" });
+          gr.moveTo(pts[0].x, pts[0].y); for (const q of pts.slice(1)) gr.lineTo(q.x, q.y);
+        }
+      });
+    }));
+  }
+  /** Молния с неба: в каждую цель сверху бьёт ломаный разряд — небо вспыхивает, лидер, удар с повторными вспышками,
+   *  ветвления по полу, вспышка, искры, подпалина и раскат грома. Промах — в пол рядом с целью. */
+  strike({ tos, P, R = Math.random }) {
+    const g = this.g;
+    this.sound("zap", "cast");
+    tos.forEach((to, i) => this.at(i * 260 + R() * 140, () => {
+      const hit = to.hit !== false, r = to.r || g * 0.5;
+      const end = hit ? { x: to.x, y: to.y } : { x: to.x + (R() < 0.5 ? -1 : 1) * r * (1.4 + R()), y: to.y + r * (0.6 + R() * 0.6) };
+      const top = { x: end.x + (R() - 0.5) * g * 2.4, y: end.y - g * (9 + R() * 3) };
+      const paths = this.boltPath(top, end, R, 0.22, 6, 3), w = g * 0.045;
+      this.light({ x: end.x, y: end.y - g * 4 }, P.c, g * 9, 240, 0.3);                       // небо вспыхивает раньше удара
+      this.boltDraw([paths[0].slice(0, Math.ceil(paths[0].length * 0.7))], P, 150, w * 0.5);   // лидер
+      this.at(120, () => {
+        this.boltDraw(paths, P, 520, w);
+        this.boltDraw([this.boltPath(top, end, R, 0.16, 6, 0)[0]], P, 300, w * 0.7, 160);       // повторный разряд по соседнему каналу
+        this.flash(end, P.c, P.hot, r * 3.4, 340, 12);
+        this.light(end, P.c, g * 6.5, 900, 0.95);
+        this.light({ x: (top.x + end.x) / 2, y: (top.y + end.y) / 2 }, P.c, g * 11, 420, 0.35);
+        this.ring(end, P, r * 0.3, r * 2.1, 480, { w: 0.045, noise: 0.05 });
+        this.spark(end, P, -Math.PI / 2, 30, 7, 0.035, 560, 6.28, R);
+        for (let k = 0; k < 5; k++) {                                                            // разряд растекается по полу
+          const a = R() * 6.28, l = r * (1.3 + R() * 1.3);
+          this.boltDraw(this.boltPath(end, { x: end.x + Math.cos(a) * l, y: end.y + Math.sin(a) * l }, R, 0.35, 4, 0), P, 340, w * 0.35, k * 35);
+        }
+        this.scorch(end, r * 1.7, R);
+        this.mist(end, P.dark, r * 3.2, 1500, 0.4, R() * 50, 1.7);
+        if (hit) this.onHit?.(to.id, P.hot);
+        this.sound("zap", "hit"); this.at(90, () => this.sound("boom", "hit"));
+      });
+    }));
+  }
+
   summon({ at, P, style = "holy", R }) {
     const g = this.g;
     this.sound(P.sound, "cast");

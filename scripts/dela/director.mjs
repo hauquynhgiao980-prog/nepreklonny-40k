@@ -81,11 +81,11 @@ const CAST = {
     { id: "leader", label: "Отмеченный Хаосом", actor: "Отмеченный Хаосом", from: "enemies40k", faces: [`${T1}token_otmechenny.webp`], at: [[1216, 1472]] },
   ],
   lifeboats: [
-    { id: "turret", label: "Турель", actor: "Сторожевая турель палубы", from: "act1-actors", faces: [`${M}04_lifeboat_deck/turret/lifeboats_turret_off_1024.png`], scale: 1.6, size: 2, at: [[1288, 2900]] },
+    { id: "turret", label: "Турель", actor: "Сторожевая турель палубы", from: "act1-actors", faces: [`${M}04_lifeboat_deck/turret/lifeboats_turret_off_1024.png`], scale: 1.6, size: 2, rotate: true, at: [[1288, 2900]] },
     { id: "varro", label: "Варро", actor: "Варро, матрос пусковой команды", from: "act1-actors", faces: [`${T1}token_varro.webp`], at: [[330, 1250]], neutral: true },
   ],
   gallery: [
-    { id: "unborn", label: "Нерождённый", actor: "Нерождённый", from: "act1-actors", faces: [`${T1}token_nerozhdenny_aura.webm`], scale: 1.5, size: 3, at: [[2215, 1430]] },
+    { id: "unborn", label: "Нерождённый", actor: "Нерождённый", from: "act1-actors", faces: [`${T1}token_nerozhdenny_aura.webm`], scale: 1.5, size: 3, rotate: true, at: [[2215, 1430]] },
   ],
 };
 // какие персонажи выходят вместе с событием (и прячутся, если событие откатили)
@@ -160,6 +160,7 @@ export async function setCast(scene, gid, show) {
       if (g.neutral) td.disposition = 0;
       if (g.faces?.length) td.texture = { ...(td.texture || {}), src: g.faces[i % g.faces.length] };
       if (g.size) { td.width = g.size; td.height = g.size; }
+      if (g.rotate) td.lockRotation = false;   // вид сверху: токен можно крутить
       const fit = g.scale ?? fitOf(td.texture?.src);
       if (fit) td.texture = { ...(td.texture || {}), scaleX: fit, scaleY: fit };
       td.flags = { ...(td.flags || {}), [MOD]: { ...(td.flags?.[MOD] || {}), cast: gid } };

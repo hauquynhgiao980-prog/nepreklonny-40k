@@ -75,7 +75,7 @@ export const SPELLS = {
   "Освящение оружия": { fx: "ward", pal: "mech", style: "mech" },
   // враги: способности-«умения»; «Предмет · Действие» — эффект для одного действия способности
   "Слово (перезарядка 5–6)": { fx: "mind", pal: "warp", spike: true },
-  "Логово: разлом · Молния вдоль ветки": { fx: "rays", pal: "warp", width: 0.22, origin: "rift" },
+  "Логово: разлом · Молния вдоль ветки": { fx: "strike", pal: "warp" },
   "Логово: разлом · Дымка сгущается": { fx: "area", kind: "void", pal: "warp", r: 15, origin: "rift", at: "rift" },
   "Легендарные действия (2 за раунд) · Шаг сквозь дымку": { fx: "self", kind: "blink", pal: "warp", self: true },
   "Якоря · Восстановление · 10 хитов": { fx: "heal", pal: "warp", self: true },
@@ -264,6 +264,7 @@ export function createSpellFX({ broadcast, settings }) {
         else e.rays({ from, tos, P, width: o.width ?? 0.28, R });
         break;
       }
+      case "strike": e.strike({ tos: p.tos ?? [], P, R }); break;
       case "mind": e.mind({ from, tos, P, spike: !!o.spike, bind: !!o.bind, whisper: !!o.whisper, R }); break;
       case "pillar": e.pillar({ tos, P, toll: !!o.toll, R }); break;
       case "heal": e.heal({ from, tos, P, mech: p.style === "mech", big: !!o.big, R }); break;
@@ -316,11 +317,11 @@ export function createSpellFX({ broadcast, settings }) {
     if (!targets.length && zone?.inside.length) targets = zone.inside.filter(t => t !== src || e.fx !== "area");   // шаблон без целей — кто под ним
     if (!targets.length && (e.self || ["heal", "ward"].includes(e.fx))) targets = [src];
     if (e.self) targets = [src];
-    if (["bolt", "rays", "mind", "pillar", "mark"].includes(e.fx) && !targets.filter(t => t !== src).length && e.fx !== "mark") return null;
+    if (["bolt", "rays", "mind", "pillar", "mark", "strike"].includes(e.fx) && !targets.filter(t => t !== src).length && e.fx !== "mark") return null;
     const pal = e.pal === "auto" ? (style === "warp" ? (e.fx === "heal" ? "heal" : "warp") : style === "mech" ? (e.fx === "heal" ? "volt" : "mech") : e.fx === "heal" ? "heal" : "holy") : e.pal;
     const rift = (e.origin === "rift" || e.at === "rift") ? riftPoint() : null;
     const p = { t: "sfx", scene: canvas.scene.id, fx: e.fx, pal, style: e.style ?? style, o: e, seed: Math.floor(Math.random() * 1e9), from: e.origin === "rift" && rift ? rift : pt(src),
-      tos: targets.filter(t => !(t === src && ["bolt", "rays", "mind", "pillar"].includes(e.fx))).map(t => pt(t, hitFor ? hitFor(t) : undefined)) };
+      tos: targets.filter(t => !(t === src && ["bolt", "rays", "mind", "pillar", "strike"].includes(e.fx))).map(t => pt(t, hitFor ? hitFor(t) : undefined)) };
     if (zone) { p.at = zone.at; if (zone.radius) p.radius = zone.radius; }
     if (e.at === "rift" && rift) p.at = { x: rift.x, y: rift.y };
     return p;
