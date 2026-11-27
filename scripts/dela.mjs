@@ -1,5 +1,6 @@
 // «Дело»: расстановка героев, анкета на старте, инфопланшет со сферой души и летописью, пульт мастера.
 import * as S from "./dela/state.mjs";
+import { resetGame, resetDialog } from "./dela/reset.mjs";
 import { Anketa, Pad, Panel } from "./dela/ui.mjs";
 import { TrialUI } from "./dela/trial.mjs";
 import * as Servitor from "./dela/servitor.mjs";
@@ -81,7 +82,7 @@ Hooks.once("ready", () => {
   for (const hk of ["createScene", "updateScene", "deleteScene", "createTile", "updateTile", "deleteTile", "createAmbientSound", "updateAmbientSound", "deleteAmbientSound", "createToken", "updateToken", "deleteToken", "canvasReady"]) Hooks.on(hk, reScenes);
   sync();
   const mod = game.modules.get(S.MOD);
-  if (mod) mod.api = Object.assign(mod.api || {}, { dela: { panel, state: S.get, update: S.update, openAnketa: S.openAnketa, assign: S.assign, startTrial: S.startTrial, trial, togglePad,
+  if (mod) mod.api = Object.assign(mod.api || {}, { dela: { panel, state: S.get, update: S.update, reset: resetGame, resetDialog, openAnketa: S.openAnketa, assign: S.assign, startTrial: S.startTrial, trial, togglePad,
     servitor: { look: Servitor.look, calm: Servitor.calm, scare: Servitor.scare },
     hack: { open: Hack.openGame, start: () => Hack.forceStart(), abort: () => Hack.abortGame(), roll: Hack.rollHacker, show: () => Hack.hackUI.showGM(), trial: n => Hack.openTrial(n) },
     nudge: { notes: Nudge.sendNotes, rumors: Nudge.sendRumors, whisper: Nudge.whisper, voice: Nudge.voice } } });
