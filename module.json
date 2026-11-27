@@ -2,7 +2,7 @@
   "id": "nepreklonny-40k",
   "title": "Непреклонный — Warhammer 40,000 на D&D 2024",
   "description": "<p>Автономный набор для игры по Warhammer 40,000 на правилах D&D 2024: тринадцать классов под 41-е тысячелетие со своими заклинаниями, снаряжением, чертами, происхождениями и существами, десять прегенов 5 уровня.</p><p>Самостоятельный модуль «Последний курс „Непреклонного“», акт I: шесть сцен с анимированными картами, тайлами и звуками, текст для мастера, раздатки, персонажи и макросы.</p>",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "compatibility": {
     "minimum": "13",
     "verified": "14"
@@ -23,7 +23,7 @@
       "name": "act1-adventure",
       "label": "Акт I — всё одной кнопкой",
       "type": "Adventure",
-      "path": "packs/act1-adventure-360",
+      "path": "packs/act1-adventure-362",
       "system": "dnd5e",
       "ownership": {
         "PLAYER": "NONE",
@@ -54,7 +54,7 @@
     {
       "name": "act1-actors",
       "label": "Акт I — персонажи",
-      "path": "packs/act1-actors-360",
+      "path": "packs/act1-actors-362",
       "type": "Actor",
       "ownership": {
         "PLAYER": "NONE",
@@ -97,7 +97,7 @@
     {
       "name": "enemies40k",
       "label": "Враги — Несущие Слово и демоны",
-      "path": "packs/enemies40k-342",
+      "path": "packs/enemies40k-362",
       "type": "Actor",
       "system": "dnd5e",
       "ownership": {

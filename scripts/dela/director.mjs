@@ -66,6 +66,9 @@ const SPAWN = {
 const T1 = `modules/${MOD}/icons/gen/act1/`;
 // разные лица рядовых: токены группы берут портреты по кругу (сюда добавляются новые варианты)
 const CULTIST_FACES = ["kultist_a", "kultist_b", "kultist_c", "kultist_d", "kultist_e", "kultist_f", "kultist_g"].map(k => `${T1}token_${k}.webp`);
+// масштаб портрета в клетке: кольцо врагов и NPC совпадает по размеру с кольцом героев (у героев масштаб 1)
+const FIT = { kryuk: 0.96, sol: 0.96, varro: 0.96, turret: 0.96, strelok: 0.9, otmechenny: 0.9, nerozhdenny: 0.9 };
+const fitOf = src => { const m = String(src ?? "").match(/icons\/gen\/act1\/token_([a-z_]+)\.webp$/); return m ? (m[1].startsWith("kultist") ? 0.9 : FIT[m[1]]) : null; };
 const CAST = {
   post: [
     { id: "kryuk", label: "Крюк", actor: "Крюк", from: "act1-actors", at: [[560, 430]], neutral: true },
@@ -74,8 +77,8 @@ const CAST = {
   hall: [
     { id: "cultists", label: "Культисты", actor: "Культист-ренегат", from: "enemies40k", faces: CULTIST_FACES,
       at: [[1344, 1216], [1344, 1856], [1216, 1344], [1216, 1728], [1472, 1344], [1472, 1728], [1472, 1088], [1472, 1984]] },
-    { id: "shooters", label: "Стрелки в люках", actor: "Предатель-стрелок", from: "enemies40k", at: [[1728, 1472], [1728, 1600]] },
-    { id: "leader", label: "Отмеченный Хаосом", actor: "Отмеченный Хаосом", from: "enemies40k", at: [[1216, 1472]] },
+    { id: "shooters", label: "Стрелки в люках", actor: "Предатель-стрелок", from: "enemies40k", faces: [`${T1}token_strelok.webp`], at: [[1728, 1472], [1728, 1600]] },
+    { id: "leader", label: "Отмеченный Хаосом", actor: "Отмеченный Хаосом", from: "enemies40k", faces: [`${T1}token_otmechenny.webp`], at: [[1216, 1472]] },
   ],
   lifeboats: [
     { id: "turret", label: "Турель", actor: "Сторожевая турель палубы", from: "act1-actors", at: [[1288, 2900]] },
@@ -156,6 +159,8 @@ export async function setCast(scene, gid, show) {
       if (g.at.length > 1) td.name = `${td.name} ${i + 1}`;
       if (g.neutral) td.disposition = 0;
       if (g.faces?.length) td.texture = { ...(td.texture || {}), src: g.faces[i % g.faces.length] };
+      const fit = fitOf(td.texture?.src);
+      if (fit) td.texture = { ...(td.texture || {}), scaleX: fit, scaleY: fit };
       td.flags = { ...(td.flags || {}), [MOD]: { ...(td.flags?.[MOD] || {}), cast: gid } };
       docs.push(td);
     }

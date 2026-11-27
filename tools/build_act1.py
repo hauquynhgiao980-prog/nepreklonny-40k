@@ -288,6 +288,10 @@ def build_actors():
         t = a['prototypeToken']; t['name'] = name; t['width'] = w; t['height'] = h; t['disposition'] = disp
         if src:
             t['texture']['src'] = src
+        if scale is None:  # кольцо портрета как у героев (у героев масштаб 1)
+            m = re.search(r'icons/gen/act1/token_([a-z_]+)\.webp$', t['texture'].get('src') or '')
+            if m:
+                scale = 0.9 if m.group(1).startswith('kultist') else {'kryuk': 0.96, 'sol': 0.96, 'varro': 0.96, 'turret': 0.96}.get(m.group(1), 0.9)
         if scale:
             t['texture']['scaleX'] = scale; t['texture']['scaleY'] = scale
 

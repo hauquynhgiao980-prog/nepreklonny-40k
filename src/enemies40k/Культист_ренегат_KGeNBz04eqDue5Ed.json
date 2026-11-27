@@ -665,8 +665,8 @@
       "offsetX": 0,
       "offsetY": 0,
       "fit": "contain",
-      "scaleX": 2,
-      "scaleY": 2,
+      "scaleX": 0.9,
+      "scaleY": 0.9,
       "rotation": 0,
       "tint": "#ffffff",
       "alphaThreshold": 0.75
