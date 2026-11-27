@@ -137,8 +137,8 @@ export async function sweep(scene, docs, { half = true } = {}) {
 export const GRENADE = { dc: 13, n: 3, d: 6, type: "piercing", radius: 10, range: 60 };
 const pending = new Map();
 
-/** Лучшая точка: больше всего героев в радиусе, в пределах броска. */
-function aim(scene, from, cfg) {
+/** Лучшая точка: больше всего героев в радиусе, в пределах броска. { at, R, n } или null. */
+export function aim(scene, from, cfg = GRENADE) {
   const ft = scene.grid.distance || 5, G = scene.grid.size, R = cfg.radius / ft * G, range = cfg.range / ft * G;
   const heroes = scene.tokens.filter(t => !t.hidden && isHero(t) && hpOf(t) > 0).map(t => t.object).filter(Boolean);
   if (!heroes.length) return null;
@@ -154,7 +154,7 @@ function aim(scene, from, cfg) {
     const n = inR(p);
     if (!best || n > best.n || (n === best.n && dist < best.dist)) best = { p, n, dist };
   }
-  return best ? { at: best.p, R } : null;
+  return best ? { at: best.p, R, n: best.n } : null;
 }
 
 /** Вожак (или кто угодно) швыряет гранату в скопление героев: эффект, урон, спасброски у игроков, итог в чат. */

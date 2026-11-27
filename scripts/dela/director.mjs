@@ -3,6 +3,7 @@ import { h } from "./ui.mjs";
 import * as S from "./state.mjs";
 import { resetDialog } from "./reset.mjs";
 import * as HF from "./hallfight.mjs";
+import * as AG from "./agent.mjs";
 
 const MOD = "nepreklonny-40k";
 const M = `modules/${MOD}/maps/`;
@@ -31,6 +32,8 @@ const EVENTS = {
       on: s => s.tiles.some(t => t.flags?.[MOD]?.role === "zone" && !t.hidden) },
     { id: "Высадка", label: "ВЫСАДКА", hint: "Культисты, стрелки и вожак выскакивают из люков торпеды и разбегаются по залу. Стрелки остаются в люках. Повтор — спрятать врагов.",
       on: s => HALL_FOES.some(gid => castTokens(s, gid).some(t => !t.hidden)), run: s => landing(s) },
+    { id: "Агент", label: "АГЕНТ БОЯ", hint: "Агент сам ведёт врагов два раунда: создаёт бой, бросает инициативу, ходит, бьёт, вожак бросает гранату в кучу героев. Ходы игроков и нейтральных ждёт. Повтор — остановить.",
+      on: () => AG.agentRunning(), run: s => toggleAgent(s) },
     { id: "Граната", label: "ГРАНАТА ВОЖАКА", hint: "Вожак швыряет фраг-гранату в скопление героев: игрокам приходит спасбросок Ловкости Сл 13, урон 3к6 вычитается сам. Одна за бой.",
       on: s => castTokens(s, "leader").some(t => t.actor?.items.some(i => i.flags?.[MOD]?.autoGrenade && i.system.uses?.spent >= 1)), run: s => leaderGrenade(s) },
     { macro: "Декомпрессия", label: "ДЕКОМПРЕССИЯ", hint: "Видео: торпеду вырывает, зал темнеет, рёв пробоины. Стрелки в люках улетают вместе с торпедой. Повтор — вернуть целый зал.",
@@ -141,6 +144,14 @@ async function landing(scene) {
   const docs = ["cultists", "cultists-las", "leader"].flatMap(gid => castTokens(scene, gid)).filter(t => !t.hidden);
   const n = await HF.scatter(scene, docs, role);
   ui.notifications.info(`Высадка: врагов на ногах — ${HALL_FOES.flatMap(gid => castTokens(scene, gid)).filter(t => !t.hidden).length}, разбежались ${n ?? 0}.`);
+}
+
+/** Агент боя: запустить на зале или остановить. */
+async function toggleAgent(scene) {
+  if (AG.agentRunning()) return AG.stopAgent();
+  await viewScene(scene);
+  if (!HALL_FOES.some(gid => castTokens(scene, gid).some(t => !t.hidden))) return ui.notifications.warn("Агент боя: врагов на карте нет — сначала «Высадка».");
+  await AG.startAgent();
 }
 
 /** Граната вожака: сам выбирает скопление героев, игрокам — спасбросок Ловкости. */
