@@ -70,7 +70,7 @@ export default async function ({ log }) {
   }
   ui.notifications.info(`Враги и NPC акта I: обновлено способностей и вещей — ${n}.`);
   // сброс игры к началу акта I: окно с выбором из модуля (scripts/dela/reset.mjs)
-  const { resetDialog } = await import(`/modules/${MOD}/scripts/dela/reset.mjs?v=${Date.now()}`);
+  const { resetDialog } = await import(`${foundry.utils.getRoute(`modules/${MOD}/scripts/dela/reset.mjs`)}?v=${Date.now()}`);
   const res = await resetDialog();
   if (res) for (const l of res) log(l); else log("сброс отменён");
   return { items: n, lasgun: !!las, reset: !!res };
