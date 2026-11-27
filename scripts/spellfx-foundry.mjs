@@ -73,14 +73,19 @@ export const SPELLS = {
   "Ауспик варпа": { fx: "self", kind: "sweep", pal: "volt" },
   "Ритуал починки": { fx: "self", kind: "glyph", pal: "volt" },
   "Освящение оружия": { fx: "ward", pal: "mech", style: "mech" },
+  // враги: способности-«умения» с броском спасения
+  "Слово (перезарядка 5–6)": { fx: "mind", pal: "warp", spike: true },
 };
+
+/** Демон или тварь варпа: когти светятся варпом, а не кровью. */
+const demonic = actor => { const t = actor?.system?.details?.type ?? {}; return /fiend|aberration/.test(t.value ?? "") || /демон|daemon|demon|варп/i.test(t.subtype ?? ""); };
 
 /** Вид удара в ближнем бою по названию оружия. */
 export function meleeKind(item) {
   const n = String(item?.name ?? "").toLowerCase(), nat = item?.system?.type?.value === "natural";
   if (/цепн/.test(n)) return /топор|секир/.test(n) ? "chainaxe" : "chain";
   if (/силов|энерг|power/.test(n)) return "power";
-  if (/когт|клешн|лап|коготь|claw/.test(n)) return "claw";
+  if (/когт|клешн|лап|коготь|claw/.test(n)) return demonic(item?.actor) ? "warpclaw" : "claw";
   if (/укус|пасть|челюст|зуб|bite/.test(n)) return "bite";
   if (/безоруж|кулак|удар|unarmed/.test(n)) return "fist";
   if (/нож|кинжал|штык|стилет|knife|dagger/.test(n)) return "knife";
@@ -338,6 +343,8 @@ export function createSpellFX({ broadcast, settings }) {
     const activity = data?.subject, item = activity?.item, roll = rolls?.[0];
     if (!item || !roll) return null;
     if (item.type === "weapon") return onWeapon(activity, item, roll, data);
+    // когти, укусы и прочие атаки-«умения» существ — как ближний бой
+    if (item.type !== "spell" && !SPELLS[item.name] && activity?.attack?.type?.value === "melee") return onWeapon(activity, item, roll, data);
     if (item.type !== "spell" && !SPELLS[item.name]) return null;
     const crit = !!roll.isCritical, fumble = !!roll.isFumble;
     const hitFor = t => crit || (!fumble && roll.total >= (t.actor?.system?.attributes?.ac?.value ?? 10));
@@ -374,5 +381,5 @@ export function createSpellFX({ broadcast, settings }) {
       tos: (targets.length ? targets : [src]).map(t => pt(t, extra.hit)) });
   }
 
-  return { play, onUse, onAttack, cast, breach, teardown, ensure, get engine() { return eng; }, manual(on) { manual = !!on; }, step(ms) { eng?.update(ms); } };
+  return { play, emit: send, onUse, onAttack, cast, breach, teardown, ensure, get engine() { return eng; }, manual(on) { manual = !!on; }, step(ms) { eng?.update(ms); } };
 }

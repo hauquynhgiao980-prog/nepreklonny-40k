@@ -140,6 +140,7 @@ export const PALETTES = {
   power:   { c: 0x3aa8ff, hot: 0xeaf8ff, alt: 0x9fe0ff, dark: 0x001020, sound: "blade" },
   chain:   { c: 0xffa040, hot: 0xfff2d8, alt: 0xff5a10, dark: 0x1a0800, sound: "chain" },
   claw:    { c: 0xd8284e, hot: 0xffd6e0, alt: 0x9a1a6a, dark: 0x1a0008, sound: "blade" },
+  warpclaw: { c: 0xb23cff, hot: 0xf4dcff, alt: 0xff2a7a, dark: 0x14001f, sound: "blade" },
   blunt:   { c: 0xffd8a8, hot: 0xffffff, alt: 0x8a7a68, dark: 0x1a140e, sound: "blunt" },
   frag:    { c: 0xff8a2a, hot: 0xfff6e0, alt: 0xffc060, dark: 0x2a2420, sound: "boom" },
 };
@@ -155,6 +156,7 @@ export const MELEE = {
   spear: { P: "steel", thrust: 1, reach: 1.9, width: 0.045 },
   blunt: { P: "blunt", arcs: 1, rad: 1.0, swing: 190, width: 0.08, span: 0.7, blunt: true },
   claw: { P: "claw", arcs: 3, rad: 1.3, swing: 140, width: 0.06, span: 0.9, gap: 0.32 },
+  warpclaw: { P: "warpclaw", arcs: 3, rad: 1.4, swing: 150, width: 0.07, span: 1.0, gap: 0.34, crackle: true, gore: 1.3 },
   bite: { P: "claw", arcs: 2, rad: 0.9, swing: 120, width: 0.05, span: 0.8, gap: 0.5, bite: true },
   fist: { P: "blunt", fist: true },
 };
@@ -690,7 +692,7 @@ export class SpellFX {
         this.onHit?.(to.id, crit ? 0xff3030 : 0xff6a6a);
       } else {
         const hp = { x: tp.x - nx * to.r * 0.3, y: tp.y - ny * to.r * 0.3 };
-        this.spark(hp, P.c === PALETTES.claw.c ? PALETTES.steel : P, tang + Math.PI, 10, 5, 0.035, 260, 1.8, R);
+        this.spark(hp, P.c === PALETTES.claw.c || P.c === PALETTES.warpclaw.c ? PALETTES.steel : P, tang + Math.PI, 10, 5, 0.035, 260, 1.8, R);
         this.sound("blade", "parry");
       }
     });

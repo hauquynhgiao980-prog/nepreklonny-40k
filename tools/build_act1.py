@@ -397,6 +397,9 @@ def build_actors():
         feat(aid, 'Легендарные действия (2 за раунд)', '<p>После хода другого существа: удар когтем или шаг сквозь дымку — телепорт на 30 футов в видимую точку внутри лиловой дымки у разлома.</p>', {step_id: step}),
         feat(aid, 'Логово: разлом', lair_html),
         feat(aid, 'Тактика', '<p>Первой идёт на того, у кого больше Света. Тех, кто принял Шёпот в испытании 3, обходит, пока есть другие цели: «эти уже наши».</p>')]
+    UNB_ICON = {"Мультиатака": "multiattack", "Коготь": "claw", "Слово (перезарядка 5–6)": "word", "Якоря": "anchors", "Легендарные действия (2 за раунд)": "legendary", "Логово: разлом": "lair", "Тактика": "tactics"}
+    for it in a['items']:
+        if it['name'] in UNB_ICON: it['img'] = A1 + f"unborn_{UNB_ICON[it['name']]}.webp"   # медальоны способностей
     a['img'] = A1 + 'nerozhdenny.webp'; token(a, 'Нерождённый', A1 + 'token_nerozhdenny_aura.webm', 3, 3, 1.5, -1)   # живой: петля MiniMax с аурой варпа, огромный
     a['system']['traits']['size'] = 'huge'
     a['prototypeToken']['lockRotation'] = False                                # вид сверху — можно крутить

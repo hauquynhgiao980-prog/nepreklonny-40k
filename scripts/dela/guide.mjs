@@ -21,6 +21,53 @@ function eventsTool(key, title) {
   };
 }
 
+/** Нерождённый: эффекты для того, что не бросается кнопкой листа (логово, шаг сквозь дымку, уход в разлом).
+ *  Коготь и «Слово» играют сами — по броску атаки и по использованию способности. */
+function unbornTools() {
+  const FT = 5;
+  const ctx = () => {
+    const fx = game.modules.get(S.MOD)?.api?.spellFx, scene = canvas?.scene;
+    if (!fx?.emit || !scene) { ui.notifications.warn("Эффекты недоступны: откройте сцену галереи."); return null; }
+    if (scene.flags?.[S.MOD]?.scene !== "gallery") { ui.notifications.warn("Откройте у себя сцену смотровой галереи."); return null; }
+    const g = canvas.grid.size, pt = t => ({ x: t.center.x, y: t.center.y, r: Math.min(t.w, t.h) / 2, id: t.id });
+    const tok = canvas.tokens.placeables.find(t => t.actor?.name === "Нерождённый" || /^Нерождённый/.test(t.document.name));
+    const riftL = scene.lights.find(l => l.flags?.[S.MOD]?.role === "rift");
+    const rift = riftL ? { x: riftL.x, y: riftL.y - g * 0.45, r: g * 0.6 } : tok ? pt(tok) : { x: scene.width * 0.72, y: scene.height * 0.56, r: g * 0.6 };
+    const targets = [...game.user.targets].filter(t => t.document?.parent === scene && t !== tok).map(pt);
+    const send = (fx, o, extra) => fx && game.modules.get(S.MOD).api.spellFx.emit({ t: "sfx", scene: scene.id, fx, pal: "warp", o, seed: Math.floor(Math.random() * 1e9), ...extra });
+    return { g, tok, pt, rift, targets, send };
+  };
+  const acts = [
+    ["ЛОГОВО: МОЛНИЯ", "Молния из разлома в отмеченные цели (клавиша T над токеном). Линия 60 футов, Ловкость Сл 14, 3к8 электричеством.", () => {
+      const c = ctx(); if (!c) return;
+      if (!c.targets.length) return ui.notifications.warn("Отметьте цели молнии: наведите на токен и нажмите T.");
+      c.send("rays", { width: 0.22 }, { from: c.rift, tos: c.targets });
+    }],
+    ["ЛОГОВО: ДЫМКА", "Лиловая дымка сгущается вокруг разлома: сфера 15 футов, сильно заслонена до следующего хода логова.", () => {
+      const c = ctx(); if (!c) return;
+      c.send("area", { kind: "void" }, { from: c.rift, tos: [], at: c.rift, radius: (15 / FT) * c.g });
+    }],
+    ["ШАГ СКВОЗЬ ДЫМКУ", "Легендарное действие: вспышка на месте твари. Потом перетащите токен — до 30 футов, внутри дымки у разлома.", () => {
+      const c = ctx(); if (!c) return;
+      if (!c.tok) return ui.notifications.warn("Токена Нерождённого на сцене нет.");
+      c.send("self", { kind: "blink" }, { from: c.pt(c.tok), tos: [] });
+    }],
+    ["УХОД В РАЗЛОМ", "Хиты на нуле или разбиты оба сердца и оборван канал: разлом утягивает тварь. Токен спрячется сам.", async () => {
+      const c = ctx(); if (!c) return;
+      if (!c.tok) return ui.notifications.warn("Токена Нерождённого на сцене нет.");
+      const p = c.pt(c.tok);
+      c.send("area", { kind: "grasp" }, { from: p, tos: [], at: p, radius: p.r * 1.6 });
+      setTimeout(() => c.send("area", { kind: "void" }, { from: p, tos: [], at: p, radius: p.r * 1.3 }), 500);
+      setTimeout(() => c.tok.document.update({ hidden: true }), 1600);
+    }],
+  ];
+  return () => h("div.nk-g-tools", {},
+    h("div.nk-g-th", {}, "НЕРОЖДЁННЫЙ · ЭФФЕКТЫ ЛОГОВА И ЛЕГЕНДАРНЫХ ДЕЙСТВИЙ"),
+    h("div.nk-g-row", {}, acts.map(([label, hint, fn]) => h("button.nk-btn", { title: hint, onclick: () => { try { fn(); } catch (err) { console.error(err); ui.notifications.error(err.message); } } }, label))),
+    h("div.nk-g-small", {}, "Коготь и «Слово» играют сами: коготь — по броску атаки с отмеченной целью, «Слово» — при использовании (шаблон конуса или отмеченные цели). " +
+      acts.map(([l, hint]) => `${l} — ${hint}`).join(" · ")));
+}
+
 export const LOCATIONS = [
   { key: "intro", title: "О МОДУЛЕ · КТО, ЧТО, ЗАЧЕМ", file: "intro" },
   { key: "prep", title: "ПЕРЕД ИГРОЙ · БЕЗОПАСНОСТЬ · ЕСЛИ ЧТО-ТО ПОШЛО НЕ ТАК", file: "prep" },
@@ -32,7 +79,7 @@ export const LOCATIONS = [
   { key: "hall", title: "2. ЗАЛ ЭТАПА", scene: "hall", tools: [eventsTool("hall", "ЗАЛ ЭТАПА · СОБЫТИЯ")], file: "hall" },
   { key: "route", title: "ПЕРЕХОД · АВАРИЙНЫЙ ТРАП · ПРОМЕЖУТОЧНЫЕ МЕСТА", file: "route" },
   { key: "boats", title: "3. ШЛЮПОЧНАЯ ПАЛУБА", scene: "lifeboats", tools: [eventsTool("lifeboats", "ШЛЮПОЧНАЯ ПАЛУБА · СОБЫТИЯ")], file: "boats" },
-  { key: "gallery", title: "4. СМОТРОВАЯ ГАЛЕРЕЯ", scene: "gallery", tools: [eventsTool("gallery", "СМОТРОВАЯ ГАЛЕРЕЯ · СОБЫТИЯ")], file: "gallery" },
+  { key: "gallery", title: "4. СМОТРОВАЯ ГАЛЕРЕЯ", scene: "gallery", tools: [eventsTool("gallery", "СМОТРОВАЯ ГАЛЕРЕЯ · СОБЫТИЯ"), unbornTools()], file: "gallery" },
   { key: "finale", title: "ФИНАЛ И ЭПИЛОГ", file: "finale" },
 ];
 
@@ -124,9 +171,15 @@ function section(L, rerender, extra) {
 
 /** Вкладка «Сценарий». */
 export function guideTab(rerender) {
-  return LOCATIONS.map(L => {
+  const top = h("div.nk-g-top", {},
+    h("button.nk-btn.small", { title: "Свернуть все разделы", onclick: () => {
+      for (const k of Object.keys(open)) open[k] = false;
+      rerender();
+      const body = document.querySelector("#nk-panel .nk-body"); if (body) body.scrollTop = 0;
+    } }, "▴ СВЕРНУТЬ ВСЕ"));
+  return [top, ...LOCATIONS.map(L => {
     const sc = L.scene && game.scenes?.find?.(s => s.flags?.[S.MOD]?.scene === L.scene);
     const view = sc ? h("button.nk-btn.small", { title: "Открыть сцену у себя", onclick: e => { e.stopPropagation(); sc.view(); } }, "СМОТРЕТЬ СЦЕНУ") : null;
     return section(L, rerender, view);
-  });
+  })];
 }

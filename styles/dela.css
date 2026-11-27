@@ -531,3 +531,4 @@
 #nk-panel .nk-drama-text blockquote { margin: 4px 0 8px; padding: 8px 12px; border: 0; border-left: 3px solid #b8862f; background: rgba(60, 40, 10, .22); border-radius: 0 4px 4px 0; }
 #nk-panel .nk-drama-text p { margin: 0 0 6px; }
 #nk-panel .nk-drama-text blockquote p:last-child { margin-bottom: 0; }
+#nk-panel .nk-g-top { display: flex; justify-content: flex-end; margin: -4px 0 8px; padding: 4px 0 6px; position: sticky; top: -4px; z-index: 3; background: #07120d; border-bottom: 1px solid rgba(120, 200, 150, .18); }

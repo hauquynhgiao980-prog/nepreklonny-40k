@@ -743,7 +743,7 @@
    "_id": "J8J88JITI76XqL3t",
    "name": "Мультиатака",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/unborn_multiattack.webp",
    "system": {
     "type": {
      "value": "monster",
@@ -788,7 +788,7 @@
    "_id": "oNRYh0s7VBdXmTqf",
    "name": "Коготь",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/unborn_claw.webp",
    "system": {
     "type": {
      "value": "monster",
@@ -936,7 +936,7 @@
    "_id": "a4hg3kgNiyVrcIeZ",
    "name": "Слово (перезарядка 5–6)",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/unborn_word.webp",
    "system": {
     "type": {
      "value": "monster",
@@ -1077,7 +1077,7 @@
    "_id": "cRMf5M0tuLeg2686",
    "name": "Якоря",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/unborn_anchors.webp",
    "system": {
     "type": {
      "value": "monster",
@@ -1122,7 +1122,7 @@
    "_id": "iCET1EqXQKFb7azV",
    "name": "Легендарные действия (2 за раунд)",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/unborn_legendary.webp",
    "system": {
     "type": {
      "value": "monster",
@@ -1215,7 +1215,7 @@
    "_id": "yg5z8raKI6GkTHgT",
    "name": "Логово: разлом",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/unborn_lair.webp",
    "system": {
     "type": {
      "value": "monster",
@@ -1260,7 +1260,7 @@
    "_id": "4NGgtUqMWhYGxZPz",
    "name": "Тактика",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/unborn_tactics.webp",
    "system": {
     "type": {
      "value": "monster",
