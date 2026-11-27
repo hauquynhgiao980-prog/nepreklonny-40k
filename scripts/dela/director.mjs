@@ -71,8 +71,8 @@ const FIT = { kryuk: 0.96, sol: 0.96, varro: 0.96, turret: 0.96, strelok: 0.9, o
 const fitOf = src => { const m = String(src ?? "").match(/icons\/gen\/act1\/token_([a-z_]+)\.webp$/); return m ? (m[1].startsWith("kultist") ? 0.9 : FIT[m[1]]) : null; };
 const CAST = {
   post: [
-    { id: "kryuk", label: "Крюк", actor: "Крюк", from: "act1-actors", at: [[560, 430]], neutral: true },
-    { id: "sol", label: "Тихий Сол", actor: "Тихий Сол", from: "act1-actors", at: [[430, 880]], neutral: true },
+    { id: "kryuk", label: "Крюк", actor: "Крюк", from: "act1-actors", faces: [`${T1}token_kryuk.webp`], at: [[560, 430]], neutral: true },
+    { id: "sol", label: "Тихий Сол", actor: "Тихий Сол", from: "act1-actors", faces: [`${T1}token_sol.webp`], at: [[430, 880]], neutral: true },
   ],
   hall: [
     { id: "cultists", label: "Культисты", actor: "Культист-ренегат", from: "enemies40k", faces: CULTIST_FACES,
@@ -81,11 +81,11 @@ const CAST = {
     { id: "leader", label: "Отмеченный Хаосом", actor: "Отмеченный Хаосом", from: "enemies40k", faces: [`${T1}token_otmechenny.webp`], at: [[1216, 1472]] },
   ],
   lifeboats: [
-    { id: "turret", label: "Турель", actor: "Сторожевая турель палубы", from: "act1-actors", at: [[1288, 2900]] },
-    { id: "varro", label: "Варро", actor: "Варро, матрос пусковой команды", from: "act1-actors", at: [[330, 1250]], neutral: true },
+    { id: "turret", label: "Турель", actor: "Сторожевая турель палубы", from: "act1-actors", faces: [`${M}04_lifeboat_deck/turret/lifeboats_turret_off_1024.png`], scale: 1.6, size: 2, at: [[1288, 2900]] },
+    { id: "varro", label: "Варро", actor: "Варро, матрос пусковой команды", from: "act1-actors", faces: [`${T1}token_varro.webp`], at: [[330, 1250]], neutral: true },
   ],
   gallery: [
-    { id: "unborn", label: "Нерождённый", actor: "Нерождённый", from: "act1-actors", at: [[2215, 1430]] },
+    { id: "unborn", label: "Нерождённый", actor: "Нерождённый", from: "act1-actors", faces: [`${T1}token_nerozhdenny_aura.webm`], scale: 1.5, size: 3, at: [[2215, 1430]] },
   ],
 };
 // какие персонажи выходят вместе с событием (и прячутся, если событие откатили)
@@ -153,13 +153,14 @@ export async function setCast(scene, gid, show) {
   if (!toks.length && show) {
     const actor = await castActor(g), gs = scene.grid?.size || 128, docs = [];
     for (const [i, [cx, cy]] of g.at.entries()) {
-      const size = (actor.prototypeToken?.width || 1) * gs;
+      const size = (g.size || actor.prototypeToken?.width || 1) * gs;
       const x = Math.round((cx - size / 2) / gs) * gs, y = Math.round((cy - size / 2) / gs) * gs;
       const td = (await actor.getTokenDocument({ x, y, hidden: true })).toObject();
       if (g.at.length > 1) td.name = `${td.name} ${i + 1}`;
       if (g.neutral) td.disposition = 0;
       if (g.faces?.length) td.texture = { ...(td.texture || {}), src: g.faces[i % g.faces.length] };
-      const fit = fitOf(td.texture?.src);
+      if (g.size) { td.width = g.size; td.height = g.size; }
+      const fit = g.scale ?? fitOf(td.texture?.src);
       if (fit) td.texture = { ...(td.texture || {}), scaleX: fit, scaleY: fit };
       td.flags = { ...(td.flags || {}), [MOD]: { ...(td.flags?.[MOD] || {}), cast: gid } };
       docs.push(td);
