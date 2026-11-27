@@ -73,16 +73,23 @@ export const SPELLS = {
   "Ауспик варпа": { fx: "self", kind: "sweep", pal: "volt" },
   "Ритуал починки": { fx: "self", kind: "glyph", pal: "volt" },
   "Освящение оружия": { fx: "ward", pal: "mech", style: "mech" },
-  // враги: способности-«умения» с броском спасения
+  // враги: способности-«умения»; «Предмет · Действие» — эффект для одного действия способности
   "Слово (перезарядка 5–6)": { fx: "mind", pal: "warp", spike: true },
+  "Логово: разлом · Молния вдоль ветки": { fx: "rays", pal: "warp", width: 0.22, origin: "rift" },
+  "Логово: разлом · Дымка сгущается": { fx: "area", kind: "void", pal: "warp", r: 15, origin: "rift", at: "rift" },
+  "Легендарные действия (2 за раунд) · Шаг сквозь дымку": { fx: "self", kind: "blink", pal: "warp", self: true },
+  "Якоря · Восстановление · 10 хитов": { fx: "heal", pal: "warp", self: true },
+  "Якоря · Восстановление · 15 (испытание 3 провалено)": { fx: "heal", pal: "warp", self: true },
 };
+/** Запись таблицы для действия способности: сначала «Предмет · Действие», потом сам предмет. */
+const entryOf = (item, activity) => SPELLS[`${item?.name} · ${activity?.name}`] ?? SPELLS[item?.name];
 
 /** Демон или тварь варпа: когти светятся варпом, а не кровью. */
 const demonic = actor => { const t = actor?.system?.details?.type ?? {}; return /fiend|aberration/.test(t.value ?? "") || /демон|daemon|demon|варп/i.test(t.subtype ?? ""); };
 
 /** Вид удара в ближнем бою по названию оружия. */
-export function meleeKind(item) {
-  const n = String(item?.name ?? "").toLowerCase(), nat = item?.system?.type?.value === "natural";
+export function meleeKind(item, activity = null) {
+  const n = `${item?.name ?? ""} ${activity?.name ?? ""}`.toLowerCase(), nat = item?.system?.type?.value === "natural";
   if (/цепн/.test(n)) return /топор|секир/.test(n) ? "chainaxe" : "chain";
   if (/силов|энерг|power/.test(n)) return "power";
   if (/когт|клешн|лап|коготь|claw/.test(n)) return demonic(item?.actor) ? "warpclaw" : "claw";
@@ -116,7 +123,7 @@ function damageTypes(activity) {
 
 /** Что показать: запись таблицы или догадка по виду действия и типу урона. Возвращает null, если ничего. */
 export function pick(item, activity) {
-  const e = SPELLS[item?.name];
+  const e = entryOf(item, activity);
   if (e) return { ...e };
   if (item?.type !== "spell") return null;
   const t = activity?.type, dt = damageTypes(activity), pal = DMG_PAL[dt[0]] ?? "warp";
@@ -274,6 +281,9 @@ export function createSpellFX({ broadcast, settings }) {
     return true;
   }
 
+  /** Разлом галереи: свет с ролью rift на сцене (центр расщелины), иначе null. */
+  const riftPoint = () => { const l = canvas.scene?.lights?.find(x => x.flags?.[MOD]?.role === "rift"), g = canvas.grid.size;
+    return l ? { x: l.x, y: l.y - g * 0.45, r: g * 0.6 } : null; };
   const tokOf = actor => actor?.token?.object ?? canvas.tokens?.controlled.find(t => t.actor === actor) ?? actor?.getActiveTokens?.()[0] ?? null;
   const pt = (t, hit) => ({ x: t.center.x, y: t.center.y, r: Math.min(t.w, t.h) / 2, id: t.id, ...(hit === undefined ? {} : { hit }) });
 
@@ -308,9 +318,11 @@ export function createSpellFX({ broadcast, settings }) {
     if (e.self) targets = [src];
     if (["bolt", "rays", "mind", "pillar", "mark"].includes(e.fx) && !targets.filter(t => t !== src).length && e.fx !== "mark") return null;
     const pal = e.pal === "auto" ? (style === "warp" ? (e.fx === "heal" ? "heal" : "warp") : style === "mech" ? (e.fx === "heal" ? "volt" : "mech") : e.fx === "heal" ? "heal" : "holy") : e.pal;
-    const p = { t: "sfx", scene: canvas.scene.id, fx: e.fx, pal, style: e.style ?? style, o: e, seed: Math.floor(Math.random() * 1e9), from: pt(src),
+    const rift = (e.origin === "rift" || e.at === "rift") ? riftPoint() : null;
+    const p = { t: "sfx", scene: canvas.scene.id, fx: e.fx, pal, style: e.style ?? style, o: e, seed: Math.floor(Math.random() * 1e9), from: e.origin === "rift" && rift ? rift : pt(src),
       tos: targets.filter(t => !(t === src && ["bolt", "rays", "mind", "pillar"].includes(e.fx))).map(t => pt(t, hitFor ? hitFor(t) : undefined)) };
     if (zone) { p.at = zone.at; if (zone.radius) p.radius = zone.radius; }
+    if (e.at === "rift" && rift) p.at = { x: rift.x, y: rift.y };
     return p;
   }
 
@@ -333,7 +345,7 @@ export function createSpellFX({ broadcast, settings }) {
     if (gk) { const templates = results?.templates ?? []; setTimeout(() => send(buildGrenade(item, activity, gk, templates)), templates.length ? 80 : 0); return true; }
     if (item.type === "weapon") return null;
     if (activity.type === "attack") return null;
-    if (item.type !== "spell" && !SPELLS[item.name]) return null;
+    if (item.type !== "spell" && !entryOf(item, activity)) return null;
     const templates = results?.templates ?? [];
     if (templates.length) { setTimeout(() => send(build(item, activity, { templates })), 80); return true; }   // дать шаблону дорисоваться
     return send(build(item, activity, { templates }));
@@ -344,8 +356,8 @@ export function createSpellFX({ broadcast, settings }) {
     if (!item || !roll) return null;
     if (item.type === "weapon") return onWeapon(activity, item, roll, data);
     // когти, укусы и прочие атаки-«умения» существ — как ближний бой
-    if (item.type !== "spell" && !SPELLS[item.name] && activity?.attack?.type?.value === "melee") return onWeapon(activity, item, roll, data);
-    if (item.type !== "spell" && !SPELLS[item.name]) return null;
+    if (item.type !== "spell" && !entryOf(item, activity) && activity?.attack?.type?.value === "melee") return onWeapon(activity, item, roll, data);
+    if (item.type !== "spell" && !entryOf(item, activity)) return null;
     const crit = !!roll.isCritical, fumble = !!roll.isFumble;
     const hitFor = t => crit || (!fumble && roll.total >= (t.actor?.system?.attributes?.ac?.value ?? 10));
     return send(build(item, activity, { hitFor }));
@@ -360,7 +372,7 @@ export function createSpellFX({ broadcast, settings }) {
     if (!targets.length) return null;
     const crit = !!roll.isCritical, fumble = !!roll.isFumble;
     const hitFor = t => crit || (!fumble && roll.total >= (t.actor?.system?.attributes?.ac?.value ?? 10));
-    return send({ t: "sfx", scene: canvas.scene.id, fx: thrown ? "throw" : "melee", kind: meleeKind(item), crit, pal: "steel", o: {}, seed: Math.floor(Math.random() * 1e9),
+    return send({ t: "sfx", scene: canvas.scene.id, fx: thrown ? "throw" : "melee", kind: meleeKind(item, activity), crit, pal: "steel", o: {}, seed: Math.floor(Math.random() * 1e9),
       from: pt(src), tos: targets.map(t => pt(t, hitFor(t))) });
   }
 

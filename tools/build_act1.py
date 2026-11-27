@@ -317,7 +317,7 @@ def build_actors():
     a['items'] = [feat(aid, 'Хромает', '<p>Пока Варро не подлечили стимулятором или проверкой Мудрости (Медицина) Сл 10, его скорость вдвое меньше.</p>'),
                   feat(aid, 'Образок паствы', '<p>Жестяной образок: агнец, на обороте звезда из восьми стрелок. Исповедник узнаёт работу своего ученика Ионы.</p>')]
     src = M + '04_lifeboat_deck/lifeboats_survivor_token_384.png'
-    a['img'] = A1 + 'varro.webp'; token(a, 'Варро', A1 + 'token_varro.webp', 1, 1, 1, 0)
+    a['img'] = A1 + 'varro.webp'; token(a, 'Варро', A1 + 'token_varro.webp', 1, 1, None, 0)
     out.append(a)
 
     # Сторожевая турель
@@ -383,7 +383,25 @@ def build_actors():
         "consumption": {"scaling": {"allowed": False}, "spellSlot": True, "targets": [{"type": "itemUses", "value": "1", "target": "", "scaling": {}}]},
         "damage": {"parts": [dmg(4, 8, "", ["psychic"])], "onSave": "half", "critical": {"allow": False}},
         "save": {"ability": ["wis"], "dc": {"calculation": "cha", "formula": ""}}})
-    step_id, step = act_base(aid, 'Шаг сквозь дымку', 'utility', 'legendary')
+    step_id, step = act_base(aid, 'Шаг сквозь дымку', 'utility', 'legendary', {
+        "name": "Шаг сквозь дымку", "range": {"override": False, "units": "ft", "value": "30", "special": "в видимую точку внутри дымки у разлома"}})
+    legclaw_id, legclaw = act_base(aid, 'Удар когтем', 'attack', 'legendary', {**{k: v for k, v in claw.items() if k in ("range", "target", "attack", "damage")}, "name": "Удар когтем"})
+    bolt_id, bolt = act_base(aid, 'Молния', 'save', 'lair', {
+        "name": "Молния вдоль ветки",
+        "target": {"template": {"contiguous": False, "units": "ft", "type": "line", "size": "60", "width": "5"}, "affects": {"choice": False, "type": "creature"},
+                   "override": False, "prompt": True},
+        "damage": {"parts": [dmg(3, 8, "", ["lightning"])], "onSave": "half", "critical": {"allow": False}},
+        "save": {"ability": ["dex"], "dc": {"calculation": "", "formula": "14"}}})
+    haze_id, haze = act_base(aid, 'Дымка', 'utility', 'lair', {
+        "name": "Дымка сгущается", "duration": {"units": "round", "value": "1", "concentration": False, "override": False},
+        "target": {"template": {"contiguous": False, "units": "ft", "type": "sphere", "size": "15"}, "affects": {"choice": False}, "override": False, "prompt": True}})
+    def regen(n, label):
+        return act_base(aid, f'Восстановление {n}', 'heal', 'special', {
+            "name": label, "activation": {"type": "special", "value": None, "override": False, "condition": "в начале своего хода, пока цел хоть один якорь"},
+            "target": {"template": {"contiguous": False, "units": "ft"}, "affects": {"choice": False, "type": "self"}, "override": False, "prompt": False},
+            "healing": {"custom": {"enabled": True, "formula": str(n)}, "number": None, "denomination": None, "bonus": "", "types": ["healing"], "scaling": {"number": 1}}})
+    regen10_id, regen10 = regen(10, "Восстановление · 10 хитов")
+    regen15_id, regen15 = regen(15, "Восстановление · 15 (испытание 3 провалено)")
     lair_html = ('<p>На счёт инициативы 20 (при ничьей — последней) одно на выбор мастера:</p><ul>'
                  '<li>Молния бьёт вдоль ветки на полу: линия 60 футов длиной и 5 шириной от разлома, спасбросок Ловкости Сл 14, 3к8 урона электричеством, при успехе половина.</li>'
                  '<li>Лиловая дымка сгущается: сфера радиусом 15 футов вокруг разлома сильно заслонена до следующего хода логова.</li></ul>')
@@ -393,9 +411,9 @@ def build_actors():
         feat(aid, 'Слово (перезарядка 5–6)', '<p>Голос Вела из пасти твари. Конус 30 футов, спасбросок Мудрости Сл 16. <em>Провал:</em> 4к8 урона психической энергией, существо падает ничком и не может встать до конца своего следующего хода. <em>Успех:</em> половина урона. Пользуется «Словом», только пока открыт канал вокса.</p>',
              {word_id: word}, {"spent": 0, "max": "1", "recovery": [{"period": "recharge", "type": "recoverAll", "formula": "5"}]}),
         feat(aid, 'Якоря', '<p>Пока цел хоть один якорь, в начале своего хода Нерождённый восстанавливает 10 хитов (15, если испытание 3 провалено), и его нельзя изгнать заклинанием. Якоря: два сердца на левых кафедрах (каждое — КД 12, 15 хитов) и канал вокса (оборвать — действие у когитатора: Техножрец без броска, остальные — Интеллект (Магия) Сл 15).</p>'
-             '<p>При 0 хитов тварь утягивает в разлом. Если разбиты оба сердца и оборван канал, её утягивает сразу, в конце текущего хода.</p>'),
-        feat(aid, 'Легендарные действия (2 за раунд)', '<p>После хода другого существа: удар когтем или шаг сквозь дымку — телепорт на 30 футов в видимую точку внутри лиловой дымки у разлома.</p>', {step_id: step}),
-        feat(aid, 'Логово: разлом', lair_html),
+             '<p>При 0 хитов тварь утягивает в разлом. Если разбиты оба сердца и оборван канал, её утягивает сразу, в конце текущего хода.</p>', {regen10_id: regen10, regen15_id: regen15}),
+        feat(aid, 'Легендарные действия (2 за раунд)', '<p>После хода другого существа: удар когтем или шаг сквозь дымку — телепорт на 30 футов в видимую точку внутри лиловой дымки у разлома.</p>', {legclaw_id: legclaw, step_id: step}),
+        feat(aid, 'Логово: разлом', lair_html, {bolt_id: bolt, haze_id: haze}),
         feat(aid, 'Тактика', '<p>Первой идёт на того, у кого больше Света. Тех, кто принял Шёпот в испытании 3, обходит, пока есть другие цели: «эти уже наши».</p>')]
     UNB_ICON = {"Мультиатака": "multiattack", "Коготь": "claw", "Слово (перезарядка 5–6)": "word", "Якоря": "anchors", "Легендарные действия (2 за раунд)": "legendary", "Логово: разлом": "lair", "Тактика": "tactics"}
     for it in a['items']:

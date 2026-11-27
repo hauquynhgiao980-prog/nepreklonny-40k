@@ -35381,7 +35381,134 @@
        "value": "monster",
        "subtype": ""
       },
-      "activities": {},
+      "activities": {
+       "IUE98ng5kV76YSaj": {
+        "type": "heal",
+        "_id": "IUE98ng5kV76YSaj",
+        "sort": 0,
+        "activation": {
+         "type": "special",
+         "value": null,
+         "override": false,
+         "condition": "в начале своего хода, пока цел хоть один якорь"
+        },
+        "consumption": {
+         "scaling": {
+          "allowed": false
+         },
+         "spellSlot": true,
+         "targets": []
+        },
+        "description": {
+         "chatFlavor": ""
+        },
+        "duration": {
+         "units": "inst",
+         "concentration": false,
+         "override": false
+        },
+        "effects": [],
+        "range": {
+         "override": false,
+         "units": "self"
+        },
+        "target": {
+         "template": {
+          "contiguous": false,
+          "units": "ft"
+         },
+         "affects": {
+          "choice": false,
+          "type": "self"
+         },
+         "override": false,
+         "prompt": false
+        },
+        "uses": {
+         "spent": 0,
+         "recovery": []
+        },
+        "name": "Восстановление · 10 хитов",
+        "healing": {
+         "custom": {
+          "enabled": true,
+          "formula": "10"
+         },
+         "number": null,
+         "denomination": null,
+         "bonus": "",
+         "types": [
+          "healing"
+         ],
+         "scaling": {
+          "number": 1
+         }
+        }
+       },
+       "6UPBcXWrnlHt4jXH": {
+        "type": "heal",
+        "_id": "6UPBcXWrnlHt4jXH",
+        "sort": 0,
+        "activation": {
+         "type": "special",
+         "value": null,
+         "override": false,
+         "condition": "в начале своего хода, пока цел хоть один якорь"
+        },
+        "consumption": {
+         "scaling": {
+          "allowed": false
+         },
+         "spellSlot": true,
+         "targets": []
+        },
+        "description": {
+         "chatFlavor": ""
+        },
+        "duration": {
+         "units": "inst",
+         "concentration": false,
+         "override": false
+        },
+        "effects": [],
+        "range": {
+         "override": false,
+         "units": "self"
+        },
+        "target": {
+         "template": {
+          "contiguous": false,
+          "units": "ft"
+         },
+         "affects": {
+          "choice": false,
+          "type": "self"
+         },
+         "override": false,
+         "prompt": false
+        },
+        "uses": {
+         "spent": 0,
+         "recovery": []
+        },
+        "name": "Восстановление · 15 (испытание 3 провалено)",
+        "healing": {
+         "custom": {
+          "enabled": true,
+          "formula": "15"
+         },
+         "number": null,
+         "denomination": null,
+         "bonus": "",
+         "types": [
+          "healing"
+         ],
+         "scaling": {
+          "number": 1
+         }
+        }
+       }
+      },
       "uses": {
        "spent": 0,
        "recovery": [],
@@ -35426,6 +35553,108 @@
        "subtype": ""
       },
       "activities": {
+       "cQkvhnjEp6yDolgF": {
+        "type": "attack",
+        "_id": "cQkvhnjEp6yDolgF",
+        "sort": 0,
+        "activation": {
+         "type": "legendary",
+         "value": 1,
+         "override": false,
+         "condition": ""
+        },
+        "consumption": {
+         "scaling": {
+          "allowed": false
+         },
+         "spellSlot": true,
+         "targets": []
+        },
+        "description": {
+         "chatFlavor": ""
+        },
+        "duration": {
+         "units": "inst",
+         "concentration": false,
+         "override": false
+        },
+        "effects": [],
+        "range": {
+         "override": false,
+         "units": "ft",
+         "value": "10",
+         "special": ""
+        },
+        "target": {
+         "template": {
+          "contiguous": false,
+          "units": "ft",
+          "type": ""
+         },
+         "affects": {
+          "choice": false,
+          "type": "creature",
+          "count": "1"
+         },
+         "override": false,
+         "prompt": true
+        },
+        "uses": {
+         "spent": 0,
+         "recovery": []
+        },
+        "name": "Удар когтем",
+        "attack": {
+         "critical": {
+          "threshold": null
+         },
+         "flat": false,
+         "type": {
+          "value": "melee",
+          "classification": "weapon"
+         },
+         "ability": "str",
+         "bonus": ""
+        },
+        "damage": {
+         "critical": {
+          "bonus": ""
+         },
+         "includeBase": false,
+         "parts": [
+          {
+           "custom": {
+            "enabled": false,
+            "formula": ""
+           },
+           "number": 2,
+           "denomination": 8,
+           "bonus": "@mod",
+           "types": [
+            "slashing"
+           ],
+           "scaling": {
+            "number": 1
+           }
+          },
+          {
+           "custom": {
+            "enabled": false,
+            "formula": ""
+           },
+           "number": 1,
+           "denomination": 8,
+           "bonus": "",
+           "types": [
+            "psychic"
+           ],
+           "scaling": {
+            "number": 1
+           }
+          }
+         ]
+        }
+       },
        "kSh7TLKXP8BZoafx": {
         "type": "utility",
         "_id": "kSh7TLKXP8BZoafx",
@@ -35454,7 +35683,9 @@
         "effects": [],
         "range": {
          "override": false,
-         "units": "self"
+         "units": "ft",
+         "value": "30",
+         "special": "в видимую точку внутри дымки у разлома"
         },
         "target": {
          "template": {
@@ -35471,7 +35702,7 @@
          "spent": 0,
          "recovery": []
         },
-        "name": ""
+        "name": "Шаг сквозь дымку"
        }
       },
       "uses": {
@@ -35517,7 +35748,141 @@
        "value": "monster",
        "subtype": ""
       },
-      "activities": {},
+      "activities": {
+       "yhCO9HuLShbe1gmb": {
+        "type": "save",
+        "_id": "yhCO9HuLShbe1gmb",
+        "sort": 0,
+        "activation": {
+         "type": "lair",
+         "value": null,
+         "override": false,
+         "condition": ""
+        },
+        "consumption": {
+         "scaling": {
+          "allowed": false
+         },
+         "spellSlot": true,
+         "targets": []
+        },
+        "description": {
+         "chatFlavor": ""
+        },
+        "duration": {
+         "units": "inst",
+         "concentration": false,
+         "override": false
+        },
+        "effects": [],
+        "range": {
+         "override": false,
+         "units": "self"
+        },
+        "target": {
+         "template": {
+          "contiguous": false,
+          "units": "ft",
+          "type": "line",
+          "size": "60",
+          "width": "5"
+         },
+         "affects": {
+          "choice": false,
+          "type": "creature"
+         },
+         "override": false,
+         "prompt": true
+        },
+        "uses": {
+         "spent": 0,
+         "recovery": []
+        },
+        "name": "Молния вдоль ветки",
+        "damage": {
+         "parts": [
+          {
+           "custom": {
+            "enabled": false,
+            "formula": ""
+           },
+           "number": 3,
+           "denomination": 8,
+           "bonus": "",
+           "types": [
+            "lightning"
+           ],
+           "scaling": {
+            "number": 1
+           }
+          }
+         ],
+         "onSave": "half",
+         "critical": {
+          "allow": false
+         }
+        },
+        "save": {
+         "ability": [
+          "dex"
+         ],
+         "dc": {
+          "calculation": "",
+          "formula": "14"
+         }
+        }
+       },
+       "Fj3i0zU8F4JYuy3s": {
+        "type": "utility",
+        "_id": "Fj3i0zU8F4JYuy3s",
+        "sort": 0,
+        "activation": {
+         "type": "lair",
+         "value": null,
+         "override": false,
+         "condition": ""
+        },
+        "consumption": {
+         "scaling": {
+          "allowed": false
+         },
+         "spellSlot": true,
+         "targets": []
+        },
+        "description": {
+         "chatFlavor": ""
+        },
+        "duration": {
+         "units": "round",
+         "value": "1",
+         "concentration": false,
+         "override": false
+        },
+        "effects": [],
+        "range": {
+         "override": false,
+         "units": "self"
+        },
+        "target": {
+         "template": {
+          "contiguous": false,
+          "units": "ft",
+          "type": "sphere",
+          "size": "15"
+         },
+         "affects": {
+          "choice": false
+         },
+         "override": false,
+         "prompt": true
+        },
+        "uses": {
+         "spent": 0,
+         "recovery": []
+        },
+        "name": "Дымка сгущается"
+       }
+      },
       "uses": {
        "spent": 0,
        "recovery": [],
