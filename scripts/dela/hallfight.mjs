@@ -109,27 +109,30 @@ export function holePoint(scene) {
   return s ? { x: s.x - 40, y: s.y } : { x: scene.dimensions.sceneX + scene.dimensions.sceneWidth * 0.84, y: scene.dimensions.sceneY + scene.dimensions.sceneHeight / 2 };
 }
 
-/** Утащить в пустоту часть врагов. Возвращает имена унесённых. */
-export async function sweep(scene, docs, { half = true } = {}) {
-  const alive = docs.filter(d => !d.hidden && hpOf(d) > 0);
-  const picked = half ? shuffle(alive).slice(0, Math.ceil(alive.length / 2)) : alive;
+/** Утащить в пустоту: все трупы на сцене (кроме героев) и половину живых из docs (или всех, half: false).
+ *  Живые кричат, трупы молча; все кувырком летят к пробоине, токены удаляются. Возвращает { dead, alive } — имена. */
+export async function sweep(scene, docs, { half = true, corpses = true } = {}) {
+  const live = docs.filter(d => !d.hidden && hpOf(d) > 0);
+  const picked = half ? shuffle(live).slice(0, Math.ceil(live.length / 2)) : live;
+  const dead = corpses ? scene.tokens.filter(t => !t.hidden && t.actor && !isHero(t) && hpOf(t) <= 0) : [];
   const hole = holePoint(scene), G = scene.grid.size;
-  const combat = game.combats.find(c => c.scene?.id === scene.id);
-  await Promise.all(picked.map(async (d, i) => {
-    await sleep(i * 450);
-    try { await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ token: d }), content: CRIES[Math.floor(Math.random() * CRIES.length)], style: CONST.CHAT_MESSAGE_STYLES.IC }); } catch {}
-    await sleep(350);
+  const fly = async (d, i, shout) => {
+    await sleep(i * 380);
+    if (shout) {
+      try { await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ token: d }), content: CRIES[Math.floor(Math.random() * CRIES.length)], style: CONST.CHAT_MESSAGE_STYLES.IC }); } catch {}
+      await sleep(350);
+    }
     const w = (d.width || 1) * G;
     try {
       await d.update({ x: Math.round(hole.x - w / 2), y: Math.round(hole.y - w / 2), rotation: (d.rotation || 0) + 540 },
         { animation: { duration: 1500, easing: "easeInCubic" }, animate: true });
     } catch (e) { console.warn(`${MOD} | унесло`, e); }
     await sleep(1550);
-    await d.update({ hidden: true });
-    const cb = combat?.combatants.find(c => c.tokenId === d.id);
-    if (cb && !cb.defeated) try { await cb.update({ defeated: true }); } catch {}
-  }));
-  return picked.map(d => d.name);
+    try { await d.delete(); } catch (e) { console.warn(`${MOD} | унесло: токен`, e); try { await d.update({ hidden: true }); } catch {} }
+  };
+  const order = shuffle([...dead.map(d => [d, false]), ...picked.map(d => [d, true])]);
+  await Promise.all(order.map(([d, shout], i) => fly(d, i, shout)));
+  return { dead: dead.map(d => d.name), alive: picked.map(d => d.name) };
 }
 
 /* ─────────────── граната вожака ─────────────── */

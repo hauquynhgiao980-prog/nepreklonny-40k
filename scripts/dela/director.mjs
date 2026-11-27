@@ -38,7 +38,7 @@ const EVENTS = {
       on: s => castTokens(s, "leader").some(t => t.actor?.items.some(i => i.flags?.[MOD]?.autoGrenade && i.system.uses?.spent >= 1)), run: s => leaderGrenade(s) },
     { macro: "Декомпрессия", label: "ДЕКОМПРЕССИЯ", hint: "Видео: торпеду вырывает, зал темнеет, рёв пробоины. Стрелки в люках улетают вместе с торпедой. Повтор — вернуть целый зал.",
       on: s => String(s.background.src).includes("hall_dark") },
-    { id: "Унесло", label: "ВРАГОВ УНОСИТ", hint: "После декомпрессии: половину оставшихся врагов, наугад, тянет к пробоине — «Нееет!» — и выносит в пустоту.",
+    { id: "Унесло", label: "ВРАГОВ УНОСИТ", hint: "После декомпрессии: все трупы и половину живых врагов, наугад, тянет к пробоине — живые кричат «Нееет!» — и выносит в пустоту, токены исчезают.",
       on: () => false, run: s => sweepFoes(s) },
   ],
   lifeboats: [
@@ -170,8 +170,8 @@ async function sweepFoes(scene) {
   await viewScene(scene);
   if (!String(scene.background.src).includes("hall_dark")) return ui.notifications.warn("Сначала «Декомпрессия»: пробоины ещё нет.");
   const docs = HALL_FOES.flatMap(gid => castTokens(scene, gid));
-  const names = await HF.sweep(scene, docs);
-  ui.notifications.info(names.length ? `Унесло в пустоту: ${names.join(", ")}.` : "Уносить некого: врагов на ногах нет.");
+  const { dead, alive } = await HF.sweep(scene, docs);
+  ui.notifications.info(dead.length + alive.length ? `Унесло в пустоту: трупов ${dead.length}${alive.length ? `, живых — ${alive.join(", ")}` : ""}.` : "Уносить некого.");
 }
 
 /** Декомпрессия: стрелки, что ещё сидят в люках, улетают вместе с торпедой. */
@@ -179,7 +179,7 @@ async function shootersGo(scene) {
   const g = (CAST.hall || []).find(x => x.id === "shooters"), G = scene.grid?.size || 128;
   const home = new Set(g.at.map(([cx, cy]) => `${Math.round((cx - G / 2) / G)},${Math.round((cy - G / 2) / G)}`));
   const docs = castTokens(scene, "shooters").filter(t => !t.hidden && (t.actor?.system?.attributes?.hp?.value ?? 0) > 0 && home.has(`${Math.round(t.x / G)},${Math.round(t.y / G)}`));
-  if (docs.length) await HF.sweep(scene, docs, { half: false });
+  if (docs.length) await HF.sweep(scene, docs, { half: false, corpses: false });
 }
 
 /** Прорыв варпа силами модуля (тот же, что в макросе): 10 с лиловая расщелина с молниями, тайтл и вспышка у всех,
