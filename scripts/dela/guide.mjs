@@ -73,7 +73,6 @@ export const LOCATIONS = [
   { key: "prep", title: "ПЕРЕД ИГРОЙ · БЕЗОПАСНОСТЬ · ЕСЛИ ЧТО-ТО ПОШЛО НЕ ТАК", file: "prep" },
   { key: "lore", title: "ШПАРГАЛКА ПО МИРУ · НЕУДОБНЫЕ ВОПРОСЫ", file: "lore" },
   { key: "drama", title: "ДРАМАТИЧЕСКИЕ ЗАЧИТКИ · СОБЫТИЯ И ВЫБОРЫ", file: "drama" },
-  { key: "prologue", title: "ПРОЛОГ · МОСТИК", scene: "bridge", file: "prologue" },
   { key: "cells", title: "0. ТЮРЕМНЫЙ БЛОК", scene: "cells", tools: [nudgeTools, servitorTools, hackTools], file: "cells" },
   { key: "post", title: "1. ПОСТ ОХРАНЫ", scene: "post", file: "post" },
   { key: "hall", title: "2. ЗАЛ ЭТАПА", scene: "hall", tools: [eventsTool("hall", "ЗАЛ ЭТАПА · СОБЫТИЯ")], file: "hall" },

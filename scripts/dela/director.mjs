@@ -255,7 +255,7 @@ async function runMacro(name, scene) {
 const playTile = t => t.update({ hidden: false, "video.autoplay": true }, { diff: false, playVideo: true, offset: 0 });
 
 export function directorTab(rerender) {
-  const scenes = game.scenes.filter(s => s.flags?.[MOD]?.scene).sort((a, b) => (a.navOrder ?? 0) - (b.navOrder ?? 0) || a.name.localeCompare(b.name));
+  const scenes = game.scenes.filter(s => s.flags?.[MOD]?.scene && s.flags[MOD].scene !== "bridge").sort((a, b) => (a.navOrder ?? 0) - (b.navOrder ?? 0) || a.name.localeCompare(b.name));
   if (!scenes.length) {
     return [h("div.nk-hint", {}, "В мире нет сцен акта I. Откройте компендиум «Акт I — всё одной кнопкой» и нажмите «Импортировать приключение».")];
   }
