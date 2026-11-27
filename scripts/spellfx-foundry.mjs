@@ -342,6 +342,7 @@ export function createSpellFX({ broadcast, settings }) {
   /** dnd5e.postUseActivity — всё, кроме атак (они — по броску). */
   function onUse(activity, usageConfig, results) {
     const item = activity?.item; if (!item) return null;
+    if (item.flags?.["nepreklonny-40k"]?.autoGrenade) return null;     // граната вожака: точку и эффект выбирает модуль сам
     const gk = grenadeKind(item);
     if (gk) { const templates = results?.templates ?? []; setTimeout(() => send(buildGrenade(item, activity, gk, templates)), templates.length ? 80 : 0); return true; }
     if (item.type === "weapon") return null;

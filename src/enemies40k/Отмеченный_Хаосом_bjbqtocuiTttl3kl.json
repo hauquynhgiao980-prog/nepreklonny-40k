@@ -1672,6 +1672,107 @@
    "_id": "RXIMDOpwLSc2xrVO",
    "sort": 4000,
    "_key": "!actors.items!bjbqtocuiTttl3kl.RXIMDOpwLSc2xrVO"
+  },
+  {
+   "_id": "nkGrenadeLeader1",
+   "name": "Фраг-граната",
+   "type": "feat",
+   "img": "modules/nepreklonny-40k/icons/claude/gear40k/dmgGrenadeFragme.webp",
+   "sort": 3500,
+   "system": {
+    "description": {
+     "value": "<p>Один раз за бой, действием: отмеченный швыряет фраг-гранату в скопление героев в пределах 60 футов. Сфера радиусом 10 футов: спасбросок Ловкости Сл 13, 10 (3к6) колющего урона при провале, половина при успехе.</p><p>Нажмите «Метнуть» здесь или «Граната вожака» в сценарии: модуль сам выберет точку, где больше героев, игрокам придёт окно со спасброском, урон вычтется сам.</p>",
+     "chat": ""
+    },
+    "type": {
+     "value": "monster",
+     "subtype": ""
+    },
+    "activities": {
+     "nkGrenadeThrow01": {
+      "type": "utility",
+      "_id": "nkGrenadeThrow01",
+      "sort": 0,
+      "name": "Метнуть в скопление героев",
+      "activation": {
+       "type": "action",
+       "value": null,
+       "override": false
+      },
+      "consumption": {
+       "scaling": {
+        "allowed": false
+       },
+       "spellSlot": true,
+       "targets": [
+        {
+         "type": "itemUses",
+         "target": "",
+         "value": "1",
+         "scaling": {}
+        }
+       ]
+      },
+      "description": {},
+      "duration": {
+       "units": "inst",
+       "concentration": false,
+       "override": false
+      },
+      "effects": [],
+      "range": {
+       "override": false,
+       "units": "self"
+      },
+      "target": {
+       "template": {
+        "contiguous": false,
+        "units": "ft"
+       },
+       "affects": {
+        "choice": false
+       },
+       "override": false,
+       "prompt": false
+      },
+      "uses": {
+       "spent": 0,
+       "recovery": []
+      },
+      "roll": {
+       "prompt": false,
+       "visible": false
+      },
+      "flags": {}
+     }
+    },
+    "uses": {
+     "spent": 0,
+     "recovery": [],
+     "max": "1"
+    },
+    "requirements": "",
+    "properties": [],
+    "source": {
+     "book": "Непреклонный",
+     "rules": "2024"
+    }
+   },
+   "effects": [],
+   "flags": {
+    "nepreklonny-40k": {
+     "autoGrenade": {
+      "dc": 13,
+      "n": 3,
+      "d": 6,
+      "type": "piercing",
+      "radius": 10,
+      "range": 60
+     }
+    }
+   },
+   "_stats": {},
+   "_key": "!actors.items!bjbqtocuiTttl3kl.nkGrenadeLeader1"
   }
  ],
  "effects": [],

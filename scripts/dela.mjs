@@ -1,6 +1,7 @@
 // «Дело»: расстановка героев, анкета на старте, инфопланшет со сферой души и летописью, пульт мастера.
 import * as S from "./dela/state.mjs";
 import { resetGame, resetDialog } from "./dela/reset.mjs";
+import * as HF from "./dela/hallfight.mjs";
 import { Anketa, Pad, Panel } from "./dela/ui.mjs";
 import { TrialUI } from "./dela/trial.mjs";
 import * as Servitor from "./dela/servitor.mjs";
@@ -68,6 +69,8 @@ Hooks.once("ready", () => {
   game.socket.on(S.SOCKET, (msg, senderId) => Servitor.onSocket(msg, senderId));
   game.socket.on(S.SOCKET, (msg, senderId) => Hack.onSocket(msg, senderId));
   game.socket.on(S.SOCKET, (msg, senderId) => Nudge.onSocket(msg, senderId));
+  game.socket.on(S.SOCKET, (msg, senderId) => HF.onSocket(msg, senderId));
+  Hooks.on("dnd5e.postUseActivity", activity => { try { HF.onUseActivity(activity); } catch (e) { console.error(`${S.MOD} | граната`, e); } });
   S.onChange(st => sync(st));
   Hooks.on("nkDelaAnketaClosed", () => sync());
   Hooks.on("userConnected", () => { if (game.user.isGM) panel.render(); });

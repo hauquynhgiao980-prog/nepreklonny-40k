@@ -30,6 +30,31 @@ FIX = {
     "Варро, матрос пусковой команды": {"Хромает": {"img": A1 + "varro_limp.webp"}, "Образок паствы": {"img": A1 + "varro_icon.webp"}},
 }
 
+# новые способности: добавляются, если у актёра их ещё нет (по имени)
+GRENADE_ICON = "modules/nepreklonny-40k/icons/claude/gear40k/dmgGrenadeFragme.webp"
+GRENADE = {
+    "_id": "nkGrenadeLeader1", "name": "Фраг-граната", "type": "feat", "img": GRENADE_ICON, "sort": 3500,
+    "system": {
+        "description": {"value": "<p>Один раз за бой, действием: отмеченный швыряет фраг-гранату в скопление героев в пределах 60 футов. "
+                                 "Сфера радиусом 10 футов: спасбросок Ловкости Сл 13, 10 (3к6) колющего урона при провале, половина при успехе.</p>"
+                                 "<p>Нажмите «Метнуть» здесь или «Граната вожака» в сценарии: модуль сам выберет точку, где больше героев, "
+                                 "игрокам придёт окно со спасброском, урон вычтется сам.</p>", "chat": ""},
+        "type": {"value": "monster", "subtype": ""},
+        "activities": {"nkGrenadeThrow01": {
+            "type": "utility", "_id": "nkGrenadeThrow01", "sort": 0, "name": "Метнуть в скопление героев",
+            "activation": {"type": "action", "value": None, "override": False},
+            "consumption": {"scaling": {"allowed": False}, "spellSlot": True, "targets": [{"type": "itemUses", "target": "", "value": "1", "scaling": {}}]},
+            "description": {}, "duration": {"units": "inst", "concentration": False, "override": False}, "effects": [],
+            "range": {"override": False, "units": "self"},
+            "target": {"template": {"contiguous": False, "units": "ft"}, "affects": {"choice": False}, "override": False, "prompt": False},
+            "uses": {"spent": 0, "recovery": []}, "roll": {"prompt": False, "visible": False}, "flags": {}}},
+        "uses": {"spent": 0, "recovery": [], "max": "1"},
+        "requirements": "", "properties": [], "source": {"book": "Непреклонный", "rules": "2024"}},
+    "effects": [], "flags": {"nepreklonny-40k": {"autoGrenade": {"dc": 13, "n": 3, "d": 6, "type": "piercing", "radius": 10, "range": 60}}},
+    "_stats": {},
+}
+ADD = {"Отмеченный Хаосом": [GRENADE]}
+
 def setp(o, path, v):
     ks = path.split("."); 
     for k in ks[:-1]: o = o.setdefault(k, {})
@@ -37,6 +62,12 @@ def setp(o, path, v):
 
 def fix_actor(a):
     n = 0
+    have = {i["name"] for i in a.get("items", [])}
+    for it in ADD.get(a["name"], []):
+        if it["name"] in have: continue
+        new = json.loads(json.dumps(it))
+        if "_key" in a: new["_key"] = f"!actors.items!{a['_id']}.{new['_id']}"
+        a.setdefault("items", []).append(new); n += 1
     for it in a.get("items", []):
         f = FIX.get(a["name"], {}).get(it["name"])
         if not f: continue
@@ -54,7 +85,7 @@ def dump(path, data, raw):
 
 if __name__ == "__main__":
     if sys.argv[1:] == ["--js"]:
-        print(json.dumps(FIX, ensure_ascii=False)); sys.exit()
+        print(json.dumps({"FIX": FIX, "ADD": ADD}, ensure_ascii=False)); sys.exit()
     files = glob.glob("src/enemies40k/*.json") + glob.glob("src/act1-actors/*.json")
     for p in files:
         raw = open(p, encoding="utf-8").read(); a = json.loads(raw)

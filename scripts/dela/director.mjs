@@ -2,6 +2,7 @@
 import { h } from "./ui.mjs";
 import * as S from "./state.mjs";
 import { resetDialog } from "./reset.mjs";
+import * as HF from "./hallfight.mjs";
 
 const MOD = "nepreklonny-40k";
 const M = `modules/${MOD}/maps/`;
@@ -26,10 +27,16 @@ const EVENTS = {
                await s.update({ "background.src": M + `00_bridge/bridge_${broken ? "intact" : "broken"}_2176x3840.mp4` });
              } }],
   hall: [
-    { macro: "Пролом", label: "ПРОЛОМ", hint: "Видео: торпеда влетает в борт, дальше петля с торпедой. Повтор — вернуть целый зал.",
+    { macro: "Пролом", label: "ПРОЛОМ", hint: "Видео: торпеда влетает в борт, дальше петля с торпедой. Врагов пока нет — их выводит «Высадка». Повтор — вернуть целый зал.",
       on: s => s.tiles.some(t => t.flags?.[MOD]?.role === "zone" && !t.hidden) },
-    { macro: "Декомпрессия", label: "ДЕКОМПРЕССИЯ", hint: "Видео: торпеду вырывает, зал темнеет, рёв пробоины. Повтор — вернуть целый зал.",
+    { id: "Высадка", label: "ВЫСАДКА", hint: "Культисты, стрелки и вожак выскакивают из люков торпеды и разбегаются по залу. Стрелки остаются в люках. Повтор — спрятать врагов.",
+      on: s => HALL_FOES.some(gid => castTokens(s, gid).some(t => !t.hidden)), run: s => landing(s) },
+    { id: "Граната", label: "ГРАНАТА ВОЖАКА", hint: "Вожак швыряет фраг-гранату в скопление героев: игрокам приходит спасбросок Ловкости Сл 13, урон 3к6 вычитается сам. Одна за бой.",
+      on: s => castTokens(s, "leader").some(t => t.actor?.items.some(i => i.flags?.[MOD]?.autoGrenade && i.system.uses?.spent >= 1)), run: s => leaderGrenade(s) },
+    { macro: "Декомпрессия", label: "ДЕКОМПРЕССИЯ", hint: "Видео: торпеду вырывает, зал темнеет, рёв пробоины. Стрелки в люках улетают вместе с торпедой. Повтор — вернуть целый зал.",
       on: s => String(s.background.src).includes("hall_dark") },
+    { id: "Унесло", label: "ВРАГОВ УНОСИТ", hint: "После декомпрессии: половину оставшихся врагов, наугад, тянет к пробоине — «Нееет!» — и выносит в пустоту.",
+      on: () => false, run: s => sweepFoes(s) },
   ],
   lifeboats: [
     { macro: "Турель", label: "ТУРЕЛЬ СТРЕЛЯЕТ", hint: "Включить огонь турели или обезвредить её",
@@ -77,11 +84,12 @@ const CAST = {
     { id: "sol", label: "Тихий Сол", actor: "Тихий Сол", from: "act1-actors", faces: [`${T1}token_sol.webp`], at: [[430, 880]], neutral: true },
   ],
   hall: [
+    // места — где враги выскакивают у торпеды; «Высадка» разгоняет их по залу
     { id: "cultists", label: "Культисты", actor: "Культист-ренегат", from: "enemies40k", faces: CULTIST_FACES,
-      at: [[1344, 1216], [1344, 1856], [1216, 1344], [1216, 1728], [1472, 1344], [1472, 1728]] },
-    // двое с лазганами — на флангах, у ящиков; актёр собирается в мире из культиста-ренегата и лазгана из «Снаряжения»
+      at: [[1344, 1216], [1344, 1856], [1216, 1344], [1216, 1728], [1472, 1344]] },
+    // трое с лазганами; актёр собирается в мире из культиста-ренегата и лазгана из «Снаряжения»
     { id: "cultists-las", label: "Культисты с лазганами", actor: LAS_CULTIST, from: "enemies40k", base: "Культист-ренегат",
-      faces: [`${T1}token_kultist_g.webp`, `${T1}token_kultist_e.webp`], at: [[1472, 1088], [1472, 1984]] },
+      faces: [`${T1}token_kultist_g.webp`, `${T1}token_kultist_e.webp`, `${T1}token_kultist_f.webp`], at: [[1472, 1728], [1472, 1088], [1472, 1984]] },
     { id: "shooters", label: "Стрелки в люках", actor: "Предатель-стрелок", from: "enemies40k", faces: [`${T1}token_strelok.webp`], at: [[1728, 1472], [1728, 1600]] },
     { id: "leader", label: "Отмеченный Хаосом", actor: "Отмеченный Хаосом", from: "enemies40k", faces: [`${T1}token_otmechenny.webp`], at: [[1216, 1472]] },
   ],
@@ -94,7 +102,74 @@ const CAST = {
   ],
 };
 // какие персонажи выходят вместе с событием (и прячутся, если событие откатили)
-const EVENT_CAST = { "Пролом": ["cultists", "cultists-las", "shooters", "leader"], "Прорыв варпа": ["unborn"] };
+const EVENT_CAST = { "Прорыв варпа": ["unborn"] };
+const HALL_FOES = ["cultists", "cultists-las", "shooters", "leader"];
+
+/** Стены зала под то, что сейчас на карте: целый зал, торпеда в борту или тёмный зал после декомпрессии.
+ *  Ящики и торпеда — стены только там, где они нарисованы, иначе на пустом полу лежат тени. */
+export async function syncHallWalls(scene) {
+  if (scene?.flags?.[MOD]?.scene !== "hall") return 0;
+  const dark = String(scene.background.src).includes("hall_dark");
+  const torpedo = !dark && scene.tiles.some(t => t.flags?.[MOD]?.role === "zone" && !t.hidden);
+  const st = dark ? "dark" : torpedo ? "torpedo" : "intact";
+  const upd = [];
+  for (const w of scene.walls ?? []) {
+    const f = w.flags?.[MOD]; if (!f?.states) continue;
+    const on = f.states.includes(st), o = f.on || {};
+    const want = { move: on ? o.move ?? 20 : 0, sight: on ? o.sight ?? 20 : 0, light: on ? o.light ?? 20 : 0, sound: on ? o.sound ?? 20 : 0 };
+    if (Object.entries(want).some(([k, v]) => w[k] !== v)) upd.push({ _id: w.id, ...want });
+  }
+  if (upd.length) await scene.updateEmbeddedDocuments("Wall", upd);
+  return upd.length;
+}
+
+async function viewScene(scene) {
+  if (canvas.scene?.id === scene.id) return;
+  const ready = new Promise(r => Hooks.once("canvasReady", r));
+  await scene.view(); await ready;
+}
+
+/** «Высадка»: враги появляются у люков торпеды и разбегаются по залу. Повтор — спрятать их. */
+async function landing(scene) {
+  await viewScene(scene);
+  const shown = HALL_FOES.some(gid => castTokens(scene, gid).some(t => !t.hidden));
+  if (shown) { for (const gid of HALL_FOES) await setCast(scene, gid, false); return; }
+  await syncHallWalls(scene);
+  for (const gid of HALL_FOES) await setCast(scene, gid, true);
+  await new Promise(r => setTimeout(r, 400));                            // токены дорисовываются на холсте
+  const role = d => { const gid = d.flags?.[MOD]?.cast; return gid === "cultists" ? "knife" : gid === "cultists-las" ? "gun" : gid === "leader" ? "leader" : null; };
+  const docs = ["cultists", "cultists-las", "leader"].flatMap(gid => castTokens(scene, gid)).filter(t => !t.hidden);
+  const n = await HF.scatter(scene, docs, role);
+  ui.notifications.info(`Высадка: врагов на ногах — ${HALL_FOES.flatMap(gid => castTokens(scene, gid)).filter(t => !t.hidden).length}, разбежались ${n ?? 0}.`);
+}
+
+/** Граната вожака: сам выбирает скопление героев, игрокам — спасбросок Ловкости. */
+async function leaderGrenade(scene) {
+  await viewScene(scene);
+  const lead = castTokens(scene, "leader").find(t => !t.hidden && (t.actor?.system?.attributes?.hp?.value ?? 0) > 0);
+  if (!lead) return ui.notifications.warn("Граната: вожака на карте нет — сначала «Высадка».");
+  const item = lead.actor?.items.find(i => i.flags?.[MOD]?.autoGrenade);
+  if (item?.system.uses?.spent >= 1) return ui.notifications.warn("У вожака одна граната, и она уже брошена.");
+  const cfg = item?.flags?.[MOD]?.autoGrenade;
+  return HF.throwGrenade(scene, lead, typeof cfg === "object" ? cfg : {});
+}
+
+/** «Врагов уносит»: половину оставшихся врагов — в пробоину. */
+async function sweepFoes(scene) {
+  await viewScene(scene);
+  if (!String(scene.background.src).includes("hall_dark")) return ui.notifications.warn("Сначала «Декомпрессия»: пробоины ещё нет.");
+  const docs = HALL_FOES.flatMap(gid => castTokens(scene, gid));
+  const names = await HF.sweep(scene, docs);
+  ui.notifications.info(names.length ? `Унесло в пустоту: ${names.join(", ")}.` : "Уносить некого: врагов на ногах нет.");
+}
+
+/** Декомпрессия: стрелки, что ещё сидят в люках, улетают вместе с торпедой. */
+async function shootersGo(scene) {
+  const g = (CAST.hall || []).find(x => x.id === "shooters"), G = scene.grid?.size || 128;
+  const home = new Set(g.at.map(([cx, cy]) => `${Math.round((cx - G / 2) / G)},${Math.round((cy - G / 2) / G)}`));
+  const docs = castTokens(scene, "shooters").filter(t => !t.hidden && (t.actor?.system?.attributes?.hp?.value ?? 0) > 0 && home.has(`${Math.round(t.x / G)},${Math.round(t.y / G)}`));
+  if (docs.length) await HF.sweep(scene, docs, { half: false });
+}
 
 /** Прорыв варпа силами модуля (тот же, что в макросе): 10 с лиловая расщелина с молниями, тайтл и вспышка у всех,
  *  под вспышкой — осквернённая галерея. Повтор возвращает чистую галерею без эффекта. */
@@ -272,12 +347,17 @@ async function runMacro(name, scene) {
   const ev = Object.values(EVENTS).flat().find(e => e.macro === name);
   const before = ev?.on?.(scene);
   await m.execute();
-  const cast = EVENT_CAST[name];
-  if (!cast || !ev?.on) return;
+  const cast = EVENT_CAST[name], hall = scene.flags?.[MOD]?.scene === "hall";
+  if ((!cast && !hall) || !ev?.on) return;
   // макрос дожидается видео; ждём, пока состояние сцены сменится, не дольше 15 с
   for (let i = 0; i < 75 && ev.on(scene) === before; i++) await new Promise(r => setTimeout(r, 200));
   const now = ev.on(scene);
-  if (now !== before) for (const gid of cast) await setCast(scene, gid, !!now);
+  if (hall) {
+    await syncHallWalls(scene);
+    if (name === "Пролом" && !now) for (const gid of HALL_FOES) await setCast(scene, gid, false);   // зал снова целый — врагов нет
+    if (name === "Декомпрессия" && now && !before) await shootersGo(scene);
+  }
+  if (cast && now !== before) for (const gid of cast) await setCast(scene, gid, !!now);
 }
 
 const playTile = t => t.update({ hidden: false, "video.autoplay": true }, { diff: false, playVideo: true, offset: 0 });
