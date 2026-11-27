@@ -8,7 +8,7 @@ export function dramaDoc() {
   if (doc) return Promise.resolve(doc);
   if (!pending) {
     const v = game.modules?.get?.(S.MOD)?.version ?? "0";
-    pending = fetch(`modules/${S.MOD}/guide/drama.html?v=${v}`)
+    pending = fetch(`modules/${S.MOD}/guide/drama.html?v=${v}`, { cache: "no-cache" })
       .then(r => (r.ok ? r.text() : Promise.reject(new Error(`${r.status}`))))
       .then(t => (doc = new DOMParser().parseFromString(`<body>${t}</body>`, "text/html")))
       .catch(e => { pending = null; throw e; });

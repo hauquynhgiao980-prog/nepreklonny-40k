@@ -91,7 +91,7 @@ function load(file) {
   if (html.has(file)) return Promise.resolve(html.get(file));
   if (!loading.has(file)) {
     const v = game.modules?.get?.(S.MOD)?.version ?? "0";
-    loading.set(file, fetch(`modules/${S.MOD}/guide/${file}.html?v=${v}`).then(r => (r.ok ? r.text() : Promise.reject(new Error(`${r.status}`))))
+    loading.set(file, fetch(`modules/${S.MOD}/guide/${file}.html?v=${v}`, { cache: "no-cache" }).then(r => (r.ok ? r.text() : Promise.reject(new Error(`${r.status}`))))
       .then(t => { html.set(file, t); return t; })
       .catch(e => { loading.delete(file); return `<p class="nk-g-hint">Не удалось загрузить текст раздела (${e.message}). Обновите страницу.</p>`; }));
   }
