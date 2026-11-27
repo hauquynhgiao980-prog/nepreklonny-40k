@@ -131,6 +131,10 @@ export async function resetGame({ keepRoster = false, chat = true } = {}) {
   const pack = game.packs.get(`${MOD}.heroes40k`);
   for (const a of game.actors.filter(a => HERO_ITEMS[a.name])) await step(a.name, () => resetHero(a, pack, log));
   if (chat) await step("Чат", async () => { await ChatMessage.deleteDocuments([], { deleteAll: true }); log.push("чат очищен"); });
+  await step("Заставка", async () => {                                     // все снова на стартовом экране
+    const intro = game.scenes.find(s => s.flags?.[MOD]?.scene === "intro");
+    if (intro && !intro.active) { await intro.activate(); log.push("все на заставке"); }
+  });
   for (const k of Object.keys(localStorage)) if (k.startsWith("nk-orb:")) localStorage.removeItem(k);
   console.log(`${MOD} | сброс игры\n` + log.join("\n"));
   ui.notifications.info("Игра сброшена к началу акта I. Подробности — в консоли (F12).");
@@ -147,6 +151,7 @@ export async function resetDialog() {
 <li>Двери — как в начале: камеры открыты, камера 8 и выходы заперты.</li>
 <li>Фишки врагов и NPC убираются со сцен и при показе выйдут заново, целыми. Фишки героев тоже снимаются: «Начать акт» расставит их по камерам. Шаблоны и бои удаляются.</li>
 <li>Герои: полные хиты, ячейки и умения, без состояний; израсходованное возвращается, подобранная добыча убирается.</li>
+<li>Все игроки возвращаются на заставку с горящим крейсером.</li>
 </ul>
 <label style="display:block"><input type="checkbox" name="keepRoster"> Оставить раздачу героев игрокам</label>
 <label style="display:block"><input type="checkbox" name="chat" checked> Очистить чат</label>`;

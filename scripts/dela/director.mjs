@@ -341,6 +341,14 @@ async function startAct() {
   if (!ok) return;
   await placeHeroes(scene);
   await scene.activate();
+  await stopIntroSound();
+}
+
+/** Заставка (горящий крейсер) звучит плейлистом сцены «Заставка»; с началом акта — стихает. */
+export const INTRO_PLAYLIST = "Непреклонный · заставка";
+export async function stopIntroSound() {
+  const pl = game.playlists?.getName?.(INTRO_PLAYLIST);
+  if (pl?.playing) try { await pl.stopAll(); } catch (e) { console.warn(e); }
 }
 
 async function runMacro(name, scene) {
