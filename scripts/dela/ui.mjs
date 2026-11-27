@@ -1,6 +1,6 @@
 // Интерфейс «Дела»: анкета игрока, инфопланшет с летописью, пульт мастера.
 import * as S from "./state.mjs";
-import { ANKETA, TRIALS, LINES, REWARDS, OUTCOME_LABEL, CLASS_LABEL, TRIAL_META, g, anketaEntry, chronicle, mood, points } from "./texts.mjs";
+import { ANKETA, TRIALS, LINES, REWARDS, OUTCOME_LABEL, CLASS_LABEL, TRIAL_META, WORD_ASK, WORD_ANY, g, anketaEntry, chronicle, mood, points } from "./texts.mjs";
 import { modeOf, saveMod } from "./trial.mjs";
 import { directorTab } from "./director.mjs";
 import { guideTab, dramaTab, dialoguesTab } from "./guide.mjs";
@@ -343,7 +343,8 @@ export class Panel {
         h("div.nk-hint", {}, "Испытание уходит всем назначенным героям сразу. Каждый игрок услышит свой голос, тайно выберет, увидит ответ голоса и бросит спасбросок — сразу (автомат) или когда вы откроете броски (вручную). Сумма и итог считаются здесь, «Применить» записывает шкалы, летопись и корпус."),
         h("div.nk-bar", { style: "margin:10px 0 0;align-items:center" }, h("span.nk-hint", {}, "БРОСКИ:"), modeSeg, h("div", { style: "flex:1" })),
         h("div.nk-bar", { style: "margin:10px 0 0" }, TRIAL_META.map(M => h("button.nk-btn", { "data-start": M.n, disabled: !assigned.length, onclick: () => S.startTrial(M.n) },
-          `НАЧАТЬ ${M.n} · ${M.title}${st.outcomes?.[M.n] ? " · ПРОЙДЕНО" : ""}`))));
+          `НАЧАТЬ ${M.n} · ${M.title}${st.outcomes?.[M.n] ? " · ПРОЙДЕНО" : ""}`))),
+        this.wordBox(st, assigned));
     }
     const M = TRIAL_META[T.n - 1], R = S.trialSum(T);
     const userOf = aid => game.users.get(Object.entries(st.roster || {}).find(([, a]) => a === aid)?.[0]);
@@ -383,6 +384,18 @@ export class Panel {
         override,
         h("button.nk-btn", { "data-apply": 1, disabled: !R.outcome && !override.value, onclick: () => S.applyTrial(override.value || null) }, "ПРИМЕНИТЬ"),
         h("button.nk-btn.ghost", { onclick: () => S.cancelTrial() }, "ОТМЕНИТЬ")));
+  }
+
+  /** Слово героям до «Начать»: следующее испытание, у каждого героя свой вопрос. Голос и выбор — только после. */
+  wordBox(st, assigned) {
+    const next = TRIAL_META.find(M => !st.outcomes?.[M.n]); if (!next || !assigned.length) return null;
+    return h("div.nk-drama-live.nk-word", {},
+      h("div.nk-drama-bar", {}, h("b", {}, `СЛОВО ГЕРОЯМ · ПЕРЕД «НАЧАТЬ ${next.n}»`),
+        h("span.nk-hint", {}, "опишите опасность, дайте слово каждому по кругу, потом жмите «Начать». Можно пропустить, монолог не нужен, «правильный» ответ не подсказывайте")),
+      h("table.nk-word-t", {}, h("tbody", {}, assigned.map(({ a, hero, user }) => h("tr", {},
+        h("td", {}, h("b", {}, hero.name), h("span.nk-hint", {}, ` · ${user?.name ?? ""}`)),
+        h("td", {}, WORD_ASK[hero.cls]?.[next.n - 1] ?? WORD_ANY))))),
+      h("div.nk-hint", { style: "margin-top:6px" }, `Если вопрос не к месту: «${WORD_ANY}» Можно ответить только внешним действием или промолчать.`));
   }
 
   /** Зачитка к идущему испытанию: вступление, строки героя по его броску и выбору, итог. Тексты — guide/drama.html. */

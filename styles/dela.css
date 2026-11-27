@@ -544,3 +544,7 @@
 #nk-panel details.nk-g-grp > :last-child { margin-bottom: 14px; }
 #nk-panel details.nk-g-grp.live > summary::after { content: " · СЕЙЧАС"; color: #ff8a6a; }
 #nk-panel .nk-g-see { margin: 10px 0; padding: 8px 12px; border-left: 3px solid #6b5a2a; background: rgba(40, 30, 6, .22); color: #f0d48a; font-size: 12.5px; }
+#nk-panel .nk-word { margin-top: 14px; }
+#nk-panel .nk-word-t { width: 100%; border-collapse: collapse; font-size: 13px; }
+#nk-panel .nk-word-t td { padding: 5px 8px; border-top: 1px solid rgba(107, 90, 42, .35); color: #f1e3c4; vertical-align: top; }
+#nk-panel .nk-word-t td:first-child { width: 30%; white-space: nowrap; }

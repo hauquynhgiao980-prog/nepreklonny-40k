@@ -78,7 +78,7 @@ export const LOCATIONS = [
   { key: "route", title: "ПЕРЕХОД · АВАРИЙНЫЙ ТРАП · ПРОМЕЖУТОЧНЫЕ МЕСТА", file: "route" },
   { key: "boats", title: "3. ШЛЮПОЧНАЯ ПАЛУБА", scene: "lifeboats", tools: [eventsTool("lifeboats", "ШЛЮПОЧНАЯ ПАЛУБА · СОБЫТИЯ")], file: "boats" },
   { key: "gallery", title: "4. СМОТРОВАЯ ГАЛЕРЕЯ", scene: "gallery", tools: [eventsTool("gallery", "СМОТРОВАЯ ГАЛЕРЕЯ · СОБЫТИЯ"), unbornTools()], file: "gallery" },
-  { key: "finale", title: "ФИНАЛ И ЭПИЛОГ", file: "finale" },
+  { key: "finale", title: "КОНЕЦ АКТА I", file: "finale" },
 ];
 
 const open = { intro: true, cells: true };
