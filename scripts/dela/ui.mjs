@@ -3,7 +3,7 @@ import * as S from "./state.mjs";
 import { ANKETA, TRIALS, LINES, REWARDS, OUTCOME_LABEL, CLASS_LABEL, TRIAL_META, g, anketaEntry, chronicle, mood, points } from "./texts.mjs";
 import { modeOf, saveMod } from "./trial.mjs";
 import { directorTab } from "./director.mjs";
-import { guideTab } from "./guide.mjs";
+import { guideTab, dramaTab, dialoguesTab } from "./guide.mjs";
 import { orbCanvas, setOrb, ArtReveal } from "./gl.mjs";
 import { dramaDoc, dramaReady, dramaPart } from "./drama.mjs";
 
@@ -267,12 +267,17 @@ export class Panel {
       h("button.nk-btn.small", { title: "Корпус −1", onclick: () => S.update(s => { s.hullAdj = (s.hullAdj || 0) - 1; }) }, "−"),
       h("button.nk-btn.small", { title: "Корпус +1", onclick: () => S.update(s => { s.hullAdj = (s.hullAdj || 0) + 1; }) }, "+"),
       h("button.nk-x", { title: "Закрыть пульт", style: "margin-left:6px", onclick: () => this.close() }, "✕"));
-    const tabs = h("div.nk-tabs", {}, [["guide", "СЦЕНАРИЙ"], ["heroes", "ГЕРОИ И ВЕРА"], ["trials", "ИСПЫТАНИЯ"], ["scenes", "СЦЕНЫ"]].map(([id, label]) =>
+    const tabs = h("div.nk-tabs", {}, [["guide", "СЦЕНАРИЙ"], ["drama", "ЗАЧИТКИ"], ["dialogues", "ДИАЛОГИ"], ["heroes", "ГЕРОИ И ВЕРА"], ["trials", "ИСПЫТАНИЯ"], ["scenes", "СЦЕНЫ"]].map(([id, label]) =>
       h("button", { class: `nk-tab ${this.tab === id ? "on" : ""}`, onclick: () => { this.tab = id; this.render(); } }, label)));
-    const body = h("div.nk-body", {}, this.tab === "heroes" ? this.heroes(st) : this.tab === "scenes" ? directorTab(() => this.render()) : this.tab === "guide" ? guideTab(() => this.render()) : this.trials(st));
-    const scroll = this.el.querySelector(".nk-body")?.scrollTop || 0;
+    const rr = () => this.render(), T = this.tab;
+    const body = h("div.nk-body", {}, T === "heroes" ? this.heroes(st) : T === "scenes" ? directorTab(rr) : T === "guide" ? guideTab(rr)
+      : T === "drama" ? dramaTab(rr) : T === "dialogues" ? dialoguesTab(rr) : this.trials(st));
+    this.scrolls ??= {};                                          // у каждой вкладки своя прокрутка
+    const prev = this.el.querySelector(".nk-body");
+    if (prev && this.shown) this.scrolls[this.shown] = prev.scrollTop;
     this.el.replaceChildren(h("div.nk-screen", {}, top, tabs, body, h("div.nk-scan")));
-    this.el.querySelector(".nk-body").scrollTop = scroll;
+    this.el.querySelector(".nk-body").scrollTop = this.scrolls[T] || 0;
+    this.shown = T;
     draggable(this.el, top);
   }
 

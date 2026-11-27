@@ -72,7 +72,6 @@ export const LOCATIONS = [
   { key: "intro", title: "О МОДУЛЕ · КТО, ЧТО, ЗАЧЕМ", file: "intro" },
   { key: "prep", title: "ПЕРЕД ИГРОЙ · БЕЗОПАСНОСТЬ · ЕСЛИ ЧТО-ТО ПОШЛО НЕ ТАК", file: "prep" },
   { key: "lore", title: "ШПАРГАЛКА ПО МИРУ · НЕУДОБНЫЕ ВОПРОСЫ", file: "lore" },
-  { key: "drama", title: "ДРАМАТИЧЕСКИЕ ЗАЧИТКИ · СОБЫТИЯ И ВЫБОРЫ", file: "drama" },
   { key: "cells", title: "0. ТЮРЕМНЫЙ БЛОК", scene: "cells", tools: [nudgeTools, servitorTools, hackTools], file: "cells" },
   { key: "post", title: "1. ПОСТ ОХРАНЫ", scene: "post", file: "post" },
   { key: "hall", title: "2. ЗАЛ ЭТАПА", scene: "hall", tools: [eventsTool("hall", "ЗАЛ ЭТАПА · СОБЫТИЯ")], file: "hall" },
@@ -122,6 +121,12 @@ function dramaState(root, rerender) {
     if (live) { try { oc = S.trialSum(st.trial).outcome || oc; } catch { /* нет бросков */ } }
     el.querySelectorAll("[data-oc]").forEach(x => x.classList.toggle("on", x.dataset.oc === oc));
   }
+  // группа «сейчас»: идёт её испытание или сработало событие на сцене, открытой у мастера
+  const cur = canvas?.scene?.flags?.[S.MOD]?.scene;
+  for (const grp of root.querySelectorAll("details.nk-g-grp")) {
+    const hot = [...grp.querySelectorAll(".nk-g-drama.on")].some(el => el.dataset.trial || el.dataset.scene === cur);
+    if (hot) { grp.open = true; grp.classList.add("live"); }
+  }
 }
 
 /** Картинки промежуточных мест: превью и кнопки «Показать игрокам», «Убрать у всех». */
@@ -136,12 +141,12 @@ function decorate(root, key, rerender) {
         h("button.nk-btn.small", { "data-pic-show": pic, onclick: () => showPic(pic, title) }, "ПОКАЗАТЬ ИГРОКАМ"),
         h("button.nk-btn.small", { onclick: () => hidePic() }, "УБРАТЬ У ВСЕХ")));
   }
-  if (root.querySelector(".nk-g-drama")) dramaState(root, rerender);
   root.querySelectorAll("details").forEach((d, i) => {
     const k = `${key}:${i}`;
     if (details.has(k)) d.open = details.get(k);
     d.addEventListener("toggle", () => details.set(k, d.open));
   });
+  if (root.querySelector(".nk-g-drama")) dramaState(root, rerender);
 }
 
 function textBlock(L, rerender) {
@@ -167,6 +172,22 @@ function section(L, rerender, extra) {
       h("div", { style: "flex:1" }), extra),
     body);
 }
+
+/** Вкладка из одного файла (зачитки, диалоги): «Свернуть все» сверху и текст с группами по локациям. */
+function fileTab(key, file, rerender) {
+  const L = { key, file };
+  const top = h("div.nk-g-top", {},
+    h("button.nk-btn.small", { title: "Свернуть все группы", onclick: () => {
+      for (const k of [...details.keys()]) if (k.startsWith(`${key}:`)) details.set(k, false);
+      document.querySelectorAll("#nk-panel .nk-g-text details").forEach(d => { d.open = false; });
+      const body = document.querySelector("#nk-panel .nk-body"); if (body) body.scrollTop = 0;
+    } }, "▴ СВЕРНУТЬ ВСЕ"));
+  return [top, textBlock(L, rerender)];
+}
+/** Вкладка «Зачитки»: драматические тексты на события и выборы. */
+export const dramaTab = rerender => fileTab("drama", "drama", rerender);
+/** Вкладка «Диалоги»: полные реплики NPC по локациям. */
+export const dialoguesTab = rerender => fileTab("dialogues", "dialogues", rerender);
 
 /** Вкладка «Сценарий». */
 export function guideTab(rerender) {

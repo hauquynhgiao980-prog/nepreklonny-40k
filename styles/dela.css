@@ -532,3 +532,15 @@
 #nk-panel .nk-drama-text p { margin: 0 0 6px; }
 #nk-panel .nk-drama-text blockquote p:last-child { margin-bottom: 0; }
 #nk-panel .nk-g-top { display: flex; justify-content: flex-end; margin: -4px 0 8px; padding: 4px 0 6px; position: sticky; top: -4px; z-index: 3; background: #07120d; border-bottom: 1px solid rgba(120, 200, 150, .18); }
+
+/* группы во вкладках «Зачитки» и «Диалоги» */
+#nk-panel details.nk-g-grp { margin: 0 0 12px; border: 1px solid var(--gdd); border-radius: 6px; background: rgba(4, 14, 8, .55); }
+#nk-panel details.nk-g-grp > summary { cursor: pointer; padding: 10px 12px; color: var(--gl); font-size: 13px; letter-spacing: .14em; list-style: none; }
+#nk-panel details.nk-g-grp > summary::-webkit-details-marker { display: none; }
+#nk-panel details.nk-g-grp > summary::before { content: "▸ "; }
+#nk-panel details.nk-g-grp[open] > summary::before { content: "▾ "; }
+#nk-panel details.nk-g-grp[open] > summary { border-bottom: 1px solid var(--gdd); }
+#nk-panel details.nk-g-grp > :not(summary) { margin-left: 14px; margin-right: 14px; }
+#nk-panel details.nk-g-grp > :last-child { margin-bottom: 14px; }
+#nk-panel details.nk-g-grp.live > summary::after { content: " · СЕЙЧАС"; color: #ff8a6a; }
+#nk-panel .nk-g-see { margin: 10px 0; padding: 8px 12px; border-left: 3px solid #6b5a2a; background: rgba(40, 30, 6, .22); color: #f0d48a; font-size: 12.5px; }
