@@ -65,6 +65,7 @@ const SPAWN = {
 // Персонажи мастера и враги по сценам. Токены создаются скрытыми при первом показе, дальше — показать/спрятать.
 // from: компендиум, откуда взять актёра, если в мире его нет; at: центры токенов; neutral — без красной рамки (не выдать заранее).
 const T1 = `modules/${MOD}/icons/gen/act1/`;
+const LAS_CULTIST = "Культист с лазганом";
 // разные лица рядовых: токены группы берут портреты по кругу (сюда добавляются новые варианты)
 const CULTIST_FACES = ["kultist_a", "kultist_b", "kultist_c", "kultist_d", "kultist_e", "kultist_f", "kultist_g"].map(k => `${T1}token_${k}.webp`);
 // масштаб портрета в клетке: кольцо врагов и NPC совпадает по размеру с кольцом героев (у героев масштаб 1)
@@ -77,7 +78,10 @@ const CAST = {
   ],
   hall: [
     { id: "cultists", label: "Культисты", actor: "Культист-ренегат", from: "enemies40k", faces: CULTIST_FACES,
-      at: [[1344, 1216], [1344, 1856], [1216, 1344], [1216, 1728], [1472, 1344], [1472, 1728], [1472, 1088], [1472, 1984]] },
+      at: [[1344, 1216], [1344, 1856], [1216, 1344], [1216, 1728], [1472, 1344], [1472, 1728]] },
+    // двое с лазганами — на флангах, у ящиков; актёр собирается в мире из культиста-ренегата и лазгана из «Снаряжения»
+    { id: "cultists-las", label: "Культисты с лазганами", actor: LAS_CULTIST, from: "enemies40k", base: "Культист-ренегат",
+      faces: [`${T1}token_kultist_g.webp`, `${T1}token_kultist_e.webp`], at: [[1472, 1088], [1472, 1984]] },
     { id: "shooters", label: "Стрелки в люках", actor: "Предатель-стрелок", from: "enemies40k", faces: [`${T1}token_strelok.webp`], at: [[1728, 1472], [1728, 1600]] },
     { id: "leader", label: "Отмеченный Хаосом", actor: "Отмеченный Хаосом", from: "enemies40k", faces: [`${T1}token_otmechenny.webp`], at: [[1216, 1472]] },
   ],
@@ -90,7 +94,7 @@ const CAST = {
   ],
 };
 // какие персонажи выходят вместе с событием (и прячутся, если событие откатили)
-const EVENT_CAST = { "Пролом": ["cultists", "shooters", "leader"], "Прорыв варпа": ["unborn"] };
+const EVENT_CAST = { "Пролом": ["cultists", "cultists-las", "shooters", "leader"], "Прорыв варпа": ["unborn"] };
 
 /** Прорыв варпа силами модуля (тот же, что в макросе): 10 с лиловая расщелина с молниями, тайтл и вспышка у всех,
  *  под вспышкой — осквернённая галерея. Повтор возвращает чистую галерею без эффекта. */
@@ -133,9 +137,32 @@ export async function fireEvent(key, name) {
   return runMacro(name, scene);
 }
 
+/** Культист с лазганом: культист-ренегат, у которого есть ещё и лазган убитого гвардейца (стреляет, нож при нём). */
+export async function lasCultist(base, folder) {
+  const gear = game.packs.get(`${MOD}.gear40k`);
+  const gid = gear && (await gear.getIndex()).find(e => e.name === "Лазган")?._id;
+  const gun = gid ? (await gear.getDocument(gid)).toObject() : null;
+  if (!gun) throw new Error("В компендиуме «Снаряжение» нет лазгана.");
+  delete gun._id; delete gun.folder;
+  gun.system.properties = ["two"];                             // без батарей и перезарядки: у врага патроны не считаем
+  gun.system.uses = { spent: 0, max: "", recovery: [] }; gun.system.equipped = true; gun.system.proficient = 1;
+  for (const [k, v] of Object.entries(gun.system.activities ?? {})) if (v.type !== "attack") delete gun.system.activities[k];
+  gun.system.description.value = "<p>Лазган убитого гвардейца. Культист стреляет из него, а нож держит под рукой.</p>";
+  const data = base.toObject(); delete data._id;
+  data.name = LAS_CULTIST; data.folder = folder ?? base.folder?.id ?? null;
+  data.img = `${T1}kultist_g.webp`;
+  data.system.details.cr = 0.25;
+  data.items = [...data.items.map(i => { delete i._id; return i; }), gun];
+  if (data.prototypeToken) { data.prototypeToken.name = LAS_CULTIST; data.prototypeToken.texture.src = `${T1}token_kultist_g.webp`; }
+  return Actor.create(data);
+}
 async function castActor(g) {
   let a = game.actors.find(x => x.name === g.actor);
   if (a) return a;
+  if (g.base) {
+    const base = await castActor({ actor: g.base, from: g.from });
+    return lasCultist(base, base.folder?.id);
+  }
   const pack = game.packs.get(`${MOD}.${g.from}`);
   const id = pack && (await pack.getIndex()).find(e => e.name === g.actor)?._id;
   if (!id) throw new Error(`Нет актёра «${g.actor}» ни в мире, ни в компендиуме.`);

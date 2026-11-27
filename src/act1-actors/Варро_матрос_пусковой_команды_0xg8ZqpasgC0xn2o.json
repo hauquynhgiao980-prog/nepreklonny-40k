@@ -762,7 +762,7 @@
    "_id": "OwGYDbCKP03UcJkP",
    "name": "Хромает",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/varro_limp.webp",
    "system": {
     "type": {
      "value": "monster",
@@ -807,7 +807,7 @@
    "_id": "Hxr21S0eXXNtXc62",
    "name": "Образок паствы",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/varro_icon.webp",
    "system": {
     "type": {
      "value": "monster",

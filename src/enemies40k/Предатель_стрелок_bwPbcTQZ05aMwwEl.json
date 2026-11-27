@@ -743,7 +743,7 @@
     {
       "name": "Бронежилет с сорванной аквилой",
       "type": "equipment",
-      "img": "icons/svg/shield.svg",
+      "img": "modules/nepreklonny-40k/icons/claude/gear40k/G49kaByMgDJiPADk.webp",
       "system": {
         "description": {
           "value": "",
@@ -863,7 +863,7 @@
       "name": "Мультиатака",
       "type": "feat",
       "_id": "2Gs6ZQQqtJehr5Oa",
-      "img": "icons/svg/aura.svg",
+      "img": "modules/nepreklonny-40k/icons/gen/act1/shooter_multi.webp",
       "system": {
         "activities": {
           "sZoPok4E6OPBvP1S": {
@@ -977,7 +977,7 @@
           "max": ""
         },
         "description": {
-          "value": "<p>Пират совершает две атаки Кинжалом. Он может заменить одну из них использованием Щегольства.</p>",
+          "value": "<p>Предатель совершает две атаки: из автогана или штык-ножом, в любом сочетании.</p>",
           "chat": "<p>[[lookup @name]] совершает несколько атак!</p>"
         },
         "identifier": "predmet",
@@ -1047,11 +1047,11 @@
     {
       "name": "Штык-нож",
       "type": "weapon",
-      "img": "icons/svg/sword.svg",
+      "img": "modules/nepreklonny-40k/icons/gen/act1/shooter_bayonet.webp",
       "system": {
         "description": {
           "value": "<p><em>Бросок рукопашной или дальнобойной атаки:</em> [[/attack @abilities.dex.mod + @prof]], досягаемость 5 футов или дистанция 20/60 футов. <em>Попадание:</em> [[/damage 1d4 + @abilities.dex.mod average]] Колющего урона.</p>",
-          "chat": "<p>[[lookup @name]] атакует кинжалом!</p>"
+          "chat": "<p>[[lookup @name]] бьёт штык-ножом!</p>"
         },
         "source": {
           "custom": "",
@@ -1571,150 +1571,15 @@
           "value": "monster",
           "subtype": ""
         },
-        "activities": {
-          "66IPjaLIJqqwvmrL": {
-            "type": "save",
-            "_id": "66IPjaLIJqqwvmrL",
-            "sort": 0,
-            "activation": {
-              "type": "action",
-              "value": null,
-              "override": false,
-              "condition": ""
-            },
-            "consumption": {
-              "scaling": {
-                "allowed": false
-              },
-              "spellSlot": true,
-              "targets": []
-            },
-            "description": {
-              "chatFlavor": ""
-            },
-            "duration": {
-              "units": "inst",
-              "concentration": false,
-              "override": false
-            },
-            "effects": [
-              {
-                "_id": "sxNoZcfI2KVb3zHr",
-                "onSave": false,
-                "level": {}
-              }
-            ],
-            "range": {
-              "override": false,
-              "units": "ft",
-              "special": "",
-              "value": "30"
-            },
-            "target": {
-              "template": {
-                "contiguous": false,
-                "units": "ft",
-                "type": ""
-              },
-              "affects": {
-                "choice": false,
-                "type": "creature",
-                "count": "1",
-                "special": ""
-              },
-              "override": false,
-              "prompt": true
-            },
-            "uses": {
-              "spent": 0,
-              "recovery": [],
-              "max": ""
-            },
-            "damage": {
-              "parts": [],
-              "onSave": "none",
-              "critical": {
-                "allow": false
-              }
-            },
-            "save": {
-              "ability": [
-                "wis"
-              ],
-              "dc": {
-                "calculation": "cha",
-                "formula": "8 + @mod + @prof"
-              }
-            },
-            "name": "",
-            "useConditionText": "",
-            "effectConditionText": "",
-            "macroData": {
-              "name": "",
-              "command": ""
-            },
-            "ignoreTraits": {
-              "idi": false,
-              "idr": false,
-              "idv": false,
-              "ida": false,
-              "idm": false
-            },
-            "midiProperties": {
-              "ignoreTraits": [],
-              "triggeredActivityId": "none",
-              "triggeredActivityConditionText": "",
-              "triggeredActivityTargets": "targets",
-              "triggeredActivityRollAs": "self",
-              "confirmTargets": "default",
-              "autoTargetType": "any",
-              "autoTargetAction": "default",
-              "automationOnly": false,
-              "otherActivityCompatible": true,
-              "identifier": "",
-              "autoConsume": false,
-              "forceConsumeDialog": "default",
-              "forceRollDialog": "default",
-              "forceDamageDialog": "default",
-              "otherActivityAsParentType": true,
-              "displayActivityName": false,
-              "rollMode": "default",
-              "chooseEffects": false,
-              "toggleEffect": false,
-              "ignoreFullCover": false,
-              "removeChatButtons": "default",
-              "magicEffect": false,
-              "magicDamage": false,
-              "noConcentrationCheck": false,
-              "autoCEEffects": "default"
-            },
-            "useConditionReason": "",
-            "isOverTimeFlag": false,
-            "overTimeProperties": {
-              "saveRemoves": true,
-              "preRemoveConditionText": "",
-              "postRemoveConditionText": ""
-            },
-            "otherActivityId": "none",
-            "otherActivityAsParentType": true,
-            "friendlySave": "default",
-            "flags": {},
-            "visibility": {
-              "level": {},
-              "requireAttunement": false,
-              "requireIdentification": false,
-              "requireMagic": false
-            }
-          }
-        },
+        "activities": {},
         "uses": {
           "spent": 0,
           "recovery": [],
           "max": ""
         },
         "description": {
-          "value": "<p class=\"feature\"><em>Спасбросок Мудрости:</em> Сл 12, одно существо, видимое пиратом в пределах 30 футов. <em>Провал:</em> Цель получает состояние &amp;Reference[charmed] до начала следующего хода пирата.</p>",
-          "chat": "<p>Ну как перед таким устоять!</p>"
+          "value": "<p>Бывший гвардеец: дальнобойные атаки, сделанные вплотную к врагу, предатель совершает без помехи.</p>",
+          "chat": ""
         },
         "identifier": "enthralling-panache",
         "source": {
@@ -1733,7 +1598,7 @@
         "cover": null,
         "crewed": false
       },
-      "img": "icons/svg/aura.svg",
+      "img": "modules/nepreklonny-40k/icons/gen/act1/shooter_drill.webp",
       "effects": [
         {
           "name": "Очарованный",
@@ -2509,7 +2374,7 @@
     {
       "name": "Подавляющий огонь",
       "type": "feat",
-      "img": "icons/svg/aura.svg",
+      "img": "modules/nepreklonny-40k/icons/gen/act1/shooter_suppress.webp",
       "system": {
         "description": {
           "value": "<p>Действие. Предатель стреляет очередью по кубу со стороной 10 футов в пределах 60 футов. Каждое существо там совершает спасбросок Ловкости Сл 12: при провале получает 7 (2d6) колющего урона и до начала следующего хода предателя его скорость уменьшается вдвое. Требует 10 зарядов автогана.</p>",

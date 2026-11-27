@@ -769,7 +769,7 @@
    "_id": "RBvGrCSzG34uK7eD",
    "name": "Очередь",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/turret_burst.webp",
    "system": {
     "type": {
      "value": "monster",
@@ -900,7 +900,7 @@
    "_id": "aKyf308qGy3zF3wa",
    "name": "Бьёт по движению",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/turret_motion.webp",
    "system": {
     "type": {
      "value": "monster",
@@ -945,7 +945,7 @@
    "_id": "jwdgLMNup0R1PAxY",
    "name": "Как обезвредить",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/turret_disarm.webp",
    "system": {
     "type": {
      "value": "monster",

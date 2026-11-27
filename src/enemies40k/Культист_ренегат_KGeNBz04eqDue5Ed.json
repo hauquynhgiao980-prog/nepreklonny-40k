@@ -761,7 +761,7 @@
     {
       "name": "Лоскутная броня",
       "type": "equipment",
-      "img": "icons/svg/shield.svg",
+      "img": "modules/nepreklonny-40k/icons/gen/act1/cult_rags.webp",
       "system": {
         "description": {
           "value": "<p>Нагрудник и плечи этого доспеха изготовлены из кожи, вываренной в масле. Остальные части доспеха сделаны из более мягких и гибких материалов.</p>",
@@ -875,7 +875,7 @@
     {
       "name": "Ритуальный нож",
       "type": "weapon",
-      "img": "icons/svg/sword.svg",
+      "img": "modules/nepreklonny-40k/icons/gen/act1/cult_knife.webp",
       "system": {
         "description": {
           "value": "<p><em>Бросок рукопашной атаки:</em> [[/attack @abilities.dex.mod + @prof]], досягаемость 5 футов. <em>Попадание:</em> [[/damage 1d4 + @abilities.dex.mod average]] Рубящего урона плюс [[/damage 1]] Некротического урона.</p>",
@@ -1441,7 +1441,7 @@
     {
       "name": "Ради Тёмных Богов",
       "type": "feat",
-      "img": "icons/svg/aura.svg",
+      "img": "modules/nepreklonny-40k/icons/gen/act1/cult_dark_gods.webp",
       "system": {
         "description": {
           "value": "<p>Когда культист-ренегат умирает в пределах 5 футов от другого культиста, тот получает преимущество на следующий бросок атаки до конца своего следующего хода.</p>",
@@ -1474,7 +1474,7 @@
     {
       "name": "Толпа",
       "type": "feat",
-      "img": "icons/svg/aura.svg",
+      "img": "modules/nepreklonny-40k/icons/gen/act1/cult_mob.webp",
       "system": {
         "description": {
           "value": "<p>Пока рядом с целью есть ещё хотя бы два культиста, атаки культиста по ней совершаются с преимуществом.</p>",

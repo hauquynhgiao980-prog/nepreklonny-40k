@@ -9,6 +9,7 @@ import markdown
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 from macros import MACROS
+from act1_enemy_fix import fix_actor
 
 MOD = 'nepreklonny-40k'
 M = f'modules/{MOD}/maps/'
@@ -444,6 +445,7 @@ def build_actors():
     out.append(a)
 
     for a in out:
+        fix_actor(a)   # иконки способностей и тексты врагов акта I (tools/act1_enemy_fix.py)
         dump(d, a['name'], a)
     return out
 

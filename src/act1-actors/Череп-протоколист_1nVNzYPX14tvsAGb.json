@@ -763,7 +763,7 @@
    "_id": "AlVwaFVRgH6M9SfE",
    "name": "Запись допроса",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/skull_record.webp",
    "system": {
     "type": {
      "value": "monster",

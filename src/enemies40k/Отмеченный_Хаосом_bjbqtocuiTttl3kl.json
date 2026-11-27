@@ -748,11 +748,11 @@
   {
    "name": "Цепной топор",
    "type": "weapon",
-   "img": "icons/svg/sword.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/leader_axe.webp",
    "system": {
     "description": {
      "value": "<p><em>Бросок рукопашной атаки:</em> [[/attack @abilities.str.mod + @prof]], досягаемость 5 футов. <em>Попадание:</em> [[/damage 1d12 + @abilities.str.mod average]] Рубящего урона.</p>",
-     "chat": "<p>Берсерк атакует секирой!</p>"
+     "chat": "<p>Отмеченный рубит цепным топором!</p>"
     },
     "source": {
      "custom": "",
@@ -1318,7 +1318,7 @@
   {
    "name": "Шипастая броня",
    "type": "equipment",
-   "img": "icons/svg/shield.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/leader_armor.webp",
    "system": {
     "description": {
      "value": "<p>Этот грубый доспех состоит из толстых мехов и шкур. Обычно их носят племена варваров, злые гуманоиды и прочие народы, у которых нет инструментов и материалов для создания более качественных доспехов.</p>",
@@ -1432,7 +1432,7 @@
    "name": "Жажда крови",
    "type": "feat",
    "_id": "oq61bpxjGjs3sssU",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/leader_bloodlust.webp",
    "system": {
     "activities": {},
     "uses": {
@@ -1441,7 +1441,7 @@
      "max": ""
     },
     "description": {
-     "value": "<p>Пока берсерк &amp;Reference[bloodied]{Окровавлен}, он совершает с Преимуществом броски атаки и спасброски.</p>",
+     "value": "<p>Пока отмеченный &amp;Reference[bloodied]{Окровавлен}, он совершает с Преимуществом броски атаки и спасброски.</p>",
      "chat": ""
     },
     "identifier": "predmet",
@@ -1610,7 +1610,7 @@
   {
    "name": "Кровь для Тёмных богов",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/leader_blood.webp",
    "system": {
     "description": {
      "value": "<p>Когда отмеченный убивает существо или опускает его до 0 хитов, он может бонусным действием переместиться на половину скорости и совершить одну атаку цепным топором.</p>",
@@ -1643,7 +1643,7 @@
   {
    "name": "Презрение к колдовству",
    "type": "feat",
-   "img": "icons/svg/aura.svg",
+   "img": "modules/nepreklonny-40k/icons/gen/act1/leader_scorn.webp",
    "system": {
     "description": {
      "value": "<p>Отмеченный совершает с преимуществом спасброски от заклинаний, а псайкер, попавший по нему заклинанием, получает 3 (1d6) психического урона.</p>",
