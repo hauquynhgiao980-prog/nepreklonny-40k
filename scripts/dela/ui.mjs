@@ -4,7 +4,7 @@ import { ANKETA, TRIALS, LINES, REWARDS, OUTCOME_LABEL, CLASS_LABEL, TRIAL_META,
 import { modeOf, saveMod } from "./trial.mjs";
 import { directorTab } from "./director.mjs";
 import { guideTab, dramaTab, dialoguesTab } from "./guide.mjs";
-import { orbCanvas, setOrb, ArtReveal } from "./gl.mjs";
+import { orbCanvas, setOrb, orbKey, ArtReveal } from "./gl.mjs";
 import { dramaDoc, dramaReady, dramaPart } from "./drama.mjs";
 
 const ART = (cls, n) => `modules/${S.MOD}/anketa/art/${cls}_${n}.webp`;
@@ -141,6 +141,7 @@ export class Pad {
     else { this.el.style.left = "110px"; this.el.style.top = "90px"; }
     this.orbBig = orbCanvas(104, 0, 0);
     this.orbMini = orbCanvas(28, 0, 0);
+    orbKey(this.orbBig, `nk-orb:${actorId}`); orbKey(this.orbMini, `nk-orb:${actorId}`);
     document.body.append(this.el);
   }
   save() {

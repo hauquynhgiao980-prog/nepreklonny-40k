@@ -12,7 +12,7 @@ float ss(float x){ x=clamp(x,0.,1.); return x*x*(3.-2.*x); }`;
 // ---------------------------------------------------------------- сфера души
 const ORB_FRAG = `precision highp float;
 varying vec2 v_uv;
-uniform float u_time, u_p, u_t, u_seed, u_pulse;
+uniform float u_time, u_p, u_t, u_seed, u_pulse, u_glow, u_side;
 uniform vec3 u_pcol;
 ${NOISE}
 void main(){
@@ -38,13 +38,18 @@ void main(){
   col *= .42 + .78*clamp(dot(n,L),0.,1.);
   col += vec3(1.,.95,.85)*pow(max(dot(reflect(-L,n), vec3(0.,0.,1.)),0.), 22.)*.3;
   col *= 1.-pow(1.-z, 2.)*.55;
-  col += u_pcol*u_pulse*(.28 + .5*pow(1.-r/R, 2.));       // импульс: вспышка изнутри
+  float own = mix(1.-lightSide, lightSide, u_side);       // своя половина: золотая после отказа, багровая после согласия
+  col += u_pcol*u_pulse*(.28 + .5*pow(1.-r/R, 2.))*(.35 + .65*own);   // импульс: вспышка изнутри
+  col += u_pcol*u_glow*own*(.22 + .45*(1.-r/R));         // свечение половины, дышит минуты
   float glow = (1.-smoothstep(R, 1., r))*(1.-inside);
   vec3 gcol = mix(vec3(.85,.16,.1), vec3(1.,.74,.3), u_p);
   float ga = glow*glow*(.18+.55*u_t)*(.85+.15*sin(u_time*1.6));
-  float ring = exp(-pow((r - (R + (1.-u_pulse)*.22))/.04, 2.))*u_pulse*(1.-inside);   // импульс: кольцо уходит наружу
-  vec3 outc = gcol*ga + u_pcol*ring*1.1;
-  gl_FragColor = vec4(col*inside + outc, max(inside, max(ga, ring)));
+  float outL = 1.-smoothstep(-.25, .25, uv.x/R - edge);   // снаружи: с какой стороны своя половина
+  float hm = mix(1.-outL, outL, u_side);
+  float ring = exp(-pow((r - (R + (1.-u_pulse)*.22))/.04, 2.))*u_pulse*(1.-inside)*(.35 + .65*hm);   // импульс: кольцо уходит наружу
+  float halo = exp(-pow((r - (R + .05))/.08, 2.))*u_glow*hm*(1.-inside);                              // ореол своей половины
+  vec3 outc = gcol*ga + u_pcol*(ring*1.1 + halo*1.25);
+  gl_FragColor = vec4(col*inside + outc, max(inside, max(ga, max(ring, halo))));
 }`;
 
 function makeGL(canvas, frag) {
@@ -92,8 +97,9 @@ class OrbHub {
     const { gl, U } = this.ctx;
     gl.viewport(0, 0, 256, 256); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform1f(U.u_time, time); gl.uniform1f(U.u_p, it.p); gl.uniform1f(U.u_t, it.t); gl.uniform1f(U.u_seed, it.seed);
-    const pk = pulseAt(it, performance.now());
-    gl.uniform1f(U.u_pulse, pk); gl.uniform3fv(U.u_pcol, it.pulse?.col ?? [0, 0, 0]);
+    const pk = pulseAt(it, Date.now());
+    gl.uniform1f(U.u_pulse, pk.beat); gl.uniform1f(U.u_glow, pk.glow); gl.uniform1f(U.u_side, it.pulse?.side ?? 1);
+    gl.uniform3fv(U.u_pcol, it.pulse?.col ?? [0, 0, 0]);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     c2.clearRect(0, 0, it.canvas.width, it.canvas.height);
     c2.drawImage(this.canvas, 0, 0, it.canvas.width, it.canvas.height);
@@ -109,13 +115,23 @@ function fallback(it, c2) {   // без WebGL — плоский круг с г�
 }
 const hub = new OrbHub();
 
-/** Сила импульса сейчас: двойной удар «тук-тук», потом затухание за 1,8 с. */
+/** После выбора сфера горит PULSE_MS: сначала двойной удар «тук-тук», потом своя половина медленно дышит светом и под конец гаснет. */
+const PULSE_MS = 5 * 60 * 1000;
 function pulseAt(it, now) {
-  if (!it.pulse) return 0;
-  const k = (now - it.pulse.t0) / 1800;
-  if (k > 1) { it.pulse = null; return 0; }
-  const beat = x => (x < 0 ? 0 : x < 0.06 ? x / 0.06 : Math.pow(Math.max(0, 1 - (x - 0.06) / 0.6), 2));
-  return Math.min(1, beat(k) + 0.65 * beat(k - 0.2));
+  if (!it.pulse) return { beat: 0, glow: 0 };
+  const ms = now - it.pulse.t0;
+  if (ms > PULSE_MS || ms < 0) { it.pulse = null; return { beat: 0, glow: 0 }; }
+  const k = ms / 1800, hit = x => (x < 0 ? 0 : x < 0.06 ? x / 0.06 : Math.pow(Math.max(0, 1 - (x - 0.06) / 0.6), 2));
+  const beat = k > 1 ? 0 : Math.min(1, hit(k) + 0.65 * hit(k - 0.2));
+  const env = Math.min(1, ms / 1200) * Math.min(1, (PULSE_MS - ms) / 20000);
+  const breath = 0.5 + 0.5 * Math.sin((ms / 2600) * Math.PI * 2);
+  return { beat, glow: env * (0.35 + 0.5 * breath) };
+}
+/** Привязать сферу к герою: свечение после выбора переживёт перерисовку и F5. */
+export function orbKey(canvas, key) {
+  const it = canvas?._orb; if (!it) return;
+  it.key = key;
+  try { const p = JSON.parse(localStorage.getItem(key) || "null"); if (p && Date.now() - p.t0 < PULSE_MS) it.pulse = p; } catch { /* нет хранилища */ }
 }
 
 /** Канвас со сферой. l, h — очки Света и Ереси. */
@@ -127,6 +143,7 @@ export function orbCanvas(size, l, h) {
   const item = { canvas, p: 0.5, t: 0, seed: Math.random() * 50 };
   canvas._orb = item;
   setOrb(canvas, l, h);
+  delete item.l; delete item.h;            // стартовые значения — не выбор: импульс только на изменение после первой отрисовки
   hub.add(item);
   return canvas;
 }
@@ -134,7 +151,9 @@ export function setOrb(canvas, l, h) {
   const it = canvas?._orb; if (!it) return;
   if (it.l !== undefined && (l !== it.l || h !== it.h)) {           // выбор записан: сфера вздрагивает своим цветом, без чисел
     const up = l > it.l, down = h > it.h;
-    it.pulse = { t0: performance.now(), col: up && down ? [1, .55, .3] : up ? [1, .9, .55] : down ? [.95, .12, .06] : [.7, .6, .5] };
+    it.pulse = { t0: Date.now(), side: up && down ? 0.5 : up ? 1 : down ? 0 : 0.5,
+      col: up && down ? [1, .55, .3] : up ? [1, .88, .5] : down ? [.95, .14, .07] : [.7, .6, .5] };
+    if (it.key) try { localStorage.setItem(it.key, JSON.stringify(it.pulse)); } catch { /* нет хранилища */ }
     it.seed += 0.8 + Math.random() * 0.6;                            // и меняет рисунок
   }
   it.l = l; it.h = h;
